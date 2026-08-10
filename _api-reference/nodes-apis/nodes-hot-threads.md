@@ -5,18 +5,18 @@ parent: Nodes APIs
 nav_order: 30
 ---
 
-# Nodes hot threads
+# Nodes Hot Threads API
 **Introduced 1.0**
 {: .label .label-purple }
 
-The nodes hot threads endpoint provides information about busy JVM threads for selected cluster nodes. It provides a unique view of the of activity each node.
+The Nodes Hot Threads endpoint provides information about busy JVM threads for selected cluster nodes. It provides a unique view of the activity on each node.
 
 
 ## Endpoints
 
 ```json
 GET /_nodes/hot_threads
-GET /_nodes/<nodeId>/hot_threads
+GET /_nodes/{node_id}/hot_threads
 ```
 
 ## Path parameters
@@ -25,7 +25,7 @@ You can include the following optional path parameter in your request.
 
 Parameter | Type | Description
 :--- | :--- | :---
-nodeId | String  | A comma-separated list of node IDs used to filter results. Supports [node filters]({{site.url}}{{site.baseurl}}/api-reference/nodes-apis/index/#node-filters). Defaults to `_all`.
+`node_id` | String | A comma-separated list of node IDs used to filter results. Supports [node filters]({{site.url}}{{site.baseurl}}/api-reference/nodes-apis/index/#node-filters). Defaults to `_all`.
 
 ## Query parameters
 
@@ -33,19 +33,36 @@ You can include the following query parameters in your request. All query parame
 
 Parameter | Type | Description
 :--- | :---| :---
-snapshots | Integer | The number of samples of thread stacktraces. Defaults to `10`.
-interval | Time | The interval between consecutive samples. Defaults to `500ms`.
-threads | Integer | The number of the busiest threads to return information about. Defaults to `3`.
-ignore_idle_threads | Boolean   | Don’t show threads that are in known idle states, such as waiting on a socket select or pulling from an empty task queue. Defaults to `true`.
+`snapshots` | Integer | The number of samples of thread stack traces. Defaults to `10`.
+`interval` | Time | The interval between consecutive samples. Defaults to `500ms`.
+`threads` | Integer | The number of the busiest threads to return information about. Defaults to `3`.
+`ignore_idle_threads` | Boolean   | Don’t show threads that are in known idle states, such as waiting on a socket select or pulling from an empty task queue. Defaults to `true`.
 type | String | Supported thread types are `cpu`, `wait`, or `block`. Defaults to `cpu`.
-timeout | Time | Sets the time limit for node response. Default value is `30s`.
+`timeout` | Time | Sets the time limit for node response. Default value is `30s`.
 
 ## Example request 
 
-```json
+<!-- spec_insert_start
+component: example_code
+rest: GET /_nodes/hot_threads
+-->
+{% capture step1_rest %}
 GET /_nodes/hot_threads
-```
-{% include copy-curl.html %}
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.nodes.info(
+  node_id_or_metric = "hot_threads"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 
@@ -73,7 +90,7 @@ Line segment | Description
 `{global-eu-35}` | Node name.
 `{uFPbKLDOTlOmdnwUlKW8sw}` | NodeId.
 `{OAM8OT5CQAyasWuIDeVyUA}` | EphemeralId.
-`{global-eu-35.local}` | Host name.
+`{global-eu-35.local}` | Hostname.
 `{[gdv2:a284:2acv:5fa6:0:3a2:7260:74cf]:9300}` | Host address.
 `{dimr}` | Node roles (d=data, i=ingest, m=cluster&nbsp;manager, r=remote&nbsp;cluster&nbsp;client).
 `{zone=west-a2, shard_indexing_pressure_enabled=true}` | Node attributes.

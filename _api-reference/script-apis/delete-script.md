@@ -1,15 +1,15 @@
 ---
 layout: default
-title: Delete Script
+title: Delete stored script
 parent: Script APIs
-nav_order: 4
+nav_order: 40
 ---
 
-# Delete script
+# Delete Stored Script API
 **Introduced 1.0**
 {: .label .label-purple }
 
-Deletes a stored script.
+Deletes a stored script from the cluster state.
 
 ## Endpoints
 
@@ -23,23 +23,40 @@ Path parameters are optional.
 
 | Parameter | Data type | Description | 
 :--- | :--- | :---
-| script-id | String | ID of script to delete. |
+| `script-id` | String | ID of script to delete. |
 
 ## Query parameters
 
 | Parameter | Data type | Description | 
 :--- | :--- | :---
-| cluster_manager_timeout | Time | Amount of time to wait for a connection to the cluster manager. Optional, defaults to `30s`. |
-| timeout | Time | The period of time to wait for a response. If a response is not received before the timeout value, the request will be dropped.
+| `cluster_manager_timeout` | Time | Amount of time to wait for a connection to the cluster manager. Optional, defaults to `30s`. |
+| `timeout` | Time | The period of time to wait for a response. If a response is not received before the timeout value, the request will be dropped.
 
 ## Example request
 
 The following request deletes the `my-first-script` script:
 
-````json
-DELETE _scripts/my-script
-````
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: DELETE /_scripts/my-script
+-->
+{% capture step1_rest %}
+DELETE /_scripts/my-script
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.delete_script(
+  id = "my-script"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 
@@ -59,4 +76,8 @@ The <HTTP METHOD> <endpoint> request returns the following response fields:
 
 | Field | Data type | Description | 
 :--- | :--- | :---
-| acknowledged | Boolean | Whether the delete script request was received. |
+| `acknowledged` | Boolean | Whether the delete script request was received. |
+
+## Required permissions
+
+If you use the Security plugin, make sure you have the appropriate permissions: `cluster:admin/script/delete`.

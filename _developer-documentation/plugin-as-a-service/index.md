@@ -75,14 +75,14 @@ plugins.<plugin_name>.remote_metadata_service_name: "remote-store-service"
 
 OpenSearch supports multi-tenancy for the following plugins.
 
-### ML Commons 
+### ML Commons plugin
 
 The ML Commons plugin supports multi-tenancy for the following components:
 
 - [Connectors]({{site.url}}{{site.baseurl}}/ml-commons-plugin/remote-models/connectors/)
 - [Model groups]({{site.url}}{{site.baseurl}}/ml-commons-plugin/model-access-control/#model-groups)
 - [Models]({{site.url}}{{site.baseurl}}/ml-commons-plugin/integrating-ml-models/) (externally hosted only)
-- [Agents]({{site.url}}{{site.baseurl}}/ml-commons-plugin/agents-tools/index/#agents)
+- [Agents]({{site.url}}{{site.baseurl}}/ml-commons-plugin/agents-tools/agents/)
 - [Tasks]({{site.url}}{{site.baseurl}}/ml-commons-plugin/api/tasks-apis/index/)
 
 The following example configures multi-tenancy for the ML Commons plugin:
@@ -96,7 +96,7 @@ plugins.ml_commons.remote_metadata_service_name: <SERVICE_NAME>
 ```
 {% include copy.html %}
 
-### Flow Framework
+### Flow Framework plugin
 
 The following example configures multi-tenancy for the Flow Framework plugin:
 

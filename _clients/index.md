@@ -9,7 +9,7 @@ redirect_from:
   - /clients/index/
 ---
 
-# OpenSearch language clients
+# ![Clients icon]({{site.url}}{{site.baseurl}}/images/icons/OpenSearch-Clients-Icon.avif){: .heading-icon} OpenSearch language clients
 
 OpenSearch provides clients in JavaScript, Python, Ruby, Java, PHP, .NET, Go, Hadoop, and Rust.
 
@@ -27,7 +27,7 @@ OpenSearch provides clients for the following programming languages and platform
 * **Java**
   * [OpenSearch Java client]({{site.url}}{{site.baseurl}}/clients/java/)
 * **JavaScript**
-  * [OpenSearch JavaScript (Node.js) client]({{site.url}}{{site.baseurl}}/clients/javascript/index)
+  * [OpenSearch JavaScript (Node.js) client]({{site.url}}{{site.baseurl}}/clients/javascript/index/)
 * **Go**
   * [OpenSearch Go client]({{site.url}}{{site.baseurl}}/clients/go/)
 * **Ruby**
@@ -39,7 +39,7 @@ OpenSearch provides clients for the following programming languages and platform
 * **Rust**
   * [OpenSearch Rust client]({{site.url}}{{site.baseurl}}/clients/rust/)
 * **Hadoop**
-  * [OpenSearch Hadoop client](https://github.com/opensearch-project/opensearch-hadoop) 
+  * [Hadoop connector (Apache Spark, Apache Hive, and Hadoop MapReduce)]({{site.url}}{{site.baseurl}}/clients/hadoop/)
 
 
 ## Legacy clients
@@ -59,7 +59,7 @@ Client | Recommended version
 [Elasticsearch Node.js client](https://www.npmjs.com/package/@elastic/elasticsearch/v/7.13.0) | 7.13.0
 [Elasticsearch Ruby client](https://rubygems.org/gems/elasticsearch/versions/7.13.0) | 7.13.0
 
-If you test a legacy client and verify that it works, please [submit a PR](https://github.com/opensearch-project/documentation-website/pulls) and add it to this table.
+If you test a legacy client and verify that it works, [submit a PR](https://github.com/opensearch-project/documentation-website/pulls) and add it to this table.
 
 
 {% comment %}

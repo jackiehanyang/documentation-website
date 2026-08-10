@@ -1,11 +1,12 @@
 ---
 layout: default
 title: Flush
-parent: Index APIs
-nav_order: 36
+parent: Index operations
+grand_parent: Index APIs
+nav_order: 30
 ---
 
-# Flush
+# Flush API
 
 **Introduced 1.0**
 {: .label .label-purple }
@@ -45,26 +46,58 @@ All parameters are optional.
 | `ignore_unavailable` | Boolean | When `true`, OpenSearch ignores missing or closed indexes. If `false`, OpenSearch returns an error if the force merge operation encounters missing or closed indexes. Default is `false`. |
 | `wait_if_ongoing` | Boolean | When `true`, the Flush API does not run while another flush request is active. When `false`, OpenSearch returns an error if another flush request is active. Default is `true`. |
 
-## Example requests
-
-### Flush a specific index
+## Example request: Flushing a specific index
 
 The following example flushes an index named `shakespeare`:
 
-```json
+<!-- spec_insert_start
+component: example_code
+rest: POST /shakespeare/_flush
+body: 
+-->
+{% capture step1_rest %}
 POST /shakespeare/_flush
-```
-{% include copy-curl.html %}
+
+{% endcapture %}
+
+{% capture step1_python %}
 
 
-### Flush all indexes
+response = client.indices.flush(
+  index = "shakespeare"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
+
+
+## Example request: Flushing all indexes
 
 The following example flushes all indexes in a cluster:
 
-```json
+<!-- spec_insert_start
+component: example_code
+rest: POST /_flush
+body: 
+-->
+{% capture step1_rest %}
 POST /_flush
-```
-{% include copy-curl.html %}
+
+{% endcapture %}
+
+{% capture step1_python %}
+
+response = client.indices.flush()
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 
@@ -80,4 +113,6 @@ OpenSearch responds with the number of shards that acknowledged the flush reques
 }
 ```
 
+## Required permissions
 
+If you use the Security plugin, make sure you have the appropriate permissions: `indices:admin/flush` and `indices:admin/flush*`.

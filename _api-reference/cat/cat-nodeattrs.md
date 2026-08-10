@@ -1,18 +1,18 @@
 ---
 layout: default
-title: CAT nodeattrs
-parent: CAT API
+title: CAT node attributes
+parent: CAT APIs
 nav_order: 35
 has_children: false
 redirect_from:
 - /opensearch/rest-api/cat/cat-nodeattrs/
 ---
 
-# CAT nodeattrs
+# CAT Node Attributes API
 **Introduced 1.0**
 {: .label .label-purple }
 
-The CAT nodeattrs operation lists the attributes of custom nodes.
+The CAT node attributes operation lists the attributes of custom nodes.
 
 
 <!-- spec_insert_start
@@ -52,10 +52,29 @@ The following table lists the available query parameters. All query parameters a
 
 The following example request returns attributes about custom nodes:
 
-```json
-GET _cat/nodeattrs?v
-```
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: GET /_cat/nodeattrs?v
+body: 
+-->
+{% capture step1_rest %}
+GET /_cat/nodeattrs?v
+
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.cat.nodeattrs(
+  params = { "v": "true" }
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 
 ## Example response
@@ -64,3 +83,7 @@ GET _cat/nodeattrs?v
 node | host | ip | attr | value
 odfe-node2 | 172.18.0.3 | 172.18.0.3 | testattr | test
 ```
+
+## Required permissions
+
+If you use the Security plugin, make sure you have the appropriate permissions: `cluster:monitor/nodes/info`.

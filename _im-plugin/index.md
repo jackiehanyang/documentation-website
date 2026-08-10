@@ -7,15 +7,14 @@ nav_exclude: true
 permalink: /im-plugin/
 redirect_from:
   - /opensearch/index-data/
-  - /opensearch/rest-api/index-apis/index/
   - /im-plugin/index/
 ---
 
 # Managing indexes
 
-You index data using the OpenSearch REST API. Two APIs exist: the index API and the `_bulk` API.
+You index data using the OpenSearch REST API. Two APIs exist: the Index API and the `_bulk` API.
 
-For situations in which new data arrives incrementally (for example, customer orders from a small business), you might use the index API to add documents individually as they arrive. For situations in which the flow of data is less frequent (for example, weekly updates to a marketing website), you might prefer to generate a file and send it to the `_bulk` API. For large numbers of documents, lumping requests together and using the `_bulk` API offers superior performance. If your documents are enormous, however, you might need to index them individually.
+For situations in which new data arrives incrementally (for example, customer orders from a small business), you might use the Index API to add documents individually as they arrive. For situations in which the data flow is less frequent (for example, weekly updates to a marketing website), you might prefer to generate a file and send it to the `_bulk` API. For large numbers of documents, lumping requests together and using the `_bulk` API offers superior performance. If your documents are exceptionally large, however, you might need to index them individually.
 
 When indexing documents, the document `_id` must be 512 bytes or less in size.
 
@@ -26,10 +25,10 @@ Before you can search data, you must *index* it. Indexing is the method by which
 
 In OpenSearch, the basic unit of data is a JSON *document*. Within an index, OpenSearch identifies each document using a unique ID.
 
-A request to the index API looks like this:
+A request sent to the Index API appears as follows:
 
 ```json
-PUT <index>/_doc/<id>
+PUT {index}/_doc/{id}
 { "A JSON": "document" }
 ```
 
@@ -75,7 +74,7 @@ PUT movies/_doc/1
 { "title": "Spirited Away" }
 ```
 
-Because you must specify an ID, if you run this command 10 times, you still have just one document indexed with the `_version` field incremented to 10.
+Because you must specify an ID, if you run this command 10 times, you still have only one document indexed with the `_version` field incremented to 10.
 
 Indexes default to one primary shard and one replica. If you want to specify non-default settings, create the index before adding documents:
 
@@ -161,7 +160,7 @@ GET _mget
 To check if a document exists:
 
 ```json
-HEAD movies/_doc/<doc-id>
+HEAD movies/_doc/{doc-id}
 ```
 
 If the document exists, you get back a `200 OK` response, and if it doesn't, you get back a `404 - Not Found` error.
@@ -281,10 +280,9 @@ DELETE movies/_doc/1
 
 The DELETE operation increments the `_version` field. If you add the document back to the same ID, the `_version` field increments again. This behavior occurs because OpenSearch deletes the document `_source`, but retains its metadata.
 
-
 ## Next steps
 
-- The Index Management (IM) plugin lets you automate recurring index management activities and reduce storage costs. For more information, see [Index State Management]({{site.url}}{{site.baseurl}}/im-plugin/ism/index).
+- The Index Management (IM) plugin lets you automate recurring index management activities and reduce storage costs. For more information, see [Index State Management]({{site.url}}{{site.baseurl}}/im-plugin/ism/index/).
 
 - For instructions on how to reindex data, see [Reindex data]({{site.url}}{{site.baseurl}}/im-plugin/reindex-data/).
 

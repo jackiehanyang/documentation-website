@@ -105,7 +105,9 @@ The following table lists all tool parameters that are available when registerin
 Parameter	| Type | Description	
 :--- | :--- | :---
 `alertIds`	| Array	| The ID of the alert to search for.
-`monitorId`	| String	| The name of the monitor by which to filter the alerts.
+`alertIndex` | String | The name of the alert index to search (default is `null`).
+`monitorId`	| String	| The ID of the monitor by which to filter the alerts.
+`monitorIds` | Array | A list of monitor IDs by which to filter the alerts.
 `workflowIds`	| Array | A list of workflow IDs by which to filter the alerts.
 `alertState` |	String	| The alert state by which to filter the alerts. Valid values are `ALL`, `ACTIVE`, `ERROR`, `COMPLETED`, and `ACKNOWLEDGED`. Default is `ALL`.
 `severityLevel` | String| The severity level by which to filter the alerts. Valid values are `ALL`, `1`, `2`, and `3`. Default is `ALL`.
@@ -122,3 +124,7 @@ The following table lists all tool parameters that are available when running th
 Parameter	| Type | Required/Optional | Description	
 :--- | :--- | :--- | :---
 `question` | String | Required | The natural language question to send to the LLM. 
+
+## Testing the tool
+
+You can run this tool either as part of an agent workflow or independently using the [Execute Tool API]({{site.url}}{{site.baseurl}}/ml-commons-plugin/api/execute-tool/). The Execute Tool API is useful for testing individual tools or performing standalone operations.

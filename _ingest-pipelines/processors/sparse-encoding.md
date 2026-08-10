@@ -27,7 +27,7 @@ The following is the syntax for the `sparse_encoding` processor:
   }
 }
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 ## Configuration parameters
 
@@ -58,7 +58,7 @@ The `sparse_encoding` processor can be used to prune sparse vectors by configuri
 `abs_value` | Float (0, +∞) | Prunes a sparse vector by removing elements with values lower than the `prune_ratio`.
 `alpha_mass` | Float [0, 1) | Prunes a sparse vector by keeping only elements whose cumulative sum of values is within the `prune_ratio` of the total sum.
 `top_k` | Integer (0, +∞) | Prunes a sparse vector by keeping only the top `prune_ratio` elements.
-none | N/A | Leaves sparse vectors unchanged.
+`none` | N/A | Leaves sparse vectors unchanged.
 
 Among all pruning options, specifying `max_ratio` as equal to `0.1` demonstrates strong generalization on test datasets. This approach reduces storage requirements by approximately 40% while incurring less than a 1% loss in search relevance.
 
@@ -154,7 +154,7 @@ The response confirms that in addition to the `passage_text` field, the processo
 }
 ```
 
-Once you have created an ingest pipeline, you need to create an index for ingestion and ingest documents into the index. To learn more, see [Create an index for ingestion]({{site.url}}{{site.baseurl}}/search-plugins/neural-sparse-with-pipelines/#step-2b-create-an-index-for-ingestion) and [Step 3: Ingest documents into the index]({{site.url}}{{site.baseurl}}/search-plugins/neural-sparse-with-pipelines/#step-2c-ingest-documents-into-the-index) of [Neural sparse search]({{site.url}}{{site.baseurl}}/search-plugins/neural-sparse-search/).
+Once you have created an ingest pipeline, you need to create an index for ingestion and ingest documents into the index. For a complete example, see [Generating sparse vector embeddings automatically]({{site.url}}{{site.baseurl}}/vector-search/ai-search/neural-sparse-with-pipelines/).
 
 ---
 

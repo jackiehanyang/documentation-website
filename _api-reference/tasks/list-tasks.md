@@ -1,11 +1,11 @@
 ---
 layout: default
 title: List tasks
-parent: Tasks API
+parent: Tasks APIs
 nav_order: 10
 ---
 
-# List tasks
+# List Tasks API
 **Introduced 1.0**
 {: .label .label-purple }
 
@@ -45,10 +45,27 @@ The following table lists the available query parameters. All query parameters a
 
 The following request returns tasks currently running on a node named `opensearch-node1`:
 
-```json
+<!-- spec_insert_start
+component: example_code
+rest: GET /_tasks?nodes=opensearch-node1
+-->
+{% capture step1_rest %}
 GET /_tasks?nodes=opensearch-node1
-```
-{% include copy-curl.html %}
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.tasks.list(
+  params = { "nodes": "opensearch-node1" }
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 
@@ -111,3 +128,7 @@ Response field | Description |
 `thread_info` | Thread-count-related statistics.|
 `thread_info.active_threads` | The number of threads currently working on the task. |
 `thread_info.thread_executions` | The number of threads that have been scheduled to work on the task. |
+
+## Required permissions
+
+If you use the Security plugin, make sure you have the appropriate permissions: `cluster:monitor/tasks/list`.

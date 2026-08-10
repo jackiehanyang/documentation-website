@@ -20,7 +20,7 @@ Use the index state management operations to programmatically work with policies
 
 
 ## Create policy
-Introduced 1.0
+**Introduced 1.0**
 {: .label .label-purple }
 
 Creates a policy.
@@ -74,7 +74,7 @@ PUT _plugins/_ism/policies/policy_1
   }
 }
 ```
-
+{% include copy-curl.html %}
 
 #### Example response
 
@@ -139,7 +139,7 @@ PUT _plugins/_ism/policies/policy_1
 ---
 
 ## Add policy
-Introduced 1.0
+**Introduced 1.0**
 {: .label .label-purple }
 
 Adds a policy to an index. This operation does not change the policy if the index already has one.
@@ -152,6 +152,7 @@ POST _plugins/_ism/add/index_1
   "policy_id": "policy_1"
 }
 ```
+{% include copy-curl.html %}
 
 #### Example response
 
@@ -171,7 +172,7 @@ Don't use the broad `*` wildcard, and instead add a prefix, such as `my-logs*`, 
 
 
 ## Update policy
-Introduced 1.0
+**Introduced 1.0**
 {: .label .label-purple }
 
 Updates a policy. Use the `seq_no` and `primary_term` parameters to update an existing policy. If these numbers don't match the existing policy or the policy doesn't exist, ISM throws an error.
@@ -227,6 +228,7 @@ PUT _plugins/_ism/policies/policy_1?if_seq_no=7&if_primary_term=1
   }
 }
 ```
+{% include copy-curl.html %}
 
 
 #### Example response
@@ -292,7 +294,7 @@ PUT _plugins/_ism/policies/policy_1?if_seq_no=7&if_primary_term=1
 ---
 
 ## Get policy
-Introduced 1.0
+**Introduced 1.0**
 {: .label .label-purple }
 
 Gets the policy by `policy_id`.
@@ -302,6 +304,7 @@ Gets the policy by `policy_id`.
 ```json
 GET _plugins/_ism/policies/policy_1
 ```
+{% include copy-curl.html %}
 
 
 #### Example response
@@ -363,8 +366,148 @@ GET _plugins/_ism/policies/policy_1
 
 ---
 
+## Get policies
+**Introduced 1.0**
+{: .label .label-purple }
+
+Gets a list of policies. This API accepts search parameters to filter and paginate the results.
+
+### Query parameters
+
+The following table lists the available query parameters. All query parameters are optional.
+
+| Parameter | Data type | Description |
+| :--- | :--- | :--- |
+| `size` | Integer | The number of policies to return. |
+| `from` | Integer | The starting position for pagination. |
+| `sortField` | String | The field by which to sort the results. |
+| `sortOrder` | String | The sort order for the results. Valid values are `asc` (ascending) and `desc` (descending). |
+| `queryString` | String | A query string used to filter policies by name or other attributes. See [Query string query]({{site.url}}{{site.baseurl}}/query-dsl/full-text/query-string/).|
+
+#### Example request
+
+```json
+GET _plugins/_ism/policies
+```
+{% include copy-curl.html %}
+
+#### Example response
+
+```json
+{
+  "policies": [
+    {
+      "_id": "policy_1",
+      "_version": 2,
+      "_seq_no": 10,
+      "_primary_term": 1,
+      "policy": {
+        "policy_id": "policy_1",
+        "description": "ingesting logs",
+        "last_updated_time": 1577990934044,
+        "schema_version": 1,
+        "error_notification": null,
+        "default_state": "ingest",
+        "states": [
+          {
+            "name": "ingest",
+            "actions": [
+              {
+                "rollover": {
+                  "min_doc_count": 5
+                }
+              }
+            ],
+            "transitions": [
+              {
+                "state_name": "search"
+              }
+            ]
+          },
+          {
+            "name": "search",
+            "actions": [],
+            "transitions": [
+              {
+                "state_name": "delete",
+                "conditions": {
+                  "min_index_age": "5m"
+                }
+              }
+            ]
+          },
+          {
+            "name": "delete",
+            "actions": [
+              {
+                "delete": {}
+              }
+            ],
+            "transitions": []
+          }
+        ]
+      }
+    },
+    {
+      "_id": "policy_2",
+      "_version": 3,
+      "_seq_no": 11,
+      "_primary_term": 1,
+      "policy": {
+        "policy_id": "policy_2",
+        "description": "ingesting logs",
+        "last_updated_time": 1577990934042,
+        "schema_version": 1,
+        "error_notification": null,
+        "default_state": "ingest",
+        "states": [
+          {
+            "name": "ingest",
+            "actions": [
+              {
+                "rollover": {
+                  "min_doc_count": 5
+                }
+              }
+            ],
+            "transitions": [
+              {
+                "state_name": "search"
+              }
+            ]
+          },
+          {
+            "name": "search",
+            "actions": [],
+            "transitions": [
+              {
+                "state_name": "delete",
+                "conditions": {
+                  "min_index_age": "5m"
+                }
+              }
+            ]
+          },
+          {
+            "name": "delete",
+            "actions": [
+              {
+                "delete": {}
+              }
+            ],
+            "transitions": []
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+---
+
 ## Remove policy from index
-Introduced 1.0
+**Introduced 1.0**
 {: .label .label-purple }
 
 Removes any ISM policy from the index.
@@ -374,6 +517,7 @@ Removes any ISM policy from the index.
 ```json
 POST _plugins/_ism/remove/index_1
 ```
+{% include copy-curl.html %}
 
 
 #### Example response
@@ -389,7 +533,7 @@ POST _plugins/_ism/remove/index_1
 ---
 
 ## Update managed index policy
-Introduced 1.0
+**Introduced 1.0**
 {: .label .label-purple }
 
 Updates the managed index policy to a new policy (or to a new version of the policy). You can use an index pattern to update multiple indexes at once. When updating multiple indexes, you might want to include a state filter to only affect certain managed indexes. The change policy filters out all the existing managed indexes and only applies the change to the ones in the state that you specify. You can also explicitly specify the state that the managed index transitions to after the change policy takes effect.
@@ -412,6 +556,7 @@ POST _plugins/_ism/change_policy/index_1
   ]
 }
 ```
+{% include copy-curl.html %}
 
 
 #### Example response
@@ -427,7 +572,7 @@ POST _plugins/_ism/change_policy/index_1
 ---
 
 ## Retry failed index
-Introduced 1.0
+**Introduced 1.0**
 {: .label .label-purple }
 
 Retries the failed action for an index. For the retry call to succeed, ISM must manage the index, and the index must be in a failed state. You can use index patterns (`*`) to retry multiple failed indexes.
@@ -440,6 +585,7 @@ POST _plugins/_ism/retry/index_1
   "state": "delete"
 }
 ```
+{% include copy-curl.html %}
 
 
 #### Example response
@@ -455,7 +601,7 @@ POST _plugins/_ism/retry/index_1
 ---
 
 ## Explain index
-Introduced 1.0
+**Introduced 1.0**
 {: .label .label-purple }
 
 Gets the current state of the index. You can use index patterns to get the status of multiple indexes.
@@ -465,6 +611,7 @@ Gets the current state of the index. You can use index patterns to get the statu
 ```json
 GET _plugins/_ism/explain/index_1
 ```
+{% include copy-curl.html %}
 
 
 #### Example response
@@ -484,6 +631,7 @@ Optionally, you can add the `show_policy` parameter to your request's path to ge
 ```json
 GET _plugins/_ism/explain/index_1?show_policy=true
 ```
+{% include copy-curl.html %}
 
 #### Example response
 
@@ -513,10 +661,350 @@ GET _plugins/_ism/explain/index_1?show_policy=true
 
 The `plugins.index_state_management.policy_id` setting is deprecated starting from ODFE version 1.13.0. We retain this field in the response API for consistency.
 
+## Explain index with filtering
+**Introduced 2.12**
+{: .label .label-purple }
+
+You can use the `POST` method with the Explain API to filter the results based on specific criteria. This allows you to query indexes based on their policy ID, current state, or action type.
+
+#### Endpoints
+
+```
+POST _plugins/_ism/explain/{index}
+```
+{% include copy-curl.html %}
+
+#### Request body
+
+The request body supports the following optional filters. If a filter is not specified, indexes with any value for that parameter are included in the results. The API returns only indexes that match all specified filters.
+
+| Parameter | Type | Description |
+|:----------|:-----|:------------|
+| `policy_id` | String | Filter results to show only indexes managed by the specified policy ID. |
+| `state` | String | Filter results to show only indexes currently in the specified state. |
+| `action_type` | String | Filter results to show only indexes currently executing the specified action type. |
+| `failed` | Boolean | Filter results to show only failed managed indexes. |
+
+#### Example request: Filter by policy ID
+
+```json
+POST _plugins/_ism/explain/log-*
+{
+  "filter": {
+    "policy_id": "hot-warm-delete-policy"
+  }
+}
+```
+{% include copy-curl.html %}
+
+#### Example request: Filter by state and action type
+
+```json
+POST _plugins/_ism/explain/app-*
+{
+  "filter": {
+    "state": "warm",
+    "action_type": "allocation"
+  }
+}
+```
+{% include copy-curl.html %}
+
+#### Example request: Filter by all criteria
+
+```json
+POST _plugins/_ism/explain/data-*
+{
+  "filter": {
+    "policy_id": "data-lifecycle-policy",
+    "state": "hot",
+    "action_type": "rollover"
+  }
+}
+```
+{% include copy-curl.html %}
+
+#### Example response
+
+<details markdown="block">
+  <summary>
+    Response
+  </summary>
+  {: .text-delta}
+
+```json
+{
+  "test-logs-001": {
+    "index.plugins.index_state_management.policy_id": "test-lifecycle-policy",
+    "index": "test-logs-001",
+    "index_uuid": "LmJgKNatQZWHQu-qIHlcJw",
+    "policy_id": "test-lifecycle-policy",
+    "enabled": true,
+    "policy": {
+      "policy_id": "test-lifecycle-policy",
+      "description": "Lifecycle policy for log data: hot -> warm -> cold -> delete",
+      "last_updated_time": 1730308440926,
+      "schema_version": 18,
+      "error_notification": null,
+      "default_state": "hot",
+      "states": [
+        {
+          "name": "hot",
+          "actions": [
+            {
+              "rollover": {
+                "min_doc_count": 10000,
+                "min_size": "1gb",
+                "min_index_age": "1d"
+              }
+            }
+          ],
+          "transitions": [
+            {
+              "state_name": "warm",
+              "conditions": {
+                "min_index_age": "7d"
+              }
+            }
+          ]
+        },
+        {
+          "name": "warm",
+          "actions": [
+            {
+              "replica_count": {
+                "number_of_replicas": 0
+              }
+            }
+          ],
+          "transitions": [
+            {
+              "state_name": "cold",
+              "conditions": {
+                "min_index_age": "30d"
+              }
+            }
+          ]
+        },
+        {
+          "name": "cold",
+          "actions": [],
+          "transitions": [
+            {
+              "state_name": "delete",
+              "conditions": {
+                "min_index_age": "90d"
+              }
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "actions": [
+            {
+              "delete": {}
+            }
+          ],
+          "transitions": []
+        }
+      ],
+      "ism_template": null
+    },
+    "policy_seq_no": 0,
+    "policy_primary_term": 1,
+    "rolled_over": false,
+    "index_creation_date": 1730308447399,
+    "state": {
+      "name": "hot",
+      "start_time": 1730308447644
+    },
+    "action": {
+      "name": "rollover",
+      "start_time": 1730308447644,
+      "index": 0,
+      "failed": false,
+      "consumed_retries": 0,
+      "last_retry_time": 0
+    },
+    "step": {
+      "name": "attempt_rollover",
+      "start_time": 1730308447644,
+      "step_status": "starting"
+    },
+    "retry_info": {
+      "failed": false,
+      "consumed_retries": 0
+    },
+    "info": {
+      "message": "Currently checking rollover conditions"
+    },
+    "enabled": true,
+    "enabled_time": 1730308447644
+  },
+  "total_managed_indices": 1
+}
+```
+
+</details>
+
+---
+
+## Simulate policy
+**Introduced 3.7**
+{: .label .label-purple }
+
+Previews how a policy would apply to one or more indexes without making any changes. For each index, the response contains the current state, the next action to execute, the evaluation of every transition condition, and which state the index would move to next. Use this endpoint to validate a policy before attaching it or to debug why an index is not transitioning as expected.
+
+Exactly one of `policy_id` or `policy` must be provided.
+
+#### Endpoints
+
+```json
+POST _plugins/_ism/simulate
+```
+{% include copy-curl.html %}
+
+#### Request body fields
+
+The following table lists the available request body fields.
+
+| Field | Type | Required | Description |
+|:------|:-----|:---------|:------------|
+| `policy_id` | String | Conditional | The ID of a stored ISM policy to simulate. Required when `policy` is not provided. |
+| `policy` | Object | Conditional | An inline policy definition to simulate without saving it. Required when `policy_id` is not provided. |
+| `indices` | Array of strings | Yes | The index names or wildcard patterns to simulate against. Wildcard patterns are expanded to matching concrete indexes. Patterns that match no indexes are silently ignored. Concrete index names that do not exist return an error in the per-index result. |
+
+#### Example request: Simulate a stored policy
+
+```json
+POST _plugins/_ism/simulate
+{
+  "policy_id": "my-lifecycle-policy",
+  "indices": ["logs-2024-01-*", "logs-2024-02-01"]
+}
+```
+{% include copy-curl.html %}
+
+#### Example request: Simulate an inline policy
+
+```json
+POST _plugins/_ism/simulate
+{
+  "policy": {
+    "description": "hot-warm lifecycle",
+    "default_state": "hot",
+    "states": [
+      {
+        "name": "hot",
+        "actions": [],
+        "transitions": [
+          {
+            "state_name": "warm",
+            "conditions": { "min_index_age": "7d" }
+          }
+        ]
+      },
+      { "name": "warm", "actions": [], "transitions": [] }
+    ]
+  },
+  "indices": ["my-index"]
+}
+```
+{% include copy-curl.html %}
+
+#### Response body fields
+
+The following table lists all response body fields. The response contains a `simulate_results` array with one entry per index.
+
+| Field | Type | Description |
+|:------|:-----|:------------|
+| `index_name` | String | The name of the index. |
+| `index_uuid` | String | The UUID of the index. `null` when the index was not found. |
+| `policy_id` | String | The ID of the policy used for simulation. Empty string for inline policies. |
+| `is_managed` | Boolean | Whether the index is managed by ISM. |
+| `current_state` | String | The state the index is in, or would start in for unmanaged indexes. Omitted when `error` is present. |
+| `current_action` | String | The action that would execute next in the current state. Omitted when `error` is present. |
+| `transition_evaluation` | Array | Per-transition condition evaluations. Present only when the index is in the transition phase (no pending actions). Omitted when `error` is present. |
+| `next_state` | String | The state the index would transition to (first met condition). `null` if no condition is met. Omitted when `error` is present. |
+| `error` | String | An index-level error message. Present when the index does not exist or another index-level error occurs. When this field is present, all other fields except `index_name`, `index_uuid`, `policy_id`, and `is_managed` are omitted. |
+
+Each object in `transition_evaluation` contains the following fields.
+
+| Field | Type | Description |
+|:------|:-----|:------------|
+| `state_name` | String | The target state this transition would move the index to. |
+| `condition_met` | Boolean | Whether the transition condition is satisfied. |
+| `condition_type` | String | The condition type (for example, `min_index_age`, `min_doc_count`, `min_size`). Set to `unconditional` for transitions with no conditions. |
+| `current_value` | String | The current value of the metric being checked, formatted as a readable string (for example, `"3d 4h"`). Omitted for unconditional transitions. |
+| `required_value` | String | The threshold required by the condition, formatted as a readable string (for example, `"7d"`). Omitted for unconditional transitions. |
+
+#### Example response
+
+```json
+{
+  "simulate_results": [
+    {
+      "index_name": "logs-2024-01-15",
+      "index_uuid": "gCFlS_zcTdih8xyxf3jQ-A",
+      "policy_id": "my-lifecycle-policy",
+      "is_managed": false,
+      "current_state": "hot",
+      "current_action": "transition",
+      "transition_evaluation": [
+        {
+          "state_name": "warm",
+          "condition_met": true,
+          "condition_type": "min_index_age",
+          "current_value": "10d",
+          "required_value": "7d"
+        }
+      ],
+      "next_state": "warm"
+    },
+    {
+      "index_name": "logs-2024-02-01",
+      "index_uuid": "LmJgKNatQZWHQu-qIHlcJw",
+      "policy_id": "my-lifecycle-policy",
+      "is_managed": false,
+      "current_state": "hot",
+      "current_action": "transition",
+      "transition_evaluation": [
+        {
+          "state_name": "warm",
+          "condition_met": false,
+          "condition_type": "min_index_age",
+          "current_value": "3d 2h",
+          "required_value": "7d"
+        }
+      ],
+      "next_state": null
+    }
+  ]
+}
+```
+
+#### Example response: Index not found
+
+When a concrete index name does not exist in the cluster, the result contains an `error` field instead of state information.
+
+```json
+{
+  "simulate_results": [
+    {
+      "index_name": "nonexistent-index",
+      "index_uuid": null,
+      "policy_id": "my-lifecycle-policy",
+      "is_managed": false,
+      "error": "Index 'nonexistent-index' not found in cluster"
+    }
+  ]
+}
+```
+
 ---
 
 ## Delete policy
-Introduced 1.0
+**Introduced 1.0**
 {: .label .label-purple }
 
 Deletes the policy by `policy_id`.
@@ -526,6 +1014,7 @@ Deletes the policy by `policy_id`.
 ```json
 DELETE _plugins/_ism/policies/policy_1
 ```
+{% include copy-curl.html %}
 
 
 #### Example response
@@ -548,23 +1037,26 @@ DELETE _plugins/_ism/policies/policy_1
 ```
 
 ## Error prevention validation
-Introduced 2.4
+**Introduced 2.4**
 {: .label .label-purple }
 
-ISM allows you to run an action automatically. However, running an action can fail for a variety of reasons. You can use error prevention validation to test an action in order to rule out failures.
+ISM runs actions automatically. However, actions can fail for various reasons. You can use error prevention validation to test an action and identify potential failures.
 
-To enable error prevention validation, set the `plugins.index_state_management.action_validation.enabled` setting to `true`:
+To enable error prevention validation, set `plugins.index_state_management.action_validation.enabled` to `true`:
 
-```bash
+```json
 PUT _cluster/settings
 {
-   "persistent":{
+   "persistent": {
       "plugins.index_state_management.action_validation.enabled": true
    }
 }
 ```
+{% include copy-curl.html %}
 
 #### Example response
+
+The following response confirms the setting was updated:
 
 ```json
 {
@@ -582,11 +1074,12 @@ PUT _cluster/settings
 }
 ```
 
-To check an error prevention validation status and message, pass `validate_action=true` to the `_plugins/_ism/explain` endpoint:
+To retrieve the error prevention validation status and message, pass `validate_action=true` to the `_plugins/_ism/explain` endpoint:
 
 ```bash
 GET _plugins/_ism/explain/test-000001?validate_action=true
 ```
+{% include copy-curl.html %}
 
 #### Example response
 
@@ -638,17 +1131,17 @@ The response contains an additional validate object with a validation message an
 }
 ```
 
-If you pass `validate_action=false` or do not pass a `validate_action` value to the `_plugins/_ism/explain` endpoint, the response will not contain an error prevention validation status and message:
+If you pass `validate_action=false` or omit the `validate_action` parameter, the response does not contain the validation status and message:
 
 ```bash
 GET _plugins/_ism/explain/test-000001?validate_action=false
 ```
-
-Or:
+{% include copy-curl.html %}
 
 ```bash
 GET _plugins/_ism/explain/test-000001
 ```
+{% include copy-curl.html %}
 
 #### Example response
 

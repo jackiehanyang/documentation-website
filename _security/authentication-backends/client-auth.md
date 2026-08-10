@@ -10,7 +10,7 @@ redirect_from:
 
 # Client certificate authentication
 
-After obtaining your own certificates either from a certificate authority (CA) or by [generating your own certificates using OpenSSL]({{site.url}}{{site.baseurl}}/security/configuration/generate-certificates), you can start configuring OpenSearch to authenticate a user using a client certificate.
+After obtaining your own certificates either from a certificate authority (CA) or by [generating your own certificates using OpenSSL]({{site.url}}{{site.baseurl}}/security/configuration/generate-certificates/), you can start configuring OpenSearch to authenticate a user using a client certificate.
 
 Client certificate authentication offers more security advantages than just using basic authentication (username and password). Because client certificate authentication requires both a client certificate and its private key, which are often in the user's possession, it is less vulnerable to brute force attacks in which malicious individuals try to guess a user's password.
 
@@ -36,6 +36,8 @@ clientcert_auth_domain:
     type: clientcert
     config:
       username_attribute: cn #optional, if omitted DN becomes username
+      skip_users:
+    	    - "DC=de,L=test,O=users,OU=bridge,CN=dashboard"
     challenge: false
   authentication_backend:
     type: noop
@@ -69,7 +71,7 @@ PUT _plugins/_security/api/rolesmapping/readall
 
 After mapping a role to your client certificate's CN, you're ready to connect to your cluster using those credentials.
 
-The code example below uses the Python `requests` library to connect to a local OpenSearch cluster and sends a GET request to the `movies` index.
+The following code example uses the Python `requests` library to connect to a local OpenSearch cluster and sends a GET request to the `movies` index.
 
 ```python
 import requests
@@ -90,6 +92,22 @@ print(response.text)
 ```
 
 {% comment %}
+
+### (Advanced) Exclude certain users from client cert authentication
+
+If you are using multiple authentication methods, it can make sense to exclude certain users from the client cert authentication.
+
+Consider the following scenario for a typical OpenSearch Dashboards setup: OpenSearch Dashboard has basic auth setup and user login from a browser. However, you also have an OpenSearch Dashboards server user. OpenSearch Dashboards uses this user to manage stored objects and perform monitoring and maintenance tasks. You do not want to use this user certificate to log in a user who submitted basic auth logic from a browser.
+
+In this case, it makes sense to exclude the OpenSearch Dashboards server user from the client cert authentication so that the user who enters login information in the browser is validated. You can use the `skip_users` configuration setting to define which users should be skipped. Wildcards and regular expressions are supported:
+
+```yml
+
+skip_users:
+  - "DC=de,L=test,O=users,OU=bridge,CN=dashboard"
+
+```
+
 ## Configuring Beats
 
 You can also configure your Beats so that it uses a client certificate for authentication with OpenSearch. Afterwards, it can start sending output to OpenSearch.

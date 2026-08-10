@@ -1,15 +1,18 @@
 ---
 layout: default
 title: Get task
-parent: Tasks API
+parent: Tasks APIs
 nav_order: 20
 ---
 
-# Get task
+# Get Task API
 **Introduced 1.0**
 {: .label .label-purple }
 
-The Get Task API returns detailed information about a single task.
+The Get Task API returns detailed information about a single general OpenSearch task (such as search, reindex, or bulk operations).
+
+This API is different from the [Get ML Task API]({{site.url}}{{site.baseurl}}/ml-commons-plugin/api/tasks-apis/get-task/), which tracks machine learning tasks and has a different response format.
+{: .important }
 
 <!-- spec_insert_start
 api: tasks.get
@@ -125,3 +128,7 @@ Response field | Description |
 `thread_info` | Thread-count-related statistics.|
 `thread_info.active_threads` | The number of threads currently working on the task. |
 `thread_info.thread_executions` | The number of threads that have been scheduled to work on the task. |
+
+## Required permissions
+
+If you use the Security plugin, make sure you have the appropriate permissions: `cluster:monitor/tasks/get`.

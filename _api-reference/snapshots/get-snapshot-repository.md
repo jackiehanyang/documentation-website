@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Get Snapshot Repository
+title: Get snapshot repository
 parent: Snapshot APIs
 nav_order: 2
 ---
 
-# Get snapshot repository.
+# Get Snapshot Repository API
 **Introduced 1.0**
 {: .label .label-purple }
 
@@ -19,30 +19,47 @@ You can also get details about a snapshot during and after snapshot creation. Se
 ## Endpoints
 
 ```json
-GET /_snapshot/<repository>
+GET /_snapshot/{repository}
 ```
 
 ## Path parameters
 
 | Parameter | Data type | Description |
 | :--- | :--- | :--- |
-| repository | String | A comma-separated list of snapshot repository names to retrieve. Wildcard (`*`) expressions are supported including combining wildcards with exclude patterns starting with `-`. |
+| `repository` | String | A comma-separated list of snapshot repository names to retrieve. Wildcard (`*`) expressions are supported including combining wildcards with exclude patterns starting with `-`. |
 
 ## Query parameters
 
 | Parameter | Data type | Description | 
 :--- | :--- | :---
-| local | Boolean | Whether to get information from the local node. Optional, defaults to `false`.|
-| cluster_manager_timeout | Time | Amount of time to wait for a connection to the cluster manager node. Optional, defaults to 30 seconds. |
+| `local` | Boolean | Whether to get information from the local node. Optional, defaults to `false`.|
+| `cluster_manager_timeout` | Time | Amount of time to wait for a connection to the cluster manager node. Optional, defaults to 30 seconds. |
 
 ## Example request
 
 The following request retrieves information for the `my-opensearch-repo` repository:
 
-````json
+<!-- spec_insert_start
+component: example_code
+rest: GET /_snapshot/my-opensearch-repo
+-->
+{% capture step1_rest %}
 GET /_snapshot/my-opensearch-repo
-````
-{% include copy-curl.html %}
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.snapshot.get_repository(
+  repository = "my-opensearch-repo"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 
@@ -64,6 +81,10 @@ Upon success, the response returns repositry information. This sample is for an 
 
 | Field | Data type | Description |
 | :--- | :--- | :--- | 
-| type | string | Bucket type: `fs` (file system) or `s3` (s3 bucket) |
-| bucket | string | S3 bucket name. |
-| base_path | string | Folder within the bucket where snapshots are stored. |
+| `type` | String | Bucket type: `fs` (file system) or `s3` (s3 bucket) |
+| `bucket` | String | S3 bucket name. |
+| `base_path` | String | Folder within the bucket where snapshots are stored. |
+
+## Required permissions
+
+If you use the Security plugin, make sure you have the appropriate permissions: `cluster:admin/repository/get`.

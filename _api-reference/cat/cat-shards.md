@@ -1,14 +1,14 @@
 ---
 layout: default
 title: CAT shards
-parent: CAT API
+parent: CAT APIs
 nav_order: 60
 has_children: false
 redirect_from:
 - /opensearch/rest-api/cat/cat-shards/
 ---
 
-# CAT shards
+# CAT Shards API
 **Introduced 1.0**
 {: .label .label-purple }
 
@@ -55,24 +55,76 @@ The following table lists the available query parameters. All query parameters a
 
 The following example requests returns information about shards:
 
-```
-GET _cat/shards?v
-```
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: GET /_cat/shards?v
+-->
+{% capture step1_rest %}
+GET /_cat/shards?v
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.cat.shards(
+  params = { "v": "true" }
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 To see only the information about shards of a specific index, add the index name after your query.
 
-```
-GET _cat/shards/<index>?v
-```
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: GET /_cat/shards/<index>?v
+-->
+{% capture step1_rest %}
+GET /_cat/shards/<index>?v
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.cat.shards(
+  index = "<index>",
+  params = { "v": "true" }
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 If you want to get information for more than one index, separate the indexes with commas:
 
-```
-GET _cat/shards/index1,index2,index3
-```
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: GET /_cat/shards/index1,index2,index3
+-->
+{% capture step1_rest %}
+GET /_cat/shards/index1,index2,index3
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.cat.shards(
+  index = "index1,index2,index3"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 
@@ -85,3 +137,7 @@ plugins | 0   |   r    | STARTED |   0  |  208b | 172.18.0.3 |  odfe-node2
 ## Limiting the response size
 
 To limit the number of shards returned, configure the `cat.shards.response.limit.number_of_shards` setting. For more information, see [Cluster-level CAT response limit settings]({{site.url}}{{site.baseurl}}/install-and-configure/configuring-opensearch/cluster-settings/#cluster-level-cat-response-limit-settings).
+
+## Required permissions
+
+If you use the Security plugin, make sure you have the appropriate permissions: `indices:monitor/stats` and `cluster:monitor/state`.

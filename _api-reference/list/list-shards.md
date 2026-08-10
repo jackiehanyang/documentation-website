@@ -1,11 +1,11 @@
 ---
 layout: default
 title: List shards
-parent: List API
+parent: List APIs
 nav_order: 20
 ---
 
-# List shards
+# List Shards API
 **Introduced 2.18**
 {: .label .label-purple }
 
@@ -15,7 +15,7 @@ The list shards operation outputs, in a paginated format, the state of all prima
 
 ```json
 GET _list/shards
-GET _list/shards/<index>
+GET _list/shards/{index}
 ```
 
 ## Query parameters
@@ -41,22 +41,58 @@ When using the `next_token` path parameter, use the token produced by the respon
 To get information for all the indexes and shards, use the following query and keep specifying the `next_token` as received from response until its `null`:
 
 ```json
-GET _list/shards/<index>?v&next_token=token
+GET _list/shards/{index}?v&next_token=token
 ```
 
 To limit the information to a specific index, add the index name after your query, as shown in the following example and keep specifying the `next_token` as received from response until its `null`:
 
-```json
-GET _list/shards/<index>?v&next_token=token
-```
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: GET /_list/shards/<index>?v&next_token=token
+-->
+{% capture step1_rest %}
+GET /_list/shards/<index>?v&next_token=token
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.list.shards(
+  index = "<index>",
+  params = { "v": "true", "next_token": "token" }
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 If you want to get information for more than one index, separate the indexes with commas, as shown in the following example:
 
-```json
-GET _list/shards/index1,index2,index3?v&next_token=token
-```
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: GET /_list/shards/index1,index2,index3?v&next_token=token
+-->
+{% capture step1_rest %}
+GET /_list/shards/index1,index2,index3?v&next_token=token
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.list.shards(
+  index = "index1,index2,index3",
+  params = { "v": "true", "next_token": "token" }
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 

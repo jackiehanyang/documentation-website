@@ -26,16 +26,16 @@ Term | Definition
 
 The following table lists the supported operators. Operators are listed in order of precedence (top to bottom, left to right).
 
-| Operator             | Description                                           | Associativity |
-|----------------------|-------------------------------------------------------|---------------|
-| `()`                 | Priority expression                                   | Left to right |
-| `not`<br> `+`<br>  `-`| Unary logical NOT<br>Unary positive<br>Unary negative | Right to left |
-| `*`, `/`             | Multiplication and division operators                 | Left to right |
-| `+`, `-`             | Addition and subtraction operators                    | Left to right |
-| `+`                  | String concatenation operator                         | Left to right |
-| `<`, `<=`, `>`, `>=` | Relational operators                                  | Left to right |
-| `==`, `!=`           | Equality operators                                    | Left to right |
-| `and`, `or`          | Conditional expression                                | Left to right |
+| Operator               | Description                                           | Associativity |
+|------------------------|-------------------------------------------------------|---------------|
+| `()`                   | Priority expression                                   | Left to right |
+| `not`<br> `+`<br>  `-` | Unary logical NOT<br>Unary positive<br>Unary negative | Right to left |
+| `*`, `/`, `%`           | Multiplication (`*`), division (`/`), and modulo (`%`) operators        | Left to right |
+| `+`, `-`               | Addition and subtraction operators                    | Left to right |
+| `+`                    | String concatenation operator                         | Left to right |
+| `<`, `<=`, `>`, `>=`   | Relational operators                                  | Left to right |
+| `==`, `!=`             | Equality operators                                    | Left to right |
+| `and`, `or`            | Conditional expression                                | Left to right |
 
 ### Relational operators
 
@@ -47,14 +47,14 @@ Relational operators compare numeric values or JSON pointers that resolve to num
 <Number | JSON Pointer> > <Number | JSON Pointer>
 <Number | JSON Pointer> >= <Number | JSON Pointer>
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 For example, to check if the value of the `status_code` field in an event is within the range of successful HTTP responses (200--299), you can use the following expression:
 
 ```
 /status_code >= 200 and /status_code < 300
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 ### Equality operators
 
@@ -64,7 +64,7 @@ Equality operators are used to test whether two values are equivalent. These ope
 <Any> == <Any>
 <Any> != <Any>
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following are some example equality operators:
 
@@ -91,7 +91,7 @@ not /status_code in {200, 202}
 /response == null
 /response != null
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 ### Arithmetic expressions
 
@@ -112,7 +112,7 @@ The following are example arithmetic expressions:
 /value1 - /value2
 /TimeInSeconds * 1000
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following are some example arithmetic expressions used in conditional expressions : 
 
@@ -121,7 +121,7 @@ The following are some example arithmetic expressions used in conditional expres
 /bytes / 1024 < 10
 /value1 - /value2 != /value3 + /value4
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 ### String concatenation expressions
 
@@ -138,7 +138,7 @@ The following are example string concatenation expressions:
 "prefix" + /name
 "time of " + /timeInMs + " ms"
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following are example string concatenation expressions that can be used in conditional expressions:
 
@@ -146,7 +146,7 @@ The following are example string concatenation expressions that can be used in c
 /service + ".com" == /url
 "www." + /service != /url
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 ### Reserved symbols
 
@@ -163,7 +163,7 @@ Priority expressions specify the evaluation order of expressions. They are enclo
 ```
 /is_cool == (/name == "Steven")
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 ### JSON pointers
 
@@ -178,7 +178,7 @@ The shorthand syntax for a JSON pointer can be expressed using the following reg
 ```
 /\w+(/\w+)*`
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
  
 
 The following is an example of this shorthand syntax:
@@ -186,7 +186,7 @@ The following is an example of this shorthand syntax:
 ```
 /Hello/World/0
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 #### Escaped syntax
 
@@ -195,7 +195,7 @@ The escaped syntax for a JSON pointer can be expressed as follows:
 ```
 "/<Valid String Characters | Escaped Character>(/<Valid String Characters | Escaped Character>)*"
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following is an example of an escaped JSON pointer:
 
@@ -204,7 +204,7 @@ The following is an example of an escaped JSON pointer:
 # { "Hello - 'world/" : [{ "\"JsonPointer\"": true }] }
 "/Hello - 'world\//0/\"JsonPointer\""
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 ### Literals
 
@@ -236,6 +236,6 @@ White space is optional around relational operators, regex equality operators, e
 | `,`                  | Set value delimiter      | No                   | `/a in {200, 202}`<br>`/a in {200,202}`<br>`/a in {200 , 202}` | `/a in {200,}`                        |
 | `typeof`             | Type check operator      | Yes                   | `/a typeof integer`<br>`/a typeof long`<br>`/a typeof string`<br> `/a typeof double`<br> `/a typeof boolean`<br>`/a typeof map`<br>`/a typeof array` |`/a typeof /b`<br>`/a typeof 2`                      |
 
-## Related articles
+## Related documentation
 
 - [Functions]({{site.url}}{{site.baseurl}}/data-prepper/pipelines/functions/)

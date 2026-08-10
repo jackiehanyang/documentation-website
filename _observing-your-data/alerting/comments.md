@@ -8,10 +8,7 @@ redirect_from:
   - /monitoring-plugins/alerting/comments/
 ---
 
-# Adding comments
-
-This is an experimental feature and is not recommended for use in a production environment. For updates on the progress of the feature or if you want to leave feedback, see the associated [GitHub issue](https://github.com/opensearch-project/OpenSearch-Dashboards/issues/6999).
-{: .warning}
+# Adding alerting comments
 
 When an alert is generated, add comments to share information about its root cause and facilitate resolution. Comments are enabled by setting `plugins.alerting.comments_enabled` to `true` using the [`cluster/settings` API]({{site.url}}{{site.baseurl}}/observing-your-data/alerting/settings/).
 

@@ -1,15 +1,15 @@
 ---
 layout: default
-title: Get Stored Script
+title: Get stored script
 parent: Script APIs
-nav_order: 3
+nav_order: 30
 ---
 
-# Get stored script
+# Get Stored Script API
 **Introduced 1.0**
 {: .label .label-purple }
 
-Retrieves a stored script.
+Retrieves a stored script from the cluster state.
 
 ## Endpoints
 
@@ -21,22 +21,39 @@ GET _scripts/my-first-script
 
 | Parameter | Data type | Description | 
 :--- | :--- | :---
-| script | String | Stored script or search template name. Required.|
+| `script` | String | Stored script or search template name. Required.|
 
 ## Query parameters
 
 | Parameter | Data type | Description | 
 :--- | :--- | :---
-| cluster_manager_timeout | Time | Amount of time to wait for a connection to the cluster manager. Optional, defaults to `30s`. |
+| `cluster_manager_timeout` | Time | Amount of time to wait for a connection to the cluster manager. Optional, defaults to `30s`. |
 
 ## Example request
 
 The following retrieves the `my-first-script` stored script.
 
-````json
-GET _scripts/my-first-script
-````
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: GET /_scripts/my-first-script
+-->
+{% capture step1_rest %}
+GET /_scripts/my-first-script
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.get_script(
+  id = "my-first-script"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 
@@ -65,13 +82,17 @@ The `GET _scripts/my-first-script` request returns the following response fields
 
 | Field | Data type | Description | 
 :--- | :--- | :---
-| _id | String | The script's name. |
-| found | Boolean | The requested script exists and was retrieved. |
-| script | Object | The script definition. See [Script object](#script-object).  |
+| `_id` | String | The script's name. |
+| `found` | Boolean | The requested script exists and was retrieved. |
+| `script` | Object | The script definition. See [Script object](#script-object).  |
 
 #### Script object
 
 | Field | Data type | Description | 
 :--- | :--- | :---
-| lang | String | The script's language. |
-|  source | String | The script's body. |
+| `lang` | String | The script's language. |
+| `source` | String | The script's body. |
+
+## Required permissions
+
+If you use the Security plugin, make sure you have the appropriate permissions: `cluster:admin/script/get`.

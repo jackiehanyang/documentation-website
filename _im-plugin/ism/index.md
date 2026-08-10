@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Index State Management
-nav_order: 16
+nav_order: 40
 has_children: true
 redirect_from:
   - /im-plugin/ism/
@@ -12,7 +12,7 @@ has_toc: false
 
 If you analyze time-series data, you likely prioritize new data over old data. You might periodically perform certain operations on older indexes, such as reducing replica count or deleting them.
 
-Index State Management (ISM) is a plugin that lets you automate these periodic, administrative operations by triggering them based on changes in the index age, index size, or number of documents. Using the ISM plugin, you can define *policies* that automatically handle index rollovers or deletions to fit your use case.
+Index State Management (ISM) lets you automate these periodic, administrative operations by triggering them based on changes in the index age, index size, or number of documents. Using the ISM plugin, you can define *policies* that automatically handle index rollovers or deletions to fit your use case.
 
 For example, you can define a policy that moves your index into a `read_only` state after 30 days and then deletes it after a set period of 90 days. You can also set up the policy to send you a notification message when the index is deleted.
 
@@ -29,7 +29,7 @@ To get started, choose **Index Management** in OpenSearch Dashboards.
 
 A policy is a set of rules that describes how an index should be managed. For information about creating a policy, see [Policies]({{site.url}}{{site.baseurl}}/im-plugin/ism/policies/).
 
-You can use the visual editor or JSON editor to create policies. Compared to the JSON editor, the visual editor offers a more structured way of defining policies by separating the process into creating error notifications, defining ISM templates, and adding states. We recommend using the visual editor if you want to see pre-defined fields, such as which actions you can assign to a state or under what conditions a state can transition into a destination state.
+You can use the visual editor or JSON editor to create policies. Compared to the JSON editor, the visual editor offers a more structured way of defining policies by separating the process into creating error notifications, defining ISM templates, and adding states. We recommend using the visual editor if you want to see predefined fields, such as which actions you can assign to a state or under what conditions a state can transition into a destination state.
 
 #### Visual editor
 
@@ -79,7 +79,7 @@ For an example ISM template policy, see [Sample policy with ISM template for aut
 Older versions of the plugin include the `policy_id` in an index template, so when an index is created that matches the index template pattern, the index will have the policy attached to it:
 
 ```json
-PUT _index_template/<template_name>
+PUT _index_template/{template_name}
 {
   "index_patterns": [
     "index_name-*"

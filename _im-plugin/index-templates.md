@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Index templates
-nav_order: 6
+nav_order: 2
 redirect_from:
   - /opensearch/index-templates/
 ---
@@ -126,7 +126,7 @@ GET _index_template/daily*
 To check if a specific template exists:
 
 ```json
-HEAD _index_template/<name>
+HEAD _index_template/{name}
 ```
 
 ### Configure multiple templates

@@ -23,29 +23,29 @@ To create a cluster metrics monitor, follow these steps:
 1. Select **Alerting** > **Monitors** > **Create monitor**.
 2. Select the **Per cluster metrics monitor** option.
 3. In the Query section, pick the **Request type** from the dropdown list.
-4. (Optional) If you want to filter the API response to use only certain path parameters, enter those parameters under **Query parameters**. Most APIs that can be used to monitor cluster status support path parameters as described in their documentation (for example, comma-separated lists of index names).
+4. (Optional) If you want to filter the API response to use only certain path parameters, enter those parameters under **Path parameters**. Most APIs that can be used to monitor cluster status support path parameters as described in their documentation (for example, comma-separated lists of index names).
 5. In the [Triggers]({{site.url}}{{site.baseurl}}/observing-your-data/alerting/triggers/) section, indicate which conditions will trigger an alert. The trigger condition autopopulates a `painless ctx` variable. For example, a cluster monitor watching for Cluster Stats uses the trigger condition `ctx.results[0].indices.count <= 0`, which triggers an alert based on the number of indexes returned by the query. For more specificity, add any additional Painless conditions supported by the API. To see an example of the condition response, select **Preview condition response**.
 6. In the Actions section, indicate how you want your users to be notified when a trigger condition is met.
 7. Select **Create**. Your new monitor appears in the **Monitors** list.
 
 The following example shows a configuration of a cluster metrics monitor.
 
-<img src="{{site.url}}{{site.baseurl}}/images/cluster-metrics.png" alt="Cluster metrics monitor" width="700"/>
+![Cluster metrics monitor]({{site.url}}{{site.baseurl}}/images/cluster-metrics.png){: width="700" }
 
 ## Supported APIs
 
 Trigger conditions use responses from the following API endpoints. Most APIs that can be used to monitor cluster status support path parameters (for example, comma-separated lists of index names). They do not support query parameters.
 
-- [_cluster/health]({{site.url}}{{site.baseurl}}/api-reference/cluster-health/)
-- [_cluster/stats]({{site.url}}{{site.baseurl}}/api-reference/cluster-stats/)
-- [_cluster/settings]({{site.url}}{{site.baseurl}}/api-reference/cluster-settings/)
-- [_nodes/stats]({{site.url}}{{site.baseurl}}/opensearch/popular-api/#get-node-statistics)
-- [_cat/indices]({{site.url}}{{site.baseurl}}/api-reference/cat/cat-indices/)
-- [_cat/pending_tasks]({{site.url}}{{site.baseurl}}/api-reference/cat/cat-pending-tasks/)
-- [_cat/recovery]({{site.url}}{{site.baseurl}}/api-reference/cat/cat-recovery/)
-- [_cat/shards]({{site.url}}{{site.baseurl}}/api-reference/cat/cat-shards/)
-- [_cat/snapshots]({{site.url}}{{site.baseurl}}/api-reference/cat/cat-snapshots/)
-- [_cat/tasks]({{site.url}}{{site.baseurl}}/api-reference/cat/cat-tasks/)
+- [`_cluster/health`]({{site.url}}{{site.baseurl}}/api-reference/cluster-health/)
+- [`_cluster/stats`]({{site.url}}{{site.baseurl}}/api-reference/cluster-stats/)
+- [`_cluster/settings`]({{site.url}}{{site.baseurl}}/api-reference/cluster-settings/)
+- [`_nodes/stats`]({{site.url}}{{site.baseurl}}/opensearch/popular-api/#get-node-statistics)
+- [`_cat/indices`]({{site.url}}{{site.baseurl}}/api-reference/cat/cat-indices/)
+- [`_cat/pending_tasks`]({{site.url}}{{site.baseurl}}/api-reference/cat/cat-pending-tasks/)
+- [`_cat/recovery`]({{site.url}}{{site.baseurl}}/api-reference/cat/cat-recovery/)
+- [`_cat/shards`]({{site.url}}{{site.baseurl}}/api-reference/cat/cat-shards/)
+- [`_cat/snapshots`]({{site.url}}{{site.baseurl}}/api-reference/cat/cat-snapshots/)
+- [`_cat/tasks`]({{site.url}}{{site.baseurl}}/api-reference/cat/cat-tasks/)
 
 ## Restrict API fields
 
@@ -87,7 +87,6 @@ The `script` parameter points the `source` to the Painless script `for (cluster 
   "inputs": [
     {
       "uri": {
-        "api_type": "CLUSTER_HEALTH",
         "path": "_cluster/health/",
         "path_params": "",
         "url": "http://localhost:9200/_cluster/health/",
@@ -118,7 +117,7 @@ The dashboards interface supports the selection of clusters to be monitored and 
 The following [permissions]({{site.url}}{{site.baseurl}}/security/access-control/permissions/) are required in order to create a cross-cluster monitor through the dashboards UI: `cluster:admin/opensearch/alerting/remote/indexes/get`, `indices:admin/resolve/index`, `cluster:monitor/health`, and `indices:admin/mappings/get`.
 {: .note}
 
-<img src="{{site.url}}{{site.baseurl}}/images/alerting/cross-cluster-cluster-metrics-monitors.png" alt="Cluster metrics monitor" width="700"/>
+![Cluster metrics monitor]({{site.url}}{{site.baseurl}}/images/alerting/cross-cluster-cluster-metrics-monitors.png){: width="700" }
 
 ### Limitations
 

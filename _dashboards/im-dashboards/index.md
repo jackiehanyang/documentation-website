@@ -1,13 +1,14 @@
 ---
 layout: default
-title: Index Management
-nav_order: 80
+title: Index management
+nav_order: 100
 has_children: true
 redirect_from:
   - /dashboards/admin-ui-index/
+  - /dashboards/im-dashboards/
 ---
 
-# Index Management
+# Index management
 Introduced 2.5
 {: .label .label-purple }
 
@@ -17,7 +18,7 @@ An example of the interface is shown in the following image.
 
 ![Index Management user interface]({{site.url}}{{site.baseurl}}/images/dashboards/index-management-UI.png)
 
-## Get started with Index Management using Dashboards
+## Get started with index management using Dashboards
 
 **Step 1: Open Index Management** 
 
@@ -39,14 +40,14 @@ An example of the interface is shown in the following image.
 
 - To modify the settings of an existing index, locate the index in the list and select its name. This takes you to the index details page. Here you can update settings such as the numbers of shards, replicas, and other advanced configurations. After making the desired changes, select **Save**.
 
-**Step 7: Refresh indexes** 
+**Step 6: Refresh indexes** 
 
 - To refresh an index, locate the index and select the checkbox next to it. Then select the **Actions** button and choose **Refresh** from the dropdown list.
 
-**Step 8: Filter and search indexes** 
+**Step 7: Filter and search indexes** 
 
 - If you have a large number of indexes and want to filter or search for specific indexes, you can use the search bar located above the list of indexes. Enter the relevant keywords or filters to narrow the list of indexes.
 
-**Step 9: Additional operations** 
+**Step 8: Additional operations** 
 
 - Index Management provides additional functionalities such as creating index patterns, managing lifecycle policies, and configuring index templates. These options are available in their respective sections of the Index Management interface. 

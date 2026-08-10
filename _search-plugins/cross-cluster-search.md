@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Cross-cluster search
-nav_order: 65
+nav_order: 230
 redirect_from:
  - /security/access-control/cross-cluster-search/
  - /security-plugin/access-control/cross-cluster-search/
@@ -19,6 +19,17 @@ You can use cross-cluster search (CCS) in OpenSearch to search and analyze data 
 
 
 ---
+
+## Prerequisite
+
+Before configuring cross-cluster search, ensure that the following prerequisite is met:
+
+- If you've overridden `node.roles` in `opensearch.yml` for any node in a cluster participating in cross-cluster search, ensure that the `node.roles` setting includes the `remote_cluster_client` role:
+
+   ```yaml
+   node.roles: [<other_roles>, remote_cluster_client]
+   ```
+   {% include copy.html %}
 
 ## Authentication flow
 
@@ -56,7 +67,7 @@ humanresources:
 
 #### Example role in OpenSearch Dashboards
 
-![OpenSearch Dashboards UI for creating a cross-cluster search role]({{site.url}}{{site.baseurl}}/images/security-ccs.png)
+![OpenSearch Dashboards panel for creating a cross-cluster search role]({{site.url}}{{site.baseurl}}/images/security-ccs.png)
 
 
 ## Sample Docker setup
@@ -167,7 +178,7 @@ curl -k -XPUT -H 'Content-Type: application/json' -u 'admin:<custom-admin-passwo
 All of the cURL requests can also be sent using OpenSearch Dashboards Dev Tools.
 {: .tip }
 The following image shows an example of a cURL request using Dev Tools.
-![OpenSearch Dashboards UI for configuring remote cluster for Cross-cluster search]({{site.url}}{{site.baseurl}}/images/ccs-devtools.png)
+![OpenSearch Dashboards Dev Tools request for configuring remote cluster for Cross-cluster search]({{site.url}}{{site.baseurl}}/images/ccs-devtools.png)
 
 On the remote cluster, index a document:
 

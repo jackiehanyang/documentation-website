@@ -32,7 +32,7 @@ assistant.alertInsight.enabled: true
 
 ### Step 2: Create the agents
 
-To orchestrate alert insights, you'll need to create the necessary [agents]({{site.url}}{{site.baseurl}}/ml-commons-plugin/agents-tools/index/#agents). Create a workflow template for creating all necessary agents by sending the following request:
+To orchestrate alert insights, you'll need to create the necessary [agents]({{site.url}}{{site.baseurl}}/ml-commons-plugin/agents-tools/agents/). Create a workflow template for creating all necessary agents by sending the following request:
 
 <details markdown="block">
   <summary>
@@ -207,7 +207,7 @@ You can verify that the agents were created successfully by calling the agents w
 To test the alert summary agent, send the following request:
 
 ```json
-POST /_plugins/_ml/agents/<SUMMARY_AGENT_ID>/_execute
+POST /_plugins/_ml/agents/{SUMMARY_AGENT_ID}/_execute
 { 
   "parameters": {
     "question": "Please summarize this alert, do not use any tool.",
@@ -220,7 +220,7 @@ POST /_plugins/_ml/agents/<SUMMARY_AGENT_ID>/_execute
 To test the alert summary with log patterns agent, send the following request:
 
 ```json
-POST /_plugins/_ml/agents/<SUMMARY_WITH_LOG_PATTERNS_AGENT_ID>/_execute
+POST /_plugins/_ml/agents/{SUMMARY_WITH_LOG_PATTERNS_AGENT_ID}/_execute
 { 
   "parameters": {
     "question": "Please summarize this alert, do not use any tool.",
@@ -234,7 +234,7 @@ POST /_plugins/_ml/agents/<SUMMARY_WITH_LOG_PATTERNS_AGENT_ID>/_execute
 To test the alert insights agent, send the following request:
 
 ```json
-POST /_plugins/_ml/agents/<ALERT_INSIGHTS_AGENT_ID>/_execute
+POST /_plugins/_ml/agents/{ALERT_INSIGHTS_AGENT_ID}/_execute
 { 
   "parameters": {
     "question": "Please provide your insight on this alerts.",
@@ -310,12 +310,12 @@ To view alert insights in OpenSearch Dashboards, use the following steps:
 
 1. Hover over the alerts for your desired monitor. If you configured alert insights, you will see a sparkle icon ({::nomarkdown}<img src="{{site.url}}{{site.baseurl}}/images/dashboards-assistant/sparkle-icon.png" class="inline-icon" alt="sparkle icon"/>{:/}) next to the alerts in the **Alerts** column, as shown in the following image.
     
-    <img src="{{site.url}}{{site.baseurl}}/images/dashboards-assistant/alert-insight-start.png" alt="Alerting page with sparkle icon">
+    ![Alerting page with sparkle icon]({{site.url}}{{site.baseurl}}/images/dashboards-assistant/alert-insight-start.png)
 
 1. Select the alerts label or the sparkle icon. You will see the generated summary, as shown in the following image.
     
-    <img src="{{site.url}}{{site.baseurl}}/images/dashboards-assistant/alert-insight-summary.png" alt="Alert summary">
+    ![Alert summary]({{site.url}}{{site.baseurl}}/images/dashboards-assistant/alert-insight-summary.png)
 
 1. Select the information icon ({::nomarkdown}<img src="{{site.url}}{{site.baseurl}}/images/dashboards-assistant/info-icon.png" class="inline-icon" alt="info icon"/>{:/}) to view alert insights. You will see the generated alert insights, as shown in the following image.
     
-    <img src="{{site.url}}{{site.baseurl}}/images/dashboards-assistant/alert-insight-insight.png" alt="Alert insights">
+    ![Alert insights]({{site.url}}{{site.baseurl}}/images/dashboards-assistant/alert-insight-insight.png)

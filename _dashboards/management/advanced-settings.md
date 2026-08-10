@@ -1,15 +1,15 @@
 ---
 layout: default
 title: Advanced settings
-parent: Dashboards Management
-nav_order: 40
+parent: Dashboards management
+nav_order: 10
 ---
 
-# Advanced settings
+# Advanced settings in OpenSearch Dashboards
 
 Use the **Advanced settings** page to modify settings that govern OpenSearch Dashboards behavior. These settings can be used to customize the look and feel of the application, change the behavior of certain features, and more. A view of the interface is shown in the following image.
 
-<img src="{{site.url}}{{site.baseurl}}/images/dashboards/advanced-settings.png" alt="Advanced settings interface in OpenSearch 2.14" width="700"/>
+![Advanced settings interface in OpenSearch 2.14]({{site.url}}{{site.baseurl}}/images/dashboards/advanced-settings.png){: width="700" }
 
 To access **Advanced settings**, go to **Dashboards Management** and select **Advanced settings**. The page is divided into the following sections: [General](#general-settings), [Appearance](#appearance-settings), [Discover](#discover-settings), [Notifications](#notifications-settings), [Search](#search-settings), [Timeline](#timeline-settings), and [Visualization](#visualization-settings). Each section contains a set of its respective settings. You can modify these settings by editing their fields. Once you've made the changes, select **Save** to apply them.
 
@@ -117,7 +117,7 @@ The following table describes the **Search** settings.
 Setting | Description
 :--- | :--- 
 `courier:batchSearches`  | Enables or disables how dashboard panels load. When disabled, panels load individually, and search requests end when the user navigates away or updates the query. When enabled, all panels load together when all data is loaded, and searches do not end. Default is `Off`.  |
-`courier:customRequestPreference`  | Specifies whether to use the [request preference]({{site.url}}{{site.baseurl}}//api-reference/popular-api/) with the `custom` setting. Default is `_local`.  |
+`courier:customRequestPreference`  | Specifies whether to use the [request preference]({{site.url}}{{site.baseurl}}/api-reference/popular-api/) with the `custom` setting. Default is `_local`.  |
 `courier:ignoreFilterIfFieldNotInIndex`  | Enables or disables support for dashboards that contain visualizations using different indexes. When disabled, all filters are applied to all visualizations. When enabled, visualization filters are ignored if the visualization's index does not contain the field being filtered. Default is `Off`.  |
 `courier:maxConcurrentShardRequests`  | Defines the maximum number of concurrent shard requests that OpenSearch Dashboards can initiate for `_msearch` requests. Set to `0` to disable the setting and to use the default value set by OpenSearch. Default is `0`.  |
 `courier:setRequestPreference`  | Defines which shards handle your search requests. Options include **Session ID**, **Custom**, and **None**. **Session ID** restricts operations so that all search requests run on the same shard and reuses shard caches across requests, which can improve performance. **Custom** is used to define your own preference. Use `courier:customRequestPreference` to customize your preference value. **None** means that no preference is set. This option can provide better performance because requests can be spread across all shard copies. However, results might be inconsistent because different shards might be in different refresh states. Default is `Session ID`.  |

@@ -18,7 +18,7 @@ Creates or updates a threat intelligence source and loads indicators of compromi
 
 ```json
 POST _plugins/_security_analytics/threat_intel/sources
-PUT _plugins/_security_analytics/threat_intel/sources/<source_id>
+PUT _plugins/_security_analytics/threat_intel/sources/{source_id}
 ```
 
 ### Request body fields
@@ -148,7 +148,9 @@ POST _plugins/_security_analytics/threat_intel/sources/
 ```
 {% include copy-curl.html %}
 
+<!-- vale off -->
 #### S3_CUSTOM type source
+<!-- vale on -->
 
 ```json
 POST _plugins/_security_analytics/threat_intel/sources/
@@ -220,7 +222,9 @@ The following example responses show what OpenSearch returns after a successful 
 }
 ```
 
+<!-- vale off -->
 #### S3_CUSTOM type source
+<!-- vale on -->
 
 ```json
 {
@@ -287,13 +291,13 @@ Retrieves the threat intelligence source configuration details.
 
 
 ```json
-GET /_plugins/_security_analytics/threat_intel/sources/<source-id>
+GET /_plugins/_security_analytics/threat_intel/sources/{source-id}
 ```
 
 ### Example request
 
 ```json
-GET /_plugins/_security_analytics/threat_intel/sources/<source-id>
+GET /_plugins/_security_analytics/threat_intel/sources/{source-id}
 ```
 {% include copy-curl.html %}
 
@@ -443,7 +447,7 @@ Deletes a threat intelligence source.
 ### Endpoints
 
 ```json
-DELETE /_plugins/_security_analytics/threat_intel/sources/<source-id>
+DELETE /_plugins/_security_analytics/threat_intel/sources/{source-id}
 ```
 
 ### Example request
@@ -469,7 +473,7 @@ Downloads any IOCs from the threat intelligence source. Only supports the `S3_CU
 ### Endpoints
 
 ```json
-POST /_plugins/_security_analytics/threat_intel/sources/<source-id>/_refresh
+POST /_plugins/_security_analytics/threat_intel/sources/{source-id}/_refresh
 ```
 
 ### Example request

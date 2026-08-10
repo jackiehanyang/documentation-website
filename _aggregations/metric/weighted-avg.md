@@ -3,132 +3,130 @@ layout: default
 title: Weighted average
 parent: Metric aggregations
 nav_order: 150
+has_math: true
 ---
 
-# Weighted average
+# Weighted average aggregation
 
-The `weighted_avg` aggregation calculates the weighted average of numeric values across documents. This is useful when you want to calculate an average but weight some data points more heavily than others.
+The `weighted_avg` aggregation computes a weighted average of numeric values extracted from documents. Unlike a regular average where each data point contributes equally, a weighted average assigns different importance to each data point based on a corresponding weight value.
 
-## Weighted average calculation
+The weighted average is calculated using the formula $$ \frac{\sum_{i=1}^n \text{value}_i \cdot \text{weight}_i}{\sum_{i=1}^n \text{weight}_i} $$.
 
-The weighted average is calculated as `(sum of value * weight) / (sum of weights)`.
+In a regular average, every data point contributes equally, which is equivalent to assigning a weight of `1` to all values.
 
 ## Parameters
 
-When using the `weighted_avg` aggregation, you must define the following parameters:
+The `weighted_avg` aggregation takes the following parameters.
 
-- `value`: The field or script used to obtain the average numeric values
-- `weight`: The field or script used to obtain the weight for each value
+| Parameter     | Required/Optional  | Description |
+|---------------|----------|-------------|
+| `value`       | Required      | Defines how to obtain the numeric values to average. Requires a `field` or `script`. |
+| `weight`      | Required      | Defines how to obtain the weight for each value. Requires a `field` or `script`. |
+| `format`      | Optional       | A [DecimalFormat](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/text/DecimalFormat.html) formatting string. Returns the formatted output in the aggregation's `value_as_string` property. |
+| `value_type`  | Optional       | A type hint for the values when using scripts or unmapped fields. |
 
-Optionally, you can specify the following parameters:
+You can specify the following parameters within `value` or `weight`.
 
-- `format`: A numeric format to apply to the output value
-- `value_type`: A type hint for the values when using scripts or unmapped fields
-
-For the value or weight, you can specify the following parameters:
-
-- `field`: The document field to use
-- `missing`: A value or weight to use if the field is missing
+| Parameter  | Required/Optional |  Description |
+|------------|----------|-------------|
+| `field`    | Optional | The document field to use for the value or weight. |
+| `missing`  | Optional | A default value or weight to use when the field is missing. See [Missing values](#missing-values).|
+| `script`   | Optional | A script that provides the value or weight. Mutually exclusive with `field`. |
 
 
-## Using the aggregation
+## Example
 
-Follow these steps to use the `weighted_avg` aggregation:
-
-**1. Create an index and index some documents**
-
-```json
-PUT /products
-
-POST /products/_doc/1
-{
-  "name": "Product A",
-  "rating": 4,
-  "num_reviews": 100
-}
-
-POST /products/_doc/2
-{
-  "name": "Product B",
-  "rating": 5,
-  "num_reviews": 20
-}
-
-POST /products/_doc/3
-{
-  "name": "Product C",
-  "rating": 3,
-  "num_reviews": 50
-}
-```
-{% include copy-curl.html %}
-
-**2. Run the `weighted_avg` aggregation**
+First, create an index and add some data. Product C is missing the `rating` and `num_reviews` fields:
 
 ```json
-GET /products/_search
-{
-  "size": 0,
-  "aggs": {
-    "weighted_rating": {
-      "weighted_avg": {
-        "value": {
-          "field": "rating"
-        },
-        "weight": {
-          "field": "num_reviews"
-        }
-      }
-    }
-  }
-}
-```
-{% include copy-curl.html %}
-
-## Handling missing values
-
-The `missing` parameter allows you to specify default values for documents missing the `value` field or the `weight` field instead of excluding them from the calculation.
-
-The following is an example of this behavior. First, create an index and add sample documents. This example includes five documents with different combinations of missing values for the `rating` and `num_reviews` fields: 
-
-```json
-PUT /products
-{
-  "mappings": {
-    "properties": {
-      "name": {
-        "type": "text"
-      },
-      "rating": {
-        "type": "double"
-      },
-      "num_reviews": {
-        "type": "integer"
-      }
-    }
-  }
-}
-
-POST /_bulk
+POST _bulk
 { "index": { "_index": "products" } }
 { "name": "Product A", "rating": 4.5, "num_reviews": 100 }
 { "index": { "_index": "products" } }
 { "name": "Product B", "rating": 3.8, "num_reviews": 50 }
 { "index": { "_index": "products" } }
-{ "name": "Product C", "rating": null, "num_reviews": 20 }
-{ "index": { "_index": "products" } }
-{ "name": "Product D", "rating": 4.2, "num_reviews": null }
-{ "index": { "_index": "products" } }
-{ "name": "Product E", "rating": null, "num_reviews": null }
+{ "name": "Product C"}
 ```
 {% include copy-curl.html %}
 
-Next, run the following `weighted_avg` aggregation:
+The following request calculates a weighted average product rating, where each product's rating is weighted by its `num_reviews`. Products with more reviews have a greater influence on the final average:
 
 ```json
 GET /products/_search
 {
   "size": 0,
+  "aggs": {
+    "weighted_rating": {
+      "weighted_avg": {
+        "value": {
+          "field": "rating"
+        },
+        "weight": {
+          "field": "num_reviews"
+        },
+        "format": "#.##"
+      }
+    }
+  }
+}
+```
+{% include copy-curl.html %}
+
+## Example response
+
+The response contains the `weighted_rating`, calculated as `(4.5 * 100 + 3.8 * 50) / (100 + 50) = 4.27`. Only documents containing values for both `rating` and `num_reviews` are included in the calculation:
+
+```json
+{
+  "took": 21,
+  "timed_out": false,
+  "terminated_early": true,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 3,
+      "relation": "eq"
+    },
+    "max_score": null,
+    "hits": []
+  },
+  "aggregations": {
+    "weighted_rating": {
+      "value": 4.266666650772095,
+      "value_as_string": "4.27"
+    }
+  }
+}
+```
+
+## Multi-valued fields
+
+The `value` field can contain multiple values per document, but the `weight` field must resolve to exactly one value. Documents with multiple weights cause an error. To handle multi-valued weight fields, use a `script` that reduces them to a single number.
+
+When a document contains multiple values, the single weight is applied to each value independently. The following example indexes a document where `rating` is a multi-valued field and then runs the aggregation:
+
+```json
+POST /products/_doc?refresh=true
+{
+  "name": "Product D",
+  "rating": [1, 2, 3],
+  "num_reviews": 2
+}
+```
+{% include copy-curl.html %}
+
+```json
+GET /products/_search
+{
+  "size": 0,
+  "query": {
+    "term": { "name.keyword": "Product D" }
+  },
   "aggs": {
     "weighted_rating": {
       "weighted_avg": {
@@ -145,4 +143,82 @@ GET /products/_search
 ```
 {% include copy-curl.html %}
 
-In the response, you can see that the missing values for `Product E` were completely ignored in the calculation. 
+The three values (`1`, `2`, and `3`) are each weighted by `2`, resulting in `((1*2) + (2*2) + (3*2)) / (2+2+2) = 2.0`:
+
+```json
+{
+  ...
+  "aggregations": {
+    "weighted_rating": {
+      "value": 2.0
+    }
+  }
+}
+```
+
+## Using a script
+
+You can supply scripts for the value, the weight, or both to compute derived quantities on the fly. The following example adds `1` to each rating and weight before computing the weighted average:
+
+```json
+GET /products/_search
+{
+  "size": 0,
+  "aggs": {
+    "weighted_rating": {
+      "weighted_avg": {
+        "value": {
+          "script": "if (doc['rating'].size() == 0) return 0; return doc['rating'].value + 1"
+        },
+        "weight": {
+          "script": "if (doc['num_reviews'].size() == 0) return 0; return doc['num_reviews'].value + 1"
+        }
+      }
+    }
+  }
+}
+```
+{% include copy-curl.html %}
+
+## Missing values
+
+Documents missing the `value` field are excluded from the calculation by default. Documents missing the `weight` field are still included with an implicit weight of `1`.
+
+The `missing` parameter overrides these defaults by specifying a substitute value for documents that lack the field. The following example assigns a default rating of `3.0` and a default review count of `1` to documents missing those fields:
+
+```json
+GET /products/_search
+{
+  "size": 0,
+  "aggs": {
+    "weighted_rating": {
+      "weighted_avg": {
+        "value": {
+          "field": "rating",
+          "missing": 3.0
+        },
+        "weight": {
+          "field": "num_reviews",
+          "missing": 1
+        },
+        "format": "#.##"
+      }
+    }
+  }
+}
+```
+{% include copy-curl.html %}
+
+With the missing values applied, the weighted average is calculated as `(4.5 * 100 + 3.8 * 50 + 3.0 * 1) / (100 + 50 + 1) = 4.26`:
+
+```json
+{
+  ...
+  "aggregations": {
+    "weighted_rating": {
+      "value": 4.258278129906055,
+      "value_as_string": "4.26"
+    }
+  }
+}
+```

@@ -1,14 +1,14 @@
 ---
 layout: default
 title: CAT recovery
-parent: CAT API
+parent: CAT APIs
 nav_order: 50
 has_children: false
 redirect_from:
 - /opensearch/rest-api/cat/cat-recovery/
 ---
 
-# CAT recovery
+# CAT Recovery API
 **Introduced 1.0**
 {: .label .label-purple }
 
@@ -54,24 +54,76 @@ The following table lists the available query parameters. All query parameters a
 
 ## Example requests
 
-```json
-GET _cat/recovery?v
-```
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: GET /_cat/recovery?v
+-->
+{% capture step1_rest %}
+GET /_cat/recovery?v
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.cat.recovery(
+  params = { "v": "true" }
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 To see only the recoveries of a specific index, add the index name after your query.
 
-```json
-GET _cat/recovery/<index>?v
-```
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: GET /_cat/recovery/<index>?v
+-->
+{% capture step1_rest %}
+GET /_cat/recovery/<index>?v
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.cat.recovery(
+  index = "<index>",
+  params = { "v": "true" }
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 If you want to get information for more than one index, separate the indexes with commas:
 
-```json
-GET _cat/recovery/index1,index2,index3
-```
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: GET /_cat/recovery/index1,index2,index3
+-->
+{% capture step1_rest %}
+GET /_cat/recovery/index1,index2,index3
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.cat.recovery(
+  index = "index1,index2,index3"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 
@@ -80,3 +132,7 @@ index | shard | time | type | stage | source_host | source_node | target_host | 
 movies | 0 | 117ms | empty_store | done | n/a | n/a | 172.18.0.4 | odfe-node1 | n/a | n/a | 0 | 0 | 0.0% | 0 | 0 | 0 | 0.0% | 0 | 0 | 0 | 100.0%
 movies | 0 | 382ms | peer | done | 172.18.0.4 | odfe-node1 | 172.18.0.3 | odfe-node2 | n/a | n/a | 1 | 1 |  100.0% | 1 | 208 | 208 | 100.0% | 208 | 1 | 1 | 100.0%
 ```
+
+## Required permissions
+
+If you use the Security plugin, make sure you have the appropriate permissions: `indices:monitor/recovery`.

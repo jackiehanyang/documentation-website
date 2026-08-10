@@ -23,11 +23,11 @@ Before getting started, you must have:
 
 ## General requirements for anomaly detection visualizations
 
-Anomaly detection visualizations are displayed as time-series charts that give you a snapshot of when anomalies have occurred from different anomaly detectors you have configured for the visualization. You can display up to 10 metrics on your chart, and each series can be shown as a line on the chart. Note that only real-time anomalies will be visible on the chart. For more information about real-time and historical anomaly detection, see [Anomaly detection, Step 3: Set up detector jobs]({{site.url}}{{site.baseurl}}/observing-your-data/ad/index/#step-3-setting-up-detector-jobs).
+Anomaly detection visualizations are displayed as time-series charts that give you a snapshot of when anomalies have occurred. You can display up to 10 metrics on your chart, and each series can be shown as a line on the chart. Note that only real-time anomalies will be visible on the chart. For more information about real-time and historical anomaly detection, see [Anomaly detection, Step 3: Set up detector jobs]({{site.url}}{{site.baseurl}}/observing-your-data/ad/index/#step-3-set-up-detector-jobs).
 
 Keep in mind the following requirements when setting up or creating anomaly detection visualizations. The visualization:
 
-- Must be a [Vizlib line chart](https://community.vizlib.com/support/solutions/articles/35000107262-vizlib-line-chart-introduction)
+- Must be a [Vizlib line chart](https://docs-vizlib.insightsoftware.com/hc/en-us/articles/39676102755341-Line-Chart-Overview)
 - Must contain at least a Y-axis metric aggregation
 - Must not have non-Y-axis metric aggregation types
 - Must use the date histogram aggregation type for the X-axis bucket
@@ -53,7 +53,7 @@ To start, first create an anomaly detector:
 8. To preview the visualization within the flyout, toggle the **Show visualization** button.
 9. Select **Create detector**. Once you have created a new detector, the detector is added to the visualization, as shown in the following image.  
 
-<img src="{{site.url}}{{site.baseurl}}/images/dashboards/add-detector.png" alt="Interface of adding a detector" width="800" height="800">
+![Interface of adding a detector]({{site.url}}{{site.baseurl}}/images/dashboards/add-detector.png){: width="800" height="800" }
 
 ## Adding anomaly detectors to visualizations
 
@@ -65,7 +65,7 @@ Use a single interface to add, view, and edit anomaly detectors that you want to
 4. View basic information about the detectors. To view comprehensive details, select **View detector page** to open the Anomaly Detection plugin page.
 5. Select **Associate detector**. An existing detector is now associated to the visualization, as shown in the following image.
 
-<img src="{{site.url}}{{site.baseurl}}/images/dashboards/anomaly-detect-dashboard.png" alt="Interface and confirmation message of associating a detector" width="800" height="800">
+![Interface and confirmation message of associating a detector]({{site.url}}{{site.baseurl}}/images/dashboards/anomaly-detect-dashboard.png){: width="800" height="800" }
 
 ## Refreshing the visualization
 

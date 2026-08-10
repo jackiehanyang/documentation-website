@@ -23,7 +23,7 @@ The following flow chart outlines the Lucene algorithm.
 
 ![Lucene algorithm for filtering]({{site.url}}{{site.baseurl}}/images/lucene-algorithm.png)
 
-For more information about the Lucene filtering implementation and the underlying `KnnVectorQuery`, see the [Apache Lucene documentation](https://lucene.apache.org/core/9_2_0/core/org/apache/lucene/search/KnnVectorQuery.html).
+For more information about the Lucene filtering implementation and the underlying `KnnFloatVectorQuery`, see the [Apache Lucene documentation](https://lucene.apache.org/core/{{site.lucene_version}}/core/org/apache/lucene/search/KnnFloatVectorQuery.html).
 
 ## Using a Lucene k-NN filter
 
@@ -232,6 +232,15 @@ The following flow chart outlines the Faiss algorithm.
 
 ![Faiss algorithm for filtering]({{site.url}}{{site.baseurl}}/images/faiss-algorithm.jpg)
 
+### Disabling the exact search fallback
+**Introduced 3.5**
+{: .label .label-purple }
+
+When a Faiss efficient-filtered ANN search returns fewer than `k` results (R < k) even though more than `k` documents match the filter (P ≥ k), the algorithm falls back to an exact search over the filtered document IDs to ensure that `k` results are returned.
+
+For latency-sensitive workloads in which fewer than `k` results are acceptable, you can disable this fallback by setting the `index.knn.faiss.efficient_filter.disable_exact_search` index setting to `true`. When this setting is enabled, the search returns only approximate results and skips the additional exact search.
+ For more information about this setting, see [Vector search settings]({{site.url}}{{site.baseurl}}/vector-search/settings/).
+
 ## Using a Faiss efficient filter
 
 Consider an index that contains information about different shirts for an e-commerce application. You want to find the top-rated shirts that are similar to the one you already have but would like to restrict the results by shirt size.
@@ -401,6 +410,15 @@ The response returns the two matching documents:
 ```
 
 For more ways to construct a filter, see [Constructing a filter](#constructing-a-filter).
+
+### ACORN filtering optimization
+Introduced 3.1
+{: .label .label-purple }
+The ACORN filtering optimization modifies the baseline algorithm to score and explore only vectors that match the filtering criteria. When filtering increases graph sparsity, the search expands to include neighbors of neighbors. The extent of this additional exploration depends on the percentage of neighbors filtered out, with more restrictive filters resulting in a wider search.
+
+The algorithm bypasses these optimizations entirely when filtering is minimal. By default, this threshold is 60%. Extended neighbor exploration occurs only if fewer than 90% of the current neighbors match the filter. 
+
+When [memory-optimized search]({{site.url}}{{site.baseurl}}/vector-search/optimizing-storage/memory-optimized-search/) is enabled, the efficient filter framework continues to apply filtering within HNSW. The ACORN filtering optimization is applied only when the number of filtered documents is 60% or fewer of the total number of documents in the current search space being considered by the HNSW algorithm.
 
 ## Constructing a filter
 

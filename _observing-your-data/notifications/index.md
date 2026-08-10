@@ -1,16 +1,23 @@
 ---
 layout: default
 title: Notifications
-nav_order: 90
+nav_order: 140
 has_children: true
 redirect_from:
   - /notifications-plugin/
   - /notifications-plugin/index/
+  - /observing-your-data/notifications/
 ---
 
 # Notifications
 
 The Notifications plugin provides a central location for all of your notifications from OpenSearch plugins. Using the plugin, you can configure which communication service you want to use and see relevant statistics and troubleshooting information. Currently, the Alerting and ISM plugins have integrated with the Notifications plugin.
+
+## Installation
+
+The Notifications plugin is bundled with all standard OpenSearch distributions and does not require separate installation. If you're using the minimal distribution of OpenSearch, you can install the plugin manually. For more information about managing plugins, see [Installing plugins]({{site.url}}{{site.baseurl}}/install-and-configure/plugins/).
+
+## Configuring notifications
 
 You can use either OpenSearch Dashboards or the REST API to configure notifications. Dashboards offers a more organized way of selecting a channel type and selecting which OpenSearch plugin sources you want to use, whereas the REST API lets you programmatically define your notification channels for better versioning and reuse later on.
 
@@ -23,7 +30,7 @@ You can use either OpenSearch Dashboards or the REST API to configure notificati
 In OpenSearch Dashboards, choose **Notifications**, **Channels**, and **Create channel**.
 
 1. In the **Name and description** section, specify a name and optional description for your channel.
-2. In the **Configurations** section, select the channel type and enter the necessary information for each type. For more information about configuring a channel that uses Amazon SNS or email, refer to the sections below. If you want to use Amazon Chime or Slack, you need to specify the webhook URL. For more information about using webhooks, see the documentation for [Slack](https://api.slack.com/messaging/webhooks), [Microsoft Teams](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/what-are-webhooks-and-connectors), or [Amazon Chime](https://docs.aws.amazon.com/chime/latest/ug/webhooks.html).
+2. In the **Configurations** section, select the channel type and enter the necessary information for each type. For more information about configuring a channel that uses Amazon SNS or email, refer to the following sections. If you want to use Amazon Chime or Slack, you need to specify the webhook URL. For more information about using webhooks, see the documentation for [Slack](https://api.slack.com/messaging/webhooks), [Microsoft Teams](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/what-are-webhooks-and-connectors), or [Amazon Chime](https://docs.aws.amazon.com/chime/latest/ug/webhooks.html).
 
 If you want to use custom webhooks, you must specify more information: parameters and headers. For example, if your endpoint requires basic authentication, you might need to add a header with an authorization key and a value of `Basic <Base64-encoded-credential-string>`. You might also need to change `Content-Type` to whatever your webhook requires. Popular values are `application/json`, `application/xml`, and `text/plain`.
 

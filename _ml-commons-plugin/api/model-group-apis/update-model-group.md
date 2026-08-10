@@ -6,7 +6,7 @@ grand_parent: ML Commons APIs
 nav_order: 20
 ---
 
-# Update a model group
+# Update Model Group API
 
 To update a model group, send a `PUT` request to the `model_groups` endpoint and provide the ID of the model group you want to update.
 
@@ -21,17 +21,17 @@ For more information, see [Model access control]({{site.url}}{{site.baseurl}}/ml
 ## Path and HTTP method
 
 ```json
-PUT /_plugins/_ml/model_groups/<model_group_id>
+PUT /_plugins/_ml/model_groups/{model_group_id}
 ```
 
 ## Request body fields
 
 Refer to [Request fields](#request-body-fields) for request field descriptions. 
 
-#### Example request
+## Example request
 
 ```json
-PUT /_plugins/_ml/model_groups/<model_group_id>
+PUT /_plugins/_ml/model_groups/{model_group_id}
 {
     "name": "model_group_test",
     "description": "This is the updated description",

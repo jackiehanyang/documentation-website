@@ -276,36 +276,53 @@ The following plugins are bundled with all OpenSearch distributions except for t
 
 | Plugin name | Repository | Earliest available version |
 | :--- | :--- | :--- |
-| Alerting | [opensearch-alerting](https://github.com/opensearch-project/alerting) | 1.0.0 |
-| Anomaly Detection | [opensearch-anomaly-detection](https://github.com/opensearch-project/anomaly-detection) | 1.0.0 |
-| Asynchronous Search | [opensearch-asynchronous-search](https://github.com/opensearch-project/asynchronous-search) | 1.0.0 |
-| Cross Cluster Replication | [opensearch-cross-cluster-replication](https://github.com/opensearch-project/cross-cluster-replication) | 1.1.0 |
-| Custom Codecs | [opensearch-custom-codecs](https://github.com/opensearch-project/custom-codecs) | 2.10.0 |
-| Flow Framework | [flow-framework](https://github.com/opensearch-project/flow-framework) | 2.12.0 |
-| Notebooks<sup>1</sup> | [opensearch-notebooks](https://github.com/opensearch-project/dashboards-notebooks) | 1.0.0 to 1.1.0 |
-| Notifications | [notifications](https://github.com/opensearch-project/notifications) | 2.0.0
-| Reports Scheduler | [opensearch-reports-scheduler](https://github.com/opensearch-project/dashboards-reports) | 1.0.0 |
-| Geospatial | [opensearch-geospatial](https://github.com/opensearch-project/geospatial) | 2.2.0 |
-| Index Management | [opensearch-index-management](https://github.com/opensearch-project/index-management) | 1.0.0 |
-| Job Scheduler | [opensearch-job-scheduler](https://github.com/opensearch-project/job-scheduler) | 1.0.0 |
-| k-NN | [opensearch-knn](https://github.com/opensearch-project/k-NN) | 1.0.0 |
-| Learning to Rank | [opensearch-ltr](https://github.com/opensearch-project/opensearch-learning-to-rank-base) | 2.19.0 |
-| ML Commons | [opensearch-ml](https://github.com/opensearch-project/ml-commons) | 1.3.0 |
-| Skills | [opensearch-skills](https://github.com/opensearch-project/skills) | 2.12.0 |
-| Neural Search | [neural-search](https://github.com/opensearch-project/neural-search) | 2.4.0 |
-| Observability | [opensearch-observability](https://github.com/opensearch-project/observability) | 1.2.0 |
-| Performance Analyzer<sup>2</sup> | [opensearch-performance-analyzer](https://github.com/opensearch-project/performance-analyzer) | 1.0.0 |
-| Security | [opensearch-security](https://github.com/opensearch-project/security) | 1.0.0 |
-| Security Analytics | [opensearch-security-analytics](https://github.com/opensearch-project/security-analytics) | 2.4.0 |
-| SQL | [opensearch-sql](https://github.com/opensearch-project/sql) | 1.0.0 |
+| Alerting | [`opensearch-alerting`](https://github.com/opensearch-project/alerting) | 1.0.0 |
+| Anomaly Detection | [`opensearch-anomaly-detection`](https://github.com/opensearch-project/anomaly-detection) | 1.0.0 |
+| Asynchronous Search | [`opensearch-asynchronous-search`](https://github.com/opensearch-project/asynchronous-search) | 1.0.0 |
+| Cross Cluster Replication | [`opensearch-cross-cluster-replication`](https://github.com/opensearch-project/cross-cluster-replication) | 1.1.0 |
+| Custom Codecs | [`opensearch-custom-codecs`](https://github.com/opensearch-project/custom-codecs) | 2.10.0 |
+| Flow Framework | [`flow-framework`](https://github.com/opensearch-project/flow-framework) | 2.12.0 |
+| Notebooks<sup>1</sup> | [`opensearch-notebooks`](https://github.com/opensearch-project/dashboards-notebooks) | 1.0.0 to 1.1.0 |
+| Notifications | [`notifications`](https://github.com/opensearch-project/notifications) | 2.0.0
+| Reports Scheduler | [`opensearch-reports-scheduler`](https://github.com/opensearch-project/dashboards-reports) | 1.0.0 |
+| Geospatial | [`opensearch-geospatial`](https://github.com/opensearch-project/geospatial) | 2.2.0 |
+| Index Management | [`opensearch-index-management`](https://github.com/opensearch-project/index-management) | 1.0.0 |
+| Job Scheduler | [`opensearch-job-scheduler`](https://github.com/opensearch-project/job-scheduler) | 1.0.0 |
+| k-NN | [`opensearch-knn`](https://github.com/opensearch-project/k-NN) | 1.0.0 |
+| Learning to Rank | [`opensearch-ltr`](https://github.com/opensearch-project/opensearch-learning-to-rank-base) | 2.19.0 |
+| ML Commons | [`opensearch-ml`](https://github.com/opensearch-project/ml-commons) | 1.3.0 |
+| Skills | [`opensearch-skills`](https://github.com/opensearch-project/skills) | 2.12.0 |
+| Neural Search | [`neural-search`](https://github.com/opensearch-project/neural-search) | 2.4.0 |
+| Observability | [`opensearch-observability`](https://github.com/opensearch-project/observability) | 1.2.0 |
+| Performance Analyzer<sup>2</sup> | [`opensearch-performance-analyzer`](https://github.com/opensearch-project/performance-analyzer) | 1.0.0 |
+| Security | [`opensearch-security`](https://github.com/opensearch-project/security) | 1.0.0 |
+| Security Analytics | [`opensearch-security-analytics`](https://github.com/opensearch-project/security-analytics) | 2.4.0 |
+| SQL | [`opensearch-sql`](https://github.com/opensearch-project/sql) | 1.0.0 |
+| Learning to Rank Base | [`opensearch-learning-to-rank-base`](https://github.com/opensearch-project/opensearch-learning-to-rank-base) | 2.19.0 |
+| Remote Metadata SDK | [`opensearch-remote-metadata-sdk`](https://github.com/opensearch-project/opensearch-remote-metadata-sdk) | 2.19.0 |
+| Query Insights | [`query-insights`](https://github.com/opensearch-project/query-insights) | 2.16.0 |
+| System Templates | [`opensearch-system-templates`](https://github.com/opensearch-project/opensearch-system-templates) | 2.17.0 |
+| User Behavior Insights | [`ubi`](https://github.com/opensearch-project/user-behavior-insights) | 3.0.0 |
+| Search Relevance | [`search-relevance`](https://github.com/opensearch-project/search-relevance) | 3.1.0 |
 
 _<sup>1</sup>Dashboard Notebooks was merged in to the Observability plugin with the release of OpenSearch 1.2.0._<br>
 _<sup>2</sup>Performance Analyzer is not available on Windows._
 
 
-### Downloading plugin distributions for offline installation
+#### Downloading bundled plugins for offline installation
 
-Each bundled plugin distribution can be downloaded and installed offline from a [zip file](#install-a-plugin-from-a-zip-file) using the official `plugins` repository URL template:
+Each bundled plugin can be downloaded and installed offline from a [zip file](#install-a-plugin-from-a-zip-file).
+
+The URL for the corresponding plugin can be found in the `manifest.yml` file located in the root directory of the extracted bundle.
+
+### Core plugins
+
+A _core_ (or _native_) plugin in OpenSearch is a plugin that resides in the [OpenSearch core engine repository](https://github.com/opensearch-project/OpenSearch/tree/main/plugins). These plugins are tightly integrated with the OpenSearch engine, are versioned alongside core releases, and are not bundled by default in the standard OpenSearch distribution.
+
+
+#### Downloading core plugins for offline installation
+
+Each core plugins in [this list](https://github.com/opensearch-project/OpenSearch/tree/main/plugins) can be downloaded and installed offline from a [zip file](#install-a-plugin-from-a-zip-file) using the official `plugins` repository URL template:
 
 ```html
 https://artifacts.opensearch.org/releases/plugins/<plugin-name>/<version>/<plugin-name>-<version>.zip
@@ -338,6 +355,10 @@ Alternatively, you can specify a range of compatible OpenSearch versions by sett
 
 You can specify only one of the `opensearch.version` or `dependencies` properties.
 {: .note}
+
+## Plugin dependencies
+
+Some plugins extend functionality of other plugins. If a plugin has a dependency on another plugin, you must install the required dependency before installing the dependent plugin. For plugin dependencies, see the [manifest file](https://github.com/opensearch-project/opensearch-build/blob/main/manifests/{{site.opensearch_version}}/opensearch-{{site.opensearch_version}}.yml). In this file, each plugin's dependencies are listed in the `depends_on` parameter.
 
 ## Related links
 

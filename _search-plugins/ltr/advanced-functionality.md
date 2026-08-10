@@ -3,10 +3,11 @@ layout: default
 title: Advanced functionality
 nav_order: 80
 parent: Learning to Rank
+grand_parent: Optimizing search quality
 has_children: false
 ---
 
-# Advanced functionality
+# Advanced LTR functionality
 
 OpenSearch Learning to Rank (LTR) offers additional functionality. It is recommended that you have a foundational understanding of OpenSearch LTR before working with these features.
 
@@ -67,14 +68,14 @@ This adds the `titleSearch` feature to the next ordinal position within the `my_
 
 ## Derived features
 
-Derived features are those that build upon other features. These can be expressed as [Lucene expressions](http://lucene.apache.org/core/7_1_0/expressions/index.html?org/apache/lucene/expressions/js/package-summary.html) and are identified by the `"template_language": "derived_expression"`. 
+Derived features are those that build upon other features. These can be expressed as [Lucene expressions](http://lucene.apache.org/core/{{site.lucene_version}}/expressions/index.html?org/apache/lucene/expressions/js/package-summary.html) and are identified by the `"template_language": "derived_expression"`. 
 
 Additionally, derived features can accept query-time variables of type [`Number`](https://docs.oracle.com/javase/8/docs/api/java/lang/Number.html), as described in [Creating feature sets]({{site.url}}{{site.baseurl}}/search-plugins/ltr/working-with-features#creating-feature-sets).
 
 ### Script features
 
 Script features are a type of [derived feature](#derived-features). These features have access to the `feature_vector`, but they are implemented as native or Painless OpenSearch scripts rather than as [Lucene
-expressions](http://lucene.apache.org/core/7_1_0/expressions/index.html?org/apache/lucene/expressions/js/package-summary.html). 
+expressions](http://lucene.apache.org/core/{{site.lucene_version}}/expressions/index.html?org/apache/lucene/expressions/js/package-summary.html). 
 
 To identify these features, set the `"template_language": "script_feature""`. The custom script can access the `feature_vector` through the [Java Map](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html), as described in [Create a feature set]({{site.url}}{{site.baseurl}}/search-plugins/ltr/working-with-features#creating-feature-sets).
 
@@ -322,11 +323,11 @@ flag to the `sltr` query that is the target of feature score logging, as shown i
 You can use the Stats API to retrieve the plugin's overall status and statistics. To do this, send the following request:
 
 ```json
-GET /_ltr/_stats
+GET /_plugins/_ltr/stats
 ```
 {% include copy-curl.html %}
 
-The response includes information about the cluster, configured stores, and cache statistics for various plugin components:
+The response includes information about the cluster, configured stores, cache statistics for various plugin components, and request counts:
 
 ```json
 {
@@ -369,7 +370,9 @@ The response includes information about the cluster, configured stores, and cach
                "entry_count":0,
                "memory_usage_in_bytes":0
             }
-         }
+         },
+         "request_total_count": 0,
+         "request_error_count": 0
       }
    }
 }
@@ -379,15 +382,25 @@ The response includes information about the cluster, configured stores, and cach
 You can use filters to retrieve a single statistic by sending the following request:
 
 ```json
-GET /_ltr/_stats/{stat}
+GET /_plugins/_ltr/stats/{stat}
 ```
 {% include copy-curl.html %}
+
+The following table lists the available `stat` values.
+
+Stat | Description
+:--- | :---
+`stores` | Information about configured feature stores.
+`status` | The overall plugin status.
+`cache` | Per-node cache statistics for various plugin components (features, feature sets, and models).
+`request_total_count` | Per-node counter of the number of LTR queries executed.
+`request_error_count` | Per-node counter of the number of LTR queries that failed.
 
 You can limit the information to a single node in the cluster by sending the following requests:
 
 ```json
-GET /_ltr/_stats/nodes/{nodeId}
-GET /_ltr/_stats/{stat}/nodes/{nodeId}
+GET /_plugins/_ltr/{nodeId}/stats
+GET /_plugins/_ltr/{nodeId}/stats/{stat}
 ```
 {% include copy-curl.html %}
 
@@ -397,7 +410,7 @@ Experimental
 
 The `TermStatQuery` is in an experimental stage, and the Domain-Specific Language (DSL) may change as the code advances. For stable term-statistic access, see [ExplorerQuery]{.title-ref}.
 
-The `TermStatQuery` is a reimagined version of the legacy `ExplorerQuery`. It provides a clearer way to specify terms and offers more flexibility for experimentation. This query surfaces the same data as the [ExplorerQuery]{.title-ref}, but it allows you to specify a custom Lucene expression to retrieve the desired data, such as in the following example:
+The `TermStatQuery` is a redesigned version of the legacy `ExplorerQuery`. It provides a clearer way to specify terms and offers more flexibility for experimentation. This query surfaces the same data as the [ExplorerQuery]{.title-ref}, but it allows you to specify a custom Lucene expression to retrieve the desired data, such as in the following example:
 
 ```json
 POST tmdb/_search

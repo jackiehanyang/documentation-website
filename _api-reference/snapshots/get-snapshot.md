@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Get Snapshot
+title: Get snapshot
 parent: Snapshot APIs
 nav_order: 6
 ---
 
-# Get snapshot.
+# Get Snapshot API
 **Introduced 1.0**
 {: .label .label-purple }
 
@@ -14,31 +14,49 @@ Retrieves information about a snapshot.
 ## Endpoints
 
 ```json
-GET _snapshot/<repository>/<snapshot>/
+GET _snapshot/{repository}/{snapshot}/
 ```
 
 ## Path parameters
 
 | Parameter | Data type | Description |
 | :--- | :--- | :--- |
-| repository | String | The repository that contains the snapshot to retrieve. |
-| snapshot | String | Snapshot to retrieve.
+| `repository` | String | The repository that contains the snapshot to retrieve. |
+| `snapshot` | String | Snapshot to retrieve.
 
 ## Query parameters
 
 | Parameter | Data type | Description | 
 :--- | :--- | :---
-| verbose | Boolean | Whether to show all, or just basic snapshot information. If `true`, returns all information. If `false`, omits information like start/end times, failures, and shards. Optional, defaults to `true`.|
-| ignore_unavailable | Boolean | How to handle snapshots that are unavailable (corrupted or otherwise temporarily can't be returned). If `true` and the snapshot is unavailable, the request does not return the snapshot. If `false` and the snapshot is unavailable, the request returns an error. Optional, defaults to `false`.|
+| `verbose` | Boolean | When `true`, returns additional information about each snapshot, such as the version of OpenSearch that took the snapshot, the start and end times of the snapshot, and the number of shards contained in the snapshot. When `false`, returns only snapshot names and contained indexes. This is useful when the snapshots belong to a cloud-based repository, where each blob read is a cost or performance concern. Optional. Default is `true`.|
+| `ignore_unavailable` | Boolean | How to handle snapshots that are unavailable (corrupted or otherwise temporarily can't be returned). If `true` and the snapshot is unavailable, the request does not return the snapshot. If `false` and the snapshot is unavailable, the request returns an error. Optional. Default is `false`.|
 
 ## Example request
 
 The following request retrieves information for the `my-first-snapshot` located in the `my-opensearch-repo` repository:
 
-````json
-GET _snapshot/my-opensearch-repo/my-first-snapshot
-````
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: GET /_snapshot/my-opensearch-repo/my-first-snapshot
+-->
+{% capture step1_rest %}
+GET /_snapshot/my-opensearch-repo/my-first-snapshot
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.snapshot.get(
+  repository = "my-opensearch-repo",
+  snapshot = "my-first-snapshot"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 
@@ -83,18 +101,22 @@ Upon success, the response returns snapshot information:
 
 | Field | Data type | Description |
 | :--- | :--- | :--- | 
-| snapshot | string | Snapshot name. |
-| uuid | string | Snapshot's universally unique identifier (UUID). |
-| version_id | int | Build ID of the Open Search version that created the snapshot. |
-| version | float | Open Search version that created the snapshot. |
-| indices | array | Indices in the snapshot. |
-| data_streams | array | Data streams in the snapshot. |
-| include_global_state | boolean | Whether the current cluster state is included in the snapshot. |
-| start_time | string | Date/time when the snapshot creation process began. |
-| start_time_in_millis | long | Time (in milliseconds) when the snapshot creation process began. |
-| end_time | string | Date/time when the snapshot creation process ended. |
-| end_time_in_millis | long | Time (in milliseconds) when the snapshot creation process ended. |
-| duration_in_millis | long | Total time (in milliseconds) that the snapshot creation process lasted. |
-| failures | array | Failures, if any, that occured during snapshot creation. |
-| shards | object | Total number of shards created along with number of successful and failed shards. |
-| state | string | Snapshot status. Possible values: `IN_PROGRESS`, `SUCCESS`, `FAILED`, `PARTIAL`. |
+| `snapshot` | String | Snapshot name. |
+| `uuid` | String | Snapshot's universally unique identifier (UUID). |
+| `version_id` | Integer | Build ID of the Open Search version that created the snapshot. |
+| `version` | Float | Open Search version that created the snapshot. |
+| `indices` | Array | Indices in the snapshot. |
+| `data_streams` | Array | Data streams in the snapshot. |
+| `include_global_state` | Boolean | Whether the current cluster state is included in the snapshot. |
+| `start_time` | String | Date/time when the snapshot creation process began. |
+| `start_time_in_millis` | Long | Time (in milliseconds) when the snapshot creation process began. |
+| `end_time` | String | Date/time when the snapshot creation process ended. |
+| `end_time_in_millis` | Long | Time (in milliseconds) when the snapshot creation process ended. |
+| `duration_in_millis` | Long | Total time (in milliseconds) that the snapshot creation process lasted. |
+| `failures` | Array | Failures, if any, that occurred during snapshot creation. |
+| `shards` | Object | Total number of shards created along with number of successful and failed shards. |
+| `state` | String | Snapshot status. Possible values: `IN_PROGRESS`, `SUCCESS`, `FAILED`, `PARTIAL`. |
+
+## Required permissions
+
+If you use the Security plugin, make sure you have the appropriate permissions: `cluster:admin/snapshot/get`.

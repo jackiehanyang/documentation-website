@@ -3,10 +3,10 @@ layout: default
 title: Get agent
 parent: Agent APIs
 grand_parent: ML Commons APIs
-nav_order: 20
+nav_order: 30
 ---
 
-# Get an agent
+# Get Agent API
 **Introduced 2.13**
 {: .label .label-purple }
 
@@ -15,7 +15,7 @@ You can retrieve agent information using the `agent_id`.
 ## Endpoints
 
 ```json
-GET /_plugins/_ml/agents/<agent_id>
+GET /_plugins/_ml/agents/{agent_id}
 ```
 
 ## Path parameters
@@ -27,14 +27,14 @@ The following table lists the available path parameters.
 | `agent_id` | String | The agent ID of the agent to retrieve. |
 
 
-#### Example request
+## Example request
 
 ```json
 GET /_plugins/_ml/agents/N8AE1osB0jLkkocYjz7D
 ```
 {% include copy-curl.html %}
 
-#### Example response
+## Example response
 
 ```json
 {

@@ -1,11 +1,12 @@
 ---
 layout: default
-title: Stats
-parent: Index APIs
-nav_order: 72
+title: Index stats
+parent: Index operations
+grand_parent: Index APIs
+nav_order: 120
 ---
 
-# Index Stats 
+# Index Stats API 
 **Introduced 1.0**
 {: .label .label-purple }
 
@@ -14,14 +15,18 @@ The Index Stats API provides index statistics. For data streams, the API provide
 When a shard moves to a different node, the shard-level statistics for the shard are cleared. Although the shard is no longer part of the node, the node preserves any node-level statistics to which the shard contributed.
 {: .note}
 
+<!-- spec_insert_start
+api: indices.stats
+component: endpoints
+-->
 ## Endpoints
-
 ```json
 GET /_stats
-GET /_stats/<metric>
-GET /<index_ids>/_stats
-GET /<index_ids>/_stats/<metric>
+GET /{index}/_stats
+GET /_stats/{metric}
+GET /{index}/_stats/{metric}
 ```
+<!-- spec_insert_end -->
 
 ## Path parameters
 
@@ -29,8 +34,8 @@ The following table lists the available path parameters. All path parameters are
 
 | Parameter | Data type | Description |
 | :--- | :--- | :--- |
-| `<index_ids>` | String | A comma-separated list of indexes, data streams, or index aliases used to filter results. Supports wildcard expressions. Defaults to `_all` (`*`).
-`<metric>` | String | A comma-separated list of metric groups that will be included in the response. For valid values, see [Metrics](#metrics). Defaults to all metrics. |
+| `index` | String | A comma-separated list of indexes, data streams, or index aliases used to filter results. Supports wildcard expressions. To retrieve statistics for all indexes, use `_all` or `*` or omit this parameter. |
+| `metric` | String | A comma-separated list of metric groups to include in the response. For valid values, see [Metrics](#metrics). Defaults to all metrics. |
 
 ### Metrics
 
@@ -66,7 +71,7 @@ Parameter | Data type | Description
 `completion_fields` | String | A comma-separated list or wildcard expression specifying fields to include in field-level `completion` statistics.
 `fielddata_fields` | String | A comma-separated list or wildcard expression specifying fields to include in field-level `fielddata` statistics.
 `forbid_closed_indices` | Boolean | Specifies not to collect statistics for closed indexes. Default is `true`.
-`groups` | String | A comma-separated list of search groups to include in the `search` statistics.
+`groups` | String | A comma-separated list of search groups to include in the `search` statistics. Search groups are custom labels assigned to search requests using the `stats` parameter of the [Search API]({{site.url}}{{site.baseurl}}/api-reference/search-apis/search/#search-stats-groups). Use `_all` to return statistics for all groups.
 `level` | String | Specifies the level used to aggregate statistics. Valid values are: <br> - `cluster`: Cluster-level statistics. <br> - `indices`: Index-level statistics. <br> - `shards`: Shard-level statistics. <br> Default is `indices`.
 `include_segment_file_sizes` | Boolean | Specifies whether to report the aggregated disk usage of each Lucene index file. Only applies to `segments` statistics. Default is `false`.
 `include_unloaded_segments` | Boolean | Specifies whether to include information from segments that are not loaded into memory. Default is `false`.
@@ -79,59 +84,191 @@ The following example requests show how to use the Index Stats API.
 
 The following example returns index stats for a single index:
 
-```json
+<!-- spec_insert_start
+component: example_code
+rest: GET /testindex/_stats
+-->
+{% capture step1_rest %}
 GET /testindex/_stats
-```
-{% include copy-curl.html %}
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.indices.stats(
+  index = "testindex"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ### Comma-separated list of indexes
 
 The following example returns stats for multiple indexes:
 
-```json
+<!-- spec_insert_start
+component: example_code
+rest: GET /testindex1,testindex2/_stats
+-->
+{% capture step1_rest %}
 GET /testindex1,testindex2/_stats
-```
-{% include copy-curl.html %}
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.indices.stats(
+  index = "testindex1,testindex2"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ### Wildcard expression
 
-The following example returns starts about any index that starts with `testindex`:
+The following example returns statistics for any index whose name starts with `testindex`:
 
-```json
+<!-- spec_insert_start
+component: example_code
+rest: GET /testindex*/_stats
+-->
+{% capture step1_rest %}
 GET /testindex*/_stats
-```
-{% include copy-curl.html %}
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.indices.stats(
+  index = "testindex*"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ### Specific stats
 
 The following example returns index stats related to the index and flush operations:
 
-```json
+<!-- spec_insert_start
+component: example_code
+rest: GET /testindex/_stats/refresh,flush
+-->
+{% capture step1_rest %}
 GET /testindex/_stats/refresh,flush
-```
-{% include copy-curl.html %}
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.indices.stats(
+  metric = "refresh,flush",
+  index = "testindex"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ### Expand wildcards
 
 The following example expands all wildcards related to index stats:
 
-```json
+<!-- spec_insert_start
+component: example_code
+rest: GET /testindex*/_stats?expand_wildcards=open,hidden
+-->
+{% capture step1_rest %}
 GET /testindex*/_stats?expand_wildcards=open,hidden
-```
-{% include copy-curl.html %}
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.indices.stats(
+  index = "testindex*",
+  params = { "expand_wildcards": "open,hidden" }
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ### Shard-level statistics
 
 The following example returns shard level stats about a test index:
 
-```json
+<!-- spec_insert_start
+component: example_code
+rest: GET /testindex/_stats?level=shards
+-->
+{% capture step1_rest %}
 GET /testindex/_stats?level=shards
-```
-{% include copy-curl.html %}
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.indices.stats(
+  index = "testindex",
+  params = { "level": "shards" }
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
+
+### Specific search groups
+
+The following example returns search statistics for the `group1` and `group2` search groups:
+
+<!-- spec_insert_start
+component: example_code
+rest: GET /_stats/search?groups=group1,group2
+-->
+{% capture step1_rest %}
+GET /_stats/search?groups=group1,group2
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.indices.stats(
+  metric = "search",
+  params = { "groups": "group1,group2" }
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 
-By default, the returned statistics are aggregated in the `primaries` and `total` aggregations. The `primaries` aggregation contains statistics for the primary shards. The `total` aggregation contains statistics for both primary and replica shards. The following is an example Index Stats API response: 
+By default, the returned statistics are split into two groups: `primaries` and `total`. The `primaries` group contains values computed for primary shards only, while the `total` group contains accumulated values across both primary and replica shards. The following is an example Index Stats API response: 
 
 <details markdown="block">
   <summary>
@@ -235,7 +372,8 @@ By default, the returned statistics are aggregated in the `primaries` and `total
       },
       "fielddata": {
         "memory_size_in_bytes": 0,
-        "evictions": 0
+        "evictions": 0,
+        "item_count": 0
       },
       "completion": {
         "size_in_bytes": 0
@@ -402,7 +540,8 @@ By default, the returned statistics are aggregated in the `primaries` and `total
       },
       "fielddata": {
         "memory_size_in_bytes": 0,
-        "evictions": 0
+        "evictions": 0,
+        "item_count": 0
       },
       "completion": {
         "size_in_bytes": 0
@@ -573,7 +712,8 @@ By default, the returned statistics are aggregated in the `primaries` and `total
         },
         "fielddata": {
           "memory_size_in_bytes": 0,
-          "evictions": 0
+          "evictions": 0,
+          "item_count": 0
         },
         "completion": {
           "size_in_bytes": 0
@@ -740,7 +880,8 @@ By default, the returned statistics are aggregated in the `primaries` and `total
         },
         "fielddata": {
           "memory_size_in_bytes": 0,
-          "evictions": 0
+          "evictions": 0,
+          "item_count": 0
         },
         "completion": {
           "size_in_bytes": 0
@@ -828,3 +969,7 @@ By default, the returned statistics are aggregated in the `primaries` and `total
 ## Response body fields
 
 For information about response fields, see [Nodes Stats API response fields]({{site.url}}{{site.baseurl}}/api-reference/nodes-apis/nodes-stats/#indices).
+
+## Required permissions
+
+If you use the Security plugin, make sure you have the appropriate permissions: `indices:monitor/stats`.

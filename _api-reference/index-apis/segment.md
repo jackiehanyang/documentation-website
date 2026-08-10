@@ -1,12 +1,13 @@
 ---
 layout: default
-title: Segment
-parent: Index APIs
-nav_order: 64
+title: Index segments
+parent: Index operations
+grand_parent: Index APIs
+nav_order: 90
 ---
 
-# Segment
-Introduced 1.0
+# Index Segments API
+**Introduced 1.0**
 {: .label .label-purple }
 
 The Segment API provides details about the Lucene segments within index shards as well as information about the backing indexes of data streams.
@@ -15,7 +16,7 @@ The Segment API provides details about the Lucene segments within index shards a
 ## Endpoints
 
 ```json
-GET /<index>/_segments
+GET /{index}/_segments
 GET /_segments
 ```
 
@@ -25,7 +26,7 @@ The following table lists the available path parameters. All path parameters are
 
 Parameter | Data type | Description 
 :--- | :--- | :--- 
-`<index>` | String | A comma-separated list of indexes, data streams, or index aliases to which the operation is applied. Supports wildcard expressions (`*`). Use `_all` or `*` to specify all indexes and data streams in a cluster. |
+`index` | String | A comma-separated list of indexes, data streams, or index aliases to which the operation is applied. Supports wildcard expressions (`*`). Use `_all` or `*` to specify all indexes and data streams in a cluster. |
 
 ## Query parameters
 
@@ -45,24 +46,71 @@ The following example requests show you how to use the Segment API.
 
 ### Specific data stream or index
 
-```json
+<!-- spec_insert_start
+component: example_code
+rest: GET /index1/_segments
+-->
+{% capture step1_rest %}
 GET /index1/_segments
-```
-{% include copy-curl.html %}
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.indices.segments(
+  index = "index1"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ### Several data streams and indexes
 
-```json
+<!-- spec_insert_start
+component: example_code
+rest: GET /index1,index2/_segments
+-->
+{% capture step1_rest %}
 GET /index1,index2/_segments
-```
-{% include copy-curl.html %}
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.indices.segments(
+  index = "index1,index2"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ### All data streams and indexes in a cluster
 
-```json
+<!-- spec_insert_start
+component: example_code
+rest: GET /_segments
+-->
+{% capture step1_rest %}
 GET /_segments
-```
-{% include copy-curl.html %}
+{% endcapture %}
+
+{% capture step1_python %}
+
+response = client.indices.segments()
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 
@@ -108,7 +156,7 @@ GET /_segments
 
 Parameter | Data type | Description 
  :--- | :--- | :--- 
-`<segment>` | String | The name of the segment used to create internal file names in the shard directory. 
+`segment` | String | The name of the segment used to create internal file names in the shard directory. 
 `generation` | Integer | The generation number, such as `0`, incremented for each written segment and used to name the segment. 
 `num_docs` | Integer | The number of documents, obtained from Lucene. Nested documents are counted separately from their parents. Deleted documents, as well as recently indexed documents that are not yet assigned to a segment, are excluded.
 `deleted_docs` | Integer | The number of deleted documents, obtained from Lucene, which may not match the actual number of delete operations performed. Recently deleted documents that are not yet assigned to a segment are excluded. Deleted documents are automatically merged when appropriate. OpenSearch will occasionally delete extra documents in order to track recent shard operations.
@@ -118,5 +166,8 @@ Parameter | Data type | Description
 `search` | Boolean | When `true`, segment search is enabled. When `false`, the segment may have already been written to disk and require a refresh in order to be searchable.
 `version` | String | The Lucene version used to write the segment. 
 `compound` | Boolean | When `true`, indicates that Lucene merged all segment files into one file in order to save any file descriptions.
-`attributes` | Object | Shows if high compression was enabled. 
+`attributes` | Object | Shows if high compression was enabled.
 
+## Required permissions
+
+If you use the Security plugin, make sure you have the appropriate permissions: `indices:monitor/segments`.

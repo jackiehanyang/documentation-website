@@ -7,7 +7,9 @@ redirect_from:
    - /api-reference/ingest-apis/processors/text-image-embedding/
 ---
 
+<!-- vale off -->
 # Text/image embedding processor
+<!-- vale on -->
 
 The `text_image_embedding` processor is used to generate combined vector embeddings from text and image fields for [multimodal neural search]({{site.url}}{{site.baseurl}}/search-plugins/multimodal-search/). 
 
@@ -29,7 +31,7 @@ The following is the syntax for the `text_image_embedding` processor:
   }
 }
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 ## Parameters
 

@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Chatbots and agents
+title: Chatbots
 parent: Generative AI
 has_children: true
 has_toc: false
-nav_order: 20
+nav_order: 30
 redirect_from:
   - /vector-search/tutorials/chatbots/
   - /tutorials/gen-ai/chatbots/
@@ -29,9 +29,9 @@ chatbots:
       - "<b>Deployment:</b> Amazon Bedrock"
 ---
 
-# Chatbots and agents tutorials
+# Tutorials: Building chatbots
 
-The following machine learning (ML) tutorials show you how to implement chatbots and agents.
+Learn how to build conversational chatbots that use OpenSearch agents to retrieve relevant documents and generate context-aware responses.
 
 {% include cards.html cards=page.chatbots %}  
   

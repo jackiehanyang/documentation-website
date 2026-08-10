@@ -1,22 +1,35 @@
 ---
 layout: default
-title: Get Script Language
+title: Get script languages
 parent: Script APIs
-nav_order: 6
+nav_order: 60
 ---
 
-# Get script language
+# Get Script Languages API
 **Introduced 1.0**
 {: .label .label-purple }
 
-The get script language API operation retrieves all supported script languages and the contexts in which they may be used.
+The Get Script Languages API retrieves all supported script languages (such as Painless) and the contexts in which they can be used.
 
 ## Example request
 
-```json
-GET _script_language
-```
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: GET /_script_language
+-->
+{% capture step1_rest %}
+GET /_script_language
+{% endcapture %}
+
+{% capture step1_python %}
+
+response = client.get_script_languages()
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 
@@ -95,7 +108,7 @@ The request contains the following response fields.
 
 Field | Data type | Description | 
 :--- | :--- | :---
-types_allowed | List of strings | The types of scripts that are enabled, determined by the `script.allowed_types` setting. May contain `inline` and/or `stored`.
-language_contexts | List of objects | A list of objects, each of which maps a supported language to its available contexts.
-language_contexts.language | String | The name of the registered scripting language.
-language_contexts.contexts | List of strings | A list of all contexts for the language, determined by the `script.allowed_contexts` setting.
+`types_allowed` | List of strings | The types of scripts that are enabled, determined by the `script.allowed_types` setting. May contain `inline` and/or `stored`.
+`language_contexts` | List of objects | A list of objects, each of which maps a supported language to its available contexts.
+`language_contexts.language` | String | The name of the registered scripting language.
+`language_contexts.contexts` | List of strings | A list of all contexts for the language, determined by the `script.allowed_contexts` setting.

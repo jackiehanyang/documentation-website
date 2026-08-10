@@ -5,7 +5,7 @@ parent: Workflow APIs
 nav_order: 10
 ---
 
-# Create or update a workflow
+# Create or Update Workflow API
 
 Creating a workflow adds the content of a workflow template to the flow framework system index. You can provide workflows in JSON format (by specifying `Content-Type: application/json`) or YAML format (by specifying `Content-Type: application/yaml`). By default, the workflow is validated to help identify invalid configurations, including:
 
@@ -29,7 +29,7 @@ You can only update a complete workflow if it has not yet been provisioned.
 
 ```json
 POST /_plugins/_flow_framework/workflow
-PUT /_plugins/_flow_framework/workflow/<workflow_id>
+PUT /_plugins/_flow_framework/workflow/{workflow_id}
 ```
 
 ## Path parameters
@@ -61,7 +61,7 @@ POST /_plugins/_flow_framework/workflow?validation=none
 In a workflow that has not been provisioned, you can update fields other than the `workflows` field. For example, you can update the `name` and `description` fields as follows:
 
 ```json
-PUT /_plugins/_flow_framework/workflow/<workflow_id>?update_fields=true
+PUT /_plugins/_flow_framework/workflow/{workflow_id}?update_fields=true
 {
   "name": "new-template-name",
   "description": "A new description for the existing template"
@@ -75,7 +75,7 @@ You cannot specify both the `provision` and `update_fields` parameters at the sa
 If a workflow has been provisioned, you can update and reprovision the full template:
 
 ```json
-PUT /_plugins/_flow_framework/workflow/<workflow_id>?reprovision=true
+PUT /_plugins/_flow_framework/workflow/{workflow_id}?reprovision=true
 {
   <updated complete template>
 }
@@ -92,7 +92,7 @@ POST /_plugins/_flow_framework/workflow/?provision=true&wait_for_completion_time
 {% include copy-curl.html %}
 
 ```json
-PUT /_plugins/_flow_framework/workflow/<workflow_id>/?reprovision=true&wait_for_completion_timeout=2s
+PUT /_plugins/_flow_framework/workflow/{workflow_id}/?reprovision=true&wait_for_completion_timeout=2s
 ```
 {% include copy-curl.html %}
 
@@ -105,7 +105,7 @@ For example, the following request provisions a workflow and waits for up to 2 s
 You can create and provision a workflow using a [workflow template]({{site.url}}{{site.baseurl}}/automating-configurations/workflow-templates/) as follows:
 
 ```json
-POST /_plugins/_flow_framework/workflow?use_case=<use_case>&provision=true
+POST /_plugins/_flow_framework/workflow?use_case={use_case}&provision=true
 {
     "create_connector.credential.key" : "<YOUR API KEY>"
 }
@@ -136,7 +136,7 @@ The following table lists the available request fields.
 |`version`	|Object	|Optional	| A key-value map with two fields: `template`, which identifies the template version, and `compatibility`, which identifies a list of minimum required OpenSearch versions.	|
 |`workflows`	|Object	|Optional	|A map of workflows. Presently, only the `provision` key is supported. The value for the workflow key is a key-value map that includes fields for `user_params` and lists of `nodes` and `edges`.	|
 
-#### Example request: Register and deploy an externally hosted model (YAML)
+## Example request: Register and deploy an externally hosted model in YAML
 
 To provide a template in YAML format, specify `Content-Type: application/yaml` in the request header:
 
@@ -150,12 +150,12 @@ YAML templates permit comments.
 The following is an example YAML template for registering and deploying an externally hosted model:
 
 ```yaml
-# This name is required
+# This Name Is Required API
 name: createconnector-registerremotemodel-deploymodel
-# Other fields are optional but useful
+# Other Fields Are Optional But Useful API
 description: This template creates a connector to a remote model, registers it, and
   deploys that model
-# Other templates with a similar use case can be searched
+# Other Templates With A Similar Use Case Can Be Searched API
 use_case: REMOTE_MODEL_DEPLOYMENT
 version:
   # Templates may be versioned by their authors
@@ -164,7 +164,7 @@ version:
   compatibility:
   - 2.12.0
   - 3.0.0
-# One or more workflows can be included, presently only provision is supported
+# One Or More Workflows Can Be Included, Presently Only Provision Is Supported API
 workflows:
   provision:
     # These nodes are the workflow steps corresponding to ML Commons APIs
@@ -216,7 +216,7 @@ workflows:
 ```
 {% include copy-curl.html %}
 
-#### Example request: Register and deploy a remote model (JSON)
+## Example request: Register and deploy a remote model (JSON)
 
 To provide a template in JSON format, specify `Content-Type: application/json` in the request header:
 
@@ -300,7 +300,7 @@ The following JSON template is equivalent to the YAML template provided in the p
 ```
 {% include copy-curl.html %}
 
-#### Example response
+## Example response
 
 OpenSearch responds with the `workflow_id`:
 
@@ -312,7 +312,7 @@ OpenSearch responds with the `workflow_id`:
 
 Once you have created a workflow, you can use other workflow APIs with the `workflow_id`.
 
-#### Example response with wait_for_completion_timeout enabled
+## Example response with wait_for_completion_timeout enabled
 
 ```json
 {

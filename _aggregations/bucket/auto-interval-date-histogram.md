@@ -2,11 +2,10 @@
 layout: default
 title: Auto-interval date histogram
 parent: Bucket aggregations
-grand_parent: Aggregations
 nav_order: 12
 ---
 
-# Auto-interval date histogram
+# Auto-interval date histogram aggregation
 
 Similar to the [date histogram aggregation]({{site.url}}{{site.baseurl}}/aggregations/bucket/date-histogram/), in which you must specify an interval, the `auto_date_histogram` is a multi-bucket aggregation that automatically creates date histogram buckets based on the number of buckets you provide and the time range of your data. The actual number of buckets returned is always less than or equal to the number of buckets you specify. This aggregation is particularly useful when you are working with time-series data and want to visualize or analyze data over different time intervals without manually specifying the interval size.
 
@@ -104,6 +103,8 @@ GET /blogs/_search
 }
 ```
 {% include copy-curl.html %}
+
+## Example response
 
 The response shows that the blog posts were aggregated into two buckets. The interval was automatically set to 1 year, with all three 2022 blog posts collected in one bucket and the 2023 blog post in another:
 
@@ -203,7 +204,7 @@ The `key_as_string` field is now returned in the specified format:
 }
 ```
 
-Alternatively, you can specify one of the built-in date [formats]({{site.url}}{{site.baseurl}}/field-types/supported-field-types/date/#formats):
+Alternatively, you can specify one of the built-in date [formats]({{site.url}}{{site.baseurl}}/mappings/supported-field-types/date/#formats):
 
 ```json
 GET /blogs/_search

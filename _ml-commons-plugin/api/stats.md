@@ -2,10 +2,13 @@
 layout: default
 title: Stats 
 parent: ML Commons APIs
-nav_order: 50
+nav_order: 120
 ---
 
-# Stats
+# ML Commons Stats API
+
+The Stats API provides basic statistics about ML Commons, such as the number of running tasks. To monitor machine learning workflows using more detailed time-series metrics, see [Monitoring machine learning workflows]({{site.url}}{{site.baseurl}}/monitoring-your-cluster/metrics/getting-started/#monitoring-machine-learning-workflows).
+{: .note }
 
 Gets statistics related to the number of tasks. 
 
@@ -13,19 +16,19 @@ Gets statistics related to the number of tasks.
 
 ```json
 GET /_plugins/_ml/stats
-GET /_plugins/_ml/stats/<stat>
-GET /_plugins/_ml/<nodeId>/stats/
-GET /_plugins/_ml/<nodeId>/stats/<stat>
+GET /_plugins/_ml/stats/{stat}
+GET /_plugins/_ml/{nodeId}/stats/
+GET /_plugins/_ml/{nodeId}/stats/{stat}
 ```
 
-#### Example request: Get all stats for all nodes
+## Example request: Get all stats for all nodes
 
 ```json
 GET /_plugins/_ml/stats
 ```
 {% include copy-curl.html %}
 
-#### Example response
+## Example response
 
 ```json
 {
@@ -53,24 +56,24 @@ GET /_plugins/_ml/stats
 }
 ```
 
-#### Example request: Get all stats for a specific node
+## Example request: Get all stats for a specific node
 
 ```json
-GET /_plugins/_ml/<nodeId>/stats/
+GET /_plugins/_ml/{nodeId}/stats/
 ```
 {% include copy-curl.html %}
 
-#### Example request: Get a specified stat for a specific node 
+## Example request: Get a specified stat for a specific node 
 
 ```json
-GET /_plugins/_ml/<nodeId>/stats/<stat>
+GET /_plugins/_ml/{nodeId}/stats/{stat}
 ```
 {% include copy-curl.html %}
 
-#### Example request: Get a specified stat for all nodes
+## Example request: Get a specified stat for all nodes
 
 ```json
-GET /_plugins/_ml/stats/<stat>
+GET /_plugins/_ml/stats/{stat}
 ```
 {% include copy-curl.html %}
 

@@ -5,7 +5,7 @@ nav_order: 20
 parent: Performance tuning
 ---
 
-# Search performance tuning
+# Vector search query performance tuning
 
 Take the following steps to improve search performance.
 
@@ -22,6 +22,8 @@ You can control the number of segments by choosing a larger refresh interval or 
 Native library indexes are constructed during indexing, but they're loaded into memory during the first search. In Lucene, each segment is searched sequentially (so, for k-NN, each segment returns up to k nearest neighbors of the query point). The top `size` results, ranked by score, are returned from all segment-level results within a shard (a higher score indicates a better result).
 
 Once a native library index is loaded (native library indexes are loaded outside of the OpenSearch JVM), OpenSearch caches them in memory. Initial queries are expensive and complete in a few seconds, while subsequent queries are faster and complete in milliseconds (assuming that the k-NN circuit breaker isn't triggered).
+
+Starting with version 3.1, you can use [memory-optimized search]({{site.url}}{{site.baseurl}}/vector-search/optimizing-storage/memory-optimized-search/), which enables the engine to load only the necessary bytes during search instead of loading the entire index outside the JVM. With this mode enabled, the Warm-up API loads only the required data into memory and opens read streams to the underlying indexes. Thus, the Warm-up API helps ensure that searches after warm-up run faster, even with memory-optimized search enabled.
 
 To avoid this latency penalty during your first queries, you can use the warmup API operation on the indexes you want to search:
 
@@ -45,5 +47,59 @@ This API operation only loads the segments of active indexes into the cache. If 
 
 ## Avoid reading stored fields
 
-If your use case only involves reading the IDs and scores of the nearest neighbors, you can disable the reading of stored fields, which saves time that would otherwise be spent retrieving the vectors from stored fields.
+If your use case only involves reading the IDs and scores of the nearest neighbors, you can disable the reading of stored fields, which saves time that would otherwise be spent retrieving the vectors from stored fields. To disable stored fields entirely, set `_source` to `false`:
 
+```json
+GET /my-index/_search
+{
+  "_source": false,
+  "query": {
+    "knn": {
+      "vector_field": {
+        "vector": [ 0.1, 0.2, 0.3],
+        "k": 10
+      }
+    }
+  }
+}
+```
+{% include copy-curl.html %}
+
+This query returns only the document IDs and scores, making it the fastest option when you don't need the actual document contents. For more information, see [Disabling `_source`]({{site.url}}{{site.baseurl}}/search-plugins/searching-data/retrieve-specific-fields/#disabling-_source).
+
+## Exclude vectors from search results
+
+If you need the document contents but want to optimize performance, you can exclude only the vector fields from being returned in the search results. This approach reduces network transfer while still maintaining access to other document fields. To exclude vectors from search results, provide the vector field name in `_source.excludes`:
+
+```json
+GET /my-index/_search
+{
+  "_source": {
+    "excludes": [
+      "vector_field"
+    ]
+  },
+  "query": {
+    "knn": {
+      "vector_field": {
+        "vector": [ 0.1, 0.2, 0.3],
+        "k": 10
+      }
+    }
+  }
+}
+```
+{% include copy-curl.html %}
+
+For more information, see [Retrieve specific fields]({{site.url}}{{site.baseurl}}/search-plugins/searching-data/retrieve-specific-fields/).
+
+## Retrieve vectors using doc values
+**Introduced 3.7**
+{: .label .label-purple }
+
+Use `docvalue_fields` to retrieve vector fields directly from on-disk columnar storage, which avoids reading and parsing the full `_source` document. This approach is significantly faster when retrieving a large number of vectors in a single search request.
+
+For best performance, exclude the vector field from the `_source` by using `_source.excludes` or by setting `_source` to `false`. This ensures that OpenSearch reads vectors only from `doc_values` and does not redundantly decompress them from the stored `_source`.
+{: .tip}
+
+For supported formats and examples, see [Retrieving vector fields using `docvalue_fields`]({{site.url}}{{site.baseurl}}/search-plugins/searching-data/retrieve-specific-fields/#retrieving-vector-fields-using-docvalue_fields).

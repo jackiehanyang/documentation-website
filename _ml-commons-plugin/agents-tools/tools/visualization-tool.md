@@ -12,7 +12,7 @@ grand_parent: Agents and tools
 **Introduced 2.13**
 {: .label .label-purple }
 
-Use the `VisualizationTool` to find visualizations relevant to a question. 
+Use the `VisualizationTool` to find visualizations relevant to a question.
 
 ## Step 1: Register a flow agent that will run the VisualizationTool
 
@@ -51,7 +51,7 @@ OpenSearch responds with an agent ID:
 
 ## Step 2: Run the agent
 
-Before you run the agent, make sure that you add the sample OpenSearch Dashboards `Sample eCommerce orders` dataset. To learn more, see [Adding sample data]({{site.url}}{{site.baseurl}}/dashboards/quickstart#adding-sample-data).
+Before you run the agent, make sure that you add the sample OpenSearch Dashboards `Sample eCommerce orders` dataset. To learn more, see [Adding sample data]({{site.url}}{{site.baseurl}}/dashboards/getting-started/data-setup/#add-sample-data).
 
 Then, run the agent by sending the following request:
 
@@ -101,3 +101,7 @@ The following table lists all tool parameters that are available when running th
 Parameter	| Type | Required/Optional | Description	
 :--- | :--- | :--- | :---
 `question` | String | Required | The natural language question to send to the LLM. 
+
+## Testing the tool
+
+You can run this tool either as part of an agent workflow or independently using the [Execute Tool API]({{site.url}}{{site.baseurl}}/ml-commons-plugin/api/execute-tool/). The Execute Tool API is useful for testing individual tools or performing standalone operations.

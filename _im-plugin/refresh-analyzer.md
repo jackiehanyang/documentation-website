@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Refresh search analyzer
-nav_order: 50
+nav_order: 35
 has_toc: false
 redirect_from: 
   - /query-dsl/analyzers/refresh-analyzer/
@@ -38,3 +38,11 @@ To work, the token filter must have an `updateable` flag of `true`:
   }
 }
 ```
+
+## Query parameters
+
+The following table lists the supported query parameters.
+
+Parameter | Data type | Description
+:--- | :--- | :---
+`reload_cached_resources` | Boolean | When set to `true`, reloads cached resources from disk without rebuilding caches for token filters that load files from disk (for example, the [`hunspell`]({{site.url}}{{site.baseurl}}/analyzers/token-filters/hunspell/) filter's dictionary files). When `false` (the default), analyzer factories are rebuilt but cached resources are reused.

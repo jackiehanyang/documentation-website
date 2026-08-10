@@ -1,75 +1,80 @@
 ---
 layout: default
 title: Migration Assistant for OpenSearch
-nav_order: 1
-has_children: false
-nav_exclude: true
+nav_order: 30
+has_children: true
 has_toc: false
+nav_exclude: true
 permalink: /migration-assistant/
 redirect_from:
+  - /migration-assistant/overview/
   - /migration-assistant/index/
-  - /upgrade-to/index/
-  - /upgrade-to/
+
+items:
+  - heading: "Is Migration Assistant right for you?"
+    description: "Decide whether Migration Assistant fits your migration path, downtime target, and operational model."
+    link: "/migration-assistant/is-migration-assistant-right-for-you/"
+  - heading: "Why Kubernetes and EKS?"
+    description: "The philosophy behind the new Migration Assistant and why Amazon EKS is the recommended AWS production path."
+    link: "/migration-assistant/why-kubernetes-and-eks/"
+  - heading: "Choose your deployment"
+    description: "Compare generic Kubernetes with Amazon EKS and decide which path fits your environment."
+    link: "/migration-assistant/migration-phases/deploy/"
+  - heading: "How migrations run"
+    description: "The workflow-driven lifecycle for backfill, Capture and Replay, validation, and cutover."
+    link: "/migration-assistant/migration-phases/"
+  - heading: "Run a migration"
+    description: "Use the Workflow CLI as the primary interface for configuring, submitting, and managing migrations."
+    link: "/migration-assistant/workflow-cli/"
+  - heading: "Use a playbook"
+    description: "Follow path-specific guides for common source and target combinations."
+    link: "/migration-assistant/playbooks/"
 ---
 
-# Migration Assistant for OpenSearch
+# ![Migration Assistant icon]({{site.url}}{{site.baseurl}}/images/icons/MigrationUpgrade_Color_Icon.svg){: .heading-icon} Migration Assistant for OpenSearch
 
-Migration Assistant for OpenSearch aids you in successfully performing an end-to-end, zero-downtime migration to OpenSearch from other search providers. It helps with the following scenarios:
+Migration Assistant is the Kubernetes-native migration platform for moving data, metadata, and live traffic from Elasticsearch, OpenSearch, and Apache Solr to OpenSearch.
 
-- **Metadata migration**: Migrating cluster metadata, such as index settings, aliases, and templates.
-- **Backfill migration**: Migrating existing or historical data from a source to a target cluster.
-- **Live traffic migration**: Replicating live ongoing traffic from a source to a target cluster.
-- **Comparative tooling**: Comparing the performance and behaviors of an existing cluster with a prospective new one.
+The Migration Assistant operating model is:
 
-This user guide focuses on conducting a comprehensive migration involving both existing and live data with zero downtime and the option to back out of a migration.
+- You define the migration in workflow configuration.
+- Migration Assistant runs the work on Kubernetes.
+- You use the Migration Console and Workflow CLI to submit, observe, approve, validate, and switch traffic to the target.
 
-It's crucial to note that migration strategies are not universally applicable. This guide provides a detailed methodology, based on certain assumptions detailed throughout, emphasizing the importance of robust engineering practices to ensure a successful migration.
-{: .tip }
+Migration Assistant runs on any Kubernetes distribution, but **Amazon EKS is the recommended production path on AWS** because it supplies the AWS identity, image, snapshot, and observability integrations that you typically need for a real migration.
 
-## Key components 
+If you used the older ECS/CDK-based Migration Assistant, see [Changes from the classic version](#changes-from-the-classic-version).
 
-The following are the key components of Migration Assistant.
+## Key capabilities
 
-### Elasticsearch/OpenSearch source
+Migration Assistant provides the following:
 
-Your source cluster in this solution operates on Elasticsearch or OpenSearch, hosted on EC2 instances or similar computing environments. A proxy is set up to interact with this source cluster, either positioned in front of or directly on the coordinating nodes of the cluster.
+- **One migration model** for snapshot-based migrations with planned downtime (called *backfill-only*) and zero-downtime migrations that use live-traffic Capture and Replay.
+- **Repeatable workflows** instead of one-time infrastructure choreography.
+- **Low source-cluster impact** through snapshot-based backfill with [Reindex-from-Snapshot (RFS)]({{site.url}}{{site.baseurl}}/migration-assistant/migration-phases/backfill/).
+- **Operational checkpoints** through approval gates, logs, status views, and validation steps.
+- **A practical AWS path** on EKS that reduces surrounding platform work.
 
-### Migration management console
+## Getting started
 
-A console that provides a migration-specific CLI and offers a variety of tools to streamline the migration process.  Everything necessary for completing a migration, other than cleaning up the migration resources, can be done via this Console.
+1. [Decide whether Migration Assistant is the right tool]({{site.url}}{{site.baseurl}}/migration-assistant/is-migration-assistant-right-for-you/).
+2. [Understand why the product moved to Kubernetes and why EKS is recommended on AWS]({{site.url}}{{site.baseurl}}/migration-assistant/why-kubernetes-and-eks/).
+3. [Assess your migration]({{site.url}}{{site.baseurl}}/migration-assistant/migration-phases/assessment/). Review breaking changes, downtime constraints, and required transformations.
+4. [Choose your deployment path]({{site.url}}{{site.baseurl}}/migration-assistant/migration-phases/deploy/).
+5. [Learn how a migration runs]({{site.url}}{{site.baseurl}}/migration-assistant/migration-phases/).
+6. [Use the Workflow CLI]({{site.url}}{{site.baseurl}}/migration-assistant/workflow-cli/) and then [pick a playbook]({{site.url}}{{site.baseurl}}/migration-assistant/playbooks/).
 
-### Traffic capture proxy
+Looking for the older ECS deployment model? See the [classic Migration Assistant documentation]({{site.url}}{{site.baseurl}}/classic/migration-assistant/).
+{: .note }
 
-This component is designed for HTTP RESTful traffic. It forwards traffic to the source cluster and also splits and channels this traffic to a stream processing service for later playback.
+## Changes from the classic version
 
-### Traffic Replayer
+If you previously used the ECS/CDK-based Migration Assistant, the operating model is different in this version:
 
-Acting as a traffic simulation tool, the Traffic Replayer replays recorded request traffic to a target cluster, mirroring source traffic patterns. It links original requests and their responses to those directed at the target cluster, facilitating comparative analysis.
+- The migration is defined in workflow configuration instead of long-lived infrastructure stacks.
+- Migration Assistant runs the work on Kubernetes (Amazon EKS is the recommended AWS path).
+- Day-to-day operations happen through the Migration Console and Workflow CLI rather than through custom scripts.
 
-### Metadata migration tool
+For background on the rationale, see [Why Kubernetes and EKS]({{site.url}}{{site.baseurl}}/migration-assistant/why-kubernetes-and-eks/).
 
-The Metadata migration tool integrated into the Migration CLI can be used independently to migrate cluster metadata, including index mappings, index configuration settings, templates, component templates, and aliases.
-
-### Reindex-from-Snapshot
-
-`Reindex-from-Snapshot` (RFS) reindexes data from an existing snapshot. Workers on Amazon Elastic Container Service (Amazon ECS) coordinate the migration of documents from an existing snapshot, reindexing the documents in parallel to a target cluster.
-
-### Target cluster
-
-The destination cluster for migration or comparison in an A/B test.
-
-## Architecture overview
-
-The Migration Assistant architecture is based on the use of an AWS Cloud infrastructure, but most tools are designed to be cloud independent. A local containerized version of this solution is also available.
-
-The design deployed in AWS is as follows: 
-
-![Migration architecture overview]({{site.url}}{{site.baseurl}}/images/migrations/migrations-architecture-overview.png)
-
-1. Client traffic is directed to the existing cluster.
-2. An Application Load Balancer with capture proxies relays traffic to a source while replicating data to Amazon Managed Streaming for Apache Kafka (Amazon MSK).
-3. Using the migration console, you can initiate metadata migration to establish indexes, templates, component templates, and aliases on the target cluster.
-4. With continuous traffic capture in place, you can use a `reindex-from-snapshot` process to capture data from your current index.
-4. Once `Reindex-from-Snapshot` is complete, captured traffic is replayed from Amazon MSK to the target cluster by the traffic replayer.
-5. Performance and behavior of traffic sent to the source and target clusters are compared by reviewing logs and metrics.
-6. After confirming that the target cluster's functionality meets expectations, clients are redirected to the new target.
+{% include list.html list_items=page.items %}

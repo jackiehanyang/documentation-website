@@ -19,7 +19,7 @@ When the cluster manager rejects a task, the node performs retries with exponent
 
 ## Setting throttling limits
 
-You can set throttling limits by specifying them in the `cluster_manager.throttling.thresholds` object and updating the [OpenSearch cluster settings]({{site.url}}{{site.baseurl}}/api-reference/cluster-settings). The setting is dynamic, so you can change the behavior of this feature without restarting your cluster.
+You can set throttling limits by specifying them in the `cluster_manager.throttling.thresholds` object and updating the [OpenSearch cluster settings]({{site.url}}{{site.baseurl}}/api-reference/cluster-settings/). The setting is dynamic, so you can change the behavior of this feature without restarting your cluster.
 
 By default, throttling is enabled for all task types. To disable throttling for a specific task type, set its threshold value to `-1`.
 {: .note}
@@ -43,7 +43,7 @@ The `cluster_manager.throttling.thresholds` object contains the following fields
 
 Field name | Description
 :--- | :---
-`<task-type>` | The task type. For a list of valid task types, see [supported task types and default thresholds](#supported-task-types-and-default-thresholds).
+`task-type` | The task type. For a list of valid task types, see [supported task types and default thresholds](#supported-task-types-and-default-thresholds).
 `<task-type>.value` | The maximum number of tasks of the `task-type` type in the cluster manager's pending task queue. <br> For default thresholds for each task type, see [Supported task types and default thresholds](#supported-task-types-and-default-thresholds).
 
 ## Supported task types and default thresholds

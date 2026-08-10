@@ -2,7 +2,7 @@
 layout: default
 title: Supported algorithms 
 has_children: false
-nav_order: 125
+nav_order: 100
 ---
 
 # Supported algorithms
@@ -314,7 +314,7 @@ Parameter | Type   | Description | Default value
 `aggregations` | List  | The fields and aggregation for values. | N/A
 `time_field_name` | String | The timestamp field. | `null`
 `start_time` | Long | The beginning of the time range. | `0` 
-`end_time` | Long | The end of the time range. | 0``
+`end_time` | Long | The end of the time range. | `0`
 `min_time_interval` | Long | The minimum time interval/scale for analysis. | `0`
 `num_outputs` | Integer | The maximum number of values from localization/slicing. | `0`
 `filter_query` | Long | (Optional) Reduces the collection of data for analysis. | N/A
@@ -673,7 +673,7 @@ To use the metrics correlation algorithm, include the following parameters.
 
 | Parameter | Type | Description | Default value |
 |---|---|---|---|
-metrics | Array | A list of metrics within the time series that can be correlated to anomalous behavior | N/A
+`metrics` | Array | A list of metrics within the time series that can be correlated to anomalous behavior | N/A
 
 ### Input
 

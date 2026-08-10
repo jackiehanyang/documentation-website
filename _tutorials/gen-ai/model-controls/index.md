@@ -4,7 +4,7 @@ title: Model guardrails
 parent: Generative AI
 has_children: true
 has_toc: false
-nav_order: 40
+nav_order: 50
 redirect_from:
   - /vector-search/tutorials/model-controls/
   - /tutorials/gen-ai/model-controls/
@@ -19,6 +19,6 @@ model_controls:
 
 # Model guardrails tutorials
 
-The following tutorials show you how to implement model guardrails.
+Learn how to add guardrails to ML models deployed in OpenSearch to control input validation, output filtering, and content safety.
 
 {% include cards.html cards=page.model_controls %}

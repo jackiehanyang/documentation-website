@@ -170,7 +170,7 @@ OpenSearch returns a task ID for the register task and a model ID for the regist
 }
 ```
 
-To verify that the registration is complete, call the Tasks API:
+To verify that the registration is complete, call the [Get ML Task API]({{site.url}}{{site.baseurl}}/ml-commons-plugin/api/tasks-apis/get-task/):
 
 ```json
 GET /_plugins/_ml/tasks/gXDIbI0BfUsSoeNT_jAb
@@ -238,7 +238,7 @@ For information about the processor fields, see [Retrieval-augmented generation 
 
 ### Step 4: Ingest RAG data into an index
 
-RAG augments the LLM's knowledge with some supplementary data. 
+RAG augments the LLM knowledge with some supplementary data. 
 
 First, create an index in which to store this data and set the default search pipeline to the pipeline created in the previous step:
 

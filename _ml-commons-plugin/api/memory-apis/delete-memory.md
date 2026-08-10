@@ -6,7 +6,7 @@ grand_parent: ML Commons APIs
 nav_order: 30
 ---
 
-# Delete a memory
+# Delete Memory API
 **Introduced 2.12**
 {: .label .label-purple }
 
@@ -18,7 +18,7 @@ When the Security plugin is enabled, all memories exist in a `private` security 
 ## Endpoints
 
 ```json
-DELETE /_plugins/_ml/memory/<memory_id>
+DELETE /_plugins/_ml/memory/{memory_id}
 ```
 
 ## Path parameters
@@ -29,17 +29,37 @@ Parameter | Data type | Description
 :--- | :--- | :---
 `memory_id` | String | The ID of the memory to be deleted. 
 
-#### Example request
+## Example request
 
 ```json
 DELETE /_plugins/_ml/memory/MzcIJX8BA7mbufL6DOwl
 ```
 {% include copy-curl.html %}
 
-#### Example response
+## Example response
 
 ```json
 {
   "success": true
+}
+```
+
+## Error responses
+
+If you attempt to delete a memory that doesn't exist, OpenSearch returns a 404 error:
+
+```json
+{
+  "error": {
+    "root_cause": [
+      {
+        "type": "resource_not_found_exception",
+        "reason": "Memory [MzcIJX8BA7mbufL6DOwl] not found"
+      }
+    ],
+    "type": "resource_not_found_exception",
+    "reason": "Memory [MzcIJX8BA7mbufL6DOwl] not found"
+  },
+  "status": 404
 }
 ```

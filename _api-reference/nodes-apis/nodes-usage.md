@@ -5,7 +5,7 @@ parent: Nodes APIs
 nav_order: 40
 ---
 
-# Nodes usage
+# Nodes Usage API
 **Introduced 1.0**
 {: .label .label-purple }
 
@@ -15,9 +15,9 @@ The nodes usage endpoint returns low-level information about REST action usage o
 
 ```json
 GET _nodes/usage
-GET _nodes/<nodeId>/usage
-GET _nodes/usage/<metric>
-GET _nodes/<nodeId>/usage/<metric>
+GET _nodes/{node_id}/usage
+GET _nodes/usage/{metric}
+GET _nodes/{node_id}/usage/{metric}
 ```
 
 ## Path parameters
@@ -26,8 +26,8 @@ You can include the following optional path parameters in your request.
 
 Parameter | Type | Description
 :--- | :--- | :---
-nodeId | String | A comma-separated list of nodeIds used to filter results. Supports [node filters]({{site.url}}{{site.baseurl}}/api-reference/nodes-apis/index/#node-filters). Defaults to `_all`.
-metric | String | The metrics that will be included in the response. You can set the string to either `_all` or `rest_actions`. `rest_actions` returns the total number of times an action has been called on the node. `_all` returns all stats from the node. Defaults to `_all`.
+`node_id` | String | A comma-separated list of node IDs used to filter results. Supports [node filters]({{site.url}}{{site.baseurl}}/api-reference/nodes-apis/index/#node-filters). Defaults to `_all`.
+`metric` | String | The metrics that will be included in the response. You can set the string to either `_all` or `rest_actions`. `rest_actions` returns the total number of times an action has been called on the node. `_all` returns all stats from the node. Defaults to `_all`.
 
 ## Query parameters
 
@@ -35,17 +35,34 @@ You can include the following optional query parameters in your request.
 
 Parameter | Type | Description
 :--- | :---| :---
-timeout | Time | Sets the time limit for a response from the node. Default is `30s`.
-cluster_manager_timeout | Time | Sets the time limit for a response from the cluster manager. Default is `30s`.
+`timeout` | Time | Sets the time limit for a response from the node. Default is `30s`.
+`cluster_manager_timeout` | Time | Sets the time limit for a response from the cluster manager. Default is `30s`.
 
 ## Example request
 
 The following request returns usage details for all nodes:
 
-```
-GET _nodes/usage
-```
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: GET /_nodes/usage
+-->
+{% capture step1_rest %}
+GET /_nodes/usage
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.nodes.info(
+  node_id_or_metric = "usage"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 

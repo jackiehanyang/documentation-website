@@ -5,35 +5,35 @@ parent: Snapshot APIs
 nav_order: 5
 ---
 
-# Create snapshot
+# Create Snapshot API
 **Introduced 1.0**
 {: .label .label-purple }
 
 Creates a snapshot within an existing repository.
 
-* To learn more about snapshots, see [Snapshots]({{site.url}}{{site.baseurl}}/opensearch/snapshots/index).
+* To learn more about snapshots, see [Snapshots]({{site.url}}{{site.baseurl}}/opensearch/snapshots/index/).
 
-* To view a list of your repositories, see [Get snapshot repository]({{site.url}}{{site.baseurl}}/api-reference/snapshots/get-snapshot-repository).
+* To view a list of your repositories, see [Get snapshot repository]({{site.url}}{{site.baseurl}}/api-reference/snapshots/get-snapshot-repository/).
 
 ## Endpoints
 
 ```json
-PUT /_snapshot/<repository>/<snapshot>
-POST /_snapshot/<repository>/<snapshot>
+PUT /_snapshot/{repository}/{snapshot}
+POST /_snapshot/{repository}/{snapshot}
 ```
 
 ## Path parameters
 
 Parameter | Data type | Description
 :--- | :--- | :---
-repository | String | Repository name to store the snapshot. |
-snapshot | String | Name of Snapshot to create. |
+`repository` | String | Repository name to store the snapshot. |
+`snapshot` | String | Name of Snapshot to create. |
 
 ## Query parameters
 
 Parameter | Data type | Description
 :--- | :--- | :---
-wait_for_completion | Boolean |  Whether to wait for snapshot creation to complete before continuing. If you include this parameter, the snapshot definition is returned after completion. |
+`wait_for_completion` | Boolean |  Whether to wait for snapshot creation to complete before continuing. If you include this parameter, the snapshot definition is returned after completion. |
 
 ## Request body fields
 
@@ -41,42 +41,96 @@ The request body is optional.
 
 Field | Data type | Description
 :--- | :--- | :---
-`indices` | String | The indices you want to include in the snapshot. You can use `,` to create a list of indices, `*` to specify an index pattern, and `-` to exclude certain indices. Don't put spaces between items. Default is all indices.
+`indices` | String | The indexes you want to include in the snapshot. You can use `,` to create a list of indexes, `*` to specify an index pattern, and `-` to exclude certain indexes. Don't put spaces between items. Default is all indexes.
 `ignore_unavailable` | Boolean | If an index from the `indices` list doesn't exist, whether to ignore it rather than fail the snapshot. Default is `false`.
 `include_global_state` | Boolean | Whether to include cluster state in the snapshot. Default is `true`.
 `partial` | Boolean | Whether to allow partial snapshots. Default is `false`, which fails the entire snapshot if one or more shards fails to stor
 
 ## Example requests
 
+The following examples demonstrate how to create a snapshot.
+
 ### Request without a body
 
 The following request creates a snapshot called `my-first-snapshot` in an S3 repository called `my-s3-repository`. A request body is not included because it is optional.
 
-```json
-POST _snapshot/my-s3-repository/my-first-snapshot
-```
-{% include copy-curl.html %}
+<!-- spec_insert_start
+component: example_code
+rest: POST /_snapshot/my-s3-repository/my-first-snapshot
+-->
+{% capture step1_rest %}
+POST /_snapshot/my-s3-repository/my-first-snapshot
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.snapshot.create(
+  repository = "my-s3-repository",
+  snapshot = "my-first-snapshot",
+  body = { "Insert body here" }
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ### Request with a body
 
-You can also add a request body to include or exclude certain indices or specify other settings:
+You can also add a request body to include or exclude certain indexes or specify other settings:
 
-```json
-PUT _snapshot/my-s3-repository/2
+<!-- spec_insert_start
+component: example_code
+rest: PUT /_snapshot/my-s3-repository/2
+body: |
 {
   "indices": "opensearch-dashboards*,my-index*,-my-index-2016",
   "ignore_unavailable": true,
   "include_global_state": false,
   "partial": false
 }
-```
-{% include copy-curl.html %}
+-->
+{% capture step1_rest %}
+PUT /_snapshot/my-s3-repository/2
+{
+  "indices": "opensearch-dashboards*,my-index*,-my-index-2016",
+  "ignore_unavailable": true,
+  "include_global_state": false,
+  "partial": false
+}
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.snapshot.create(
+  repository = "my-s3-repository",
+  snapshot = "2",
+  body =   {
+    "indices": "opensearch-dashboards*,my-index*,-my-index-2016",
+    "ignore_unavailable": true,
+    "include_global_state": false,
+    "partial": false
+  }
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example responses
 
 Upon success, the response content depends on whether you include the `wait_for_completion` query parameter.
 
+<!-- vale off -->
 ##### `wait_for_completion` not included
+<!-- vale on -->
 
 ```json
 {
@@ -84,10 +138,12 @@ Upon success, the response content depends on whether you include the `wait_for_
 }
 ```
 
-To verify that the snapshot was created, use the [Get snapshot]({{site.url}}{{site.baseurl}}/api-reference/snapshots/get-snapshot) API, passing the snapshot name as the `snapshot` path parameter.
+To verify that the snapshot was created, use the [Get snapshot]({{site.url}}{{site.baseurl}}/api-reference/snapshots/get-snapshot/) API, passing the snapshot name as the `snapshot` path parameter.
 {: .note}
 
+<!-- vale off -->
 ### `wait_for_completion` included
+<!-- vale on -->
 
 The snapshot definition is returned.
 
@@ -129,20 +185,24 @@ The snapshot definition is returned.
 
 | Field | Data type | Description |
 | :--- | :--- | :--- | 
-| snapshot | string | Snapshot name. |
-| uuid | string | Snapshot's universally unique identifier (UUID). |
-| version_id | int | Build ID of the Open Search version that created the snapshot. |
-| version | float | Open Search version that created the snapshot. |
-| indices | array | Indices in the snapshot. |
-| data_streams | array | Data streams in the snapshot. |
-| include_global_state | boolean | Whether the current cluster state is included in the snapshot. |
-| start_time | string | Date/time when the snapshot creation process began. |
-| start_time_in_millis | long | Time (in milliseconds) when the snapshot creation process began. |
-| end_time | string | Date/time when the snapshot creation process ended. |
-| end_time_in_millis | long | Time (in milliseconds) when the snapshot creation process ended. |
-| duration_in_millis | long | Total time (in milliseconds) that the snapshot creation process lasted. |
-| failures | array | Failures, if any, that occured during snapshot creation. |
-| shards | object | Total number of shards created along with number of successful and failed shards. |
-| state | string | Snapshot status. Possible values: `IN_PROGRESS`, `SUCCESS`, `FAILED`, `PARTIAL`. |
-| remote_store_index_shallow_copy | Boolean | Whether the snapshots of the remote store indexes is captured as a shallow copy. Default is `false`. |
-| pinned_timestamp | long      | A timestamp (in milliseconds) pinned by the snapshot for the implicit locking of remote store files referenced by the snapshot. |
+| `snapshot` | String | Snapshot name. |
+| `uuid` | String | Snapshot's universally unique identifier (UUID). |
+| `version_id` | Integer | Build ID of the Open Search version that created the snapshot. |
+| `version` | Float | Open Search version that created the snapshot. |
+| `indices` | Array | Indexes in the snapshot. |
+| `data_streams` | Array | Data streams in the snapshot. |
+| `include_global_state` | Boolean | Whether the current cluster state is included in the snapshot. |
+| `start_time` | String | Date/time when the snapshot creation process began. |
+| `start_time_in_millis` | Long | Time (in milliseconds) when the snapshot creation process began. |
+| `end_time` | String | Date/time when the snapshot creation process ended. |
+| `end_time_in_millis` | Long | Time (in milliseconds) when the snapshot creation process ended. |
+| `duration_in_millis` | Long | Total time (in milliseconds) that the snapshot creation process lasted. |
+| `failures` | Array | Failures, if any, that occurred during snapshot creation. |
+| `shards` | Object | Total number of shards created along with number of successful and failed shards. |
+| `state` | String | Snapshot status. Possible values: `IN_PROGRESS`, `SUCCESS`, `FAILED`, `PARTIAL`. |
+| `remote_store_index_shallow_copy` | Boolean | Whether the snapshots of the remote store indexes is captured as a shallow copy. Default is `false`. |
+| `pinned_timestamp` | Long | A timestamp (in milliseconds) pinned by the snapshot for the implicit locking of remote store files referenced by the snapshot. |
+
+## Required permissions
+
+If you use the Security plugin, make sure you have the appropriate permissions: `cluster:admin/snapshot/create`.

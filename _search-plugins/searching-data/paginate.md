@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Paginate results
-parent: Search options
+parent: Customizing search results
 nav_order: 10
 redirect_from:
   - /opensearch/search/paginate/
@@ -136,7 +136,7 @@ Close the search context when you’re done scrolling, because it continues to c
 DELETE _search/scroll/DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAAAAcWdmpUZDhnRFBUcWFtV21nMmFwUGJEQQ==
 ```
 
-#### Sample Response
+#### Example response
 
 ```json
 {
@@ -159,7 +159,7 @@ Because open search contexts consume a lot of memory, we suggest you don't use t
 
 The `search_after` parameter provides a live cursor that uses the previous page's results to obtain the next page's results. It is similar to the `scroll` operation in that it is meant to scroll many queries in parallel. You can use `search_after` only when sorting is applied.
 
-For example, the following query sorts all lines from the play "Hamlet" by the speech number and then the ID and retrieves the first three results:
+For example, the following query sorts all lines from the play "Hamlet" by the speech number and then the line ID and retrieves the first three results:
 
 ```json
 GET shakespeare/_search
@@ -172,7 +172,7 @@ GET shakespeare/_search
   },
   "sort": [
     { "speech_number": "asc" },
-    { "_id": "asc" } 
+    { "line_id": "asc" }
   ]
 }
 ```
@@ -211,7 +211,7 @@ The response contains the `sort` array of values for each document:
         },
         "sort" : [
           1,
-          "32435"
+          32436
         ]
       },
       {
@@ -229,7 +229,7 @@ The response contains the `sort` array of values for each document:
         },
         "sort" : [
           1,
-          "32634"
+          32635
         ]
       },
       {
@@ -247,7 +247,7 @@ The response contains the `sort` array of values for each document:
         },
         "sort" : [
           1,
-          "32635"
+          32636
         ]
       }
     ]
@@ -266,10 +266,10 @@ GET shakespeare/_search
       "play_name": "Hamlet"
     }
   },
-  "search_after": [ 1, "32635"],
+  "search_after": [ 1, 32636],
   "sort": [
     { "speech_number": "asc" },
-    { "_id": "asc" } 
+    { "line_id": "asc" }
   ]
 }
 ```
@@ -278,4 +278,4 @@ Unlike the `scroll` operation, the `search_after` parameter is stateless, so the
 
 ## Point in Time with `search_after`
 
-Point in Time (PIT) with `search_after` is the preferred pagination method in OpenSearch, especially for deep pagination. It bypasses the limitations of all other methods because it operates on a dataset that is frozen in time, it is not bound to a query, and it supports consistent pagination going forward and backward. To learn more, see [Point in Time]({{site.url}}{{site.baseurl}}/opensearch/point-in-time).
+Point in Time (PIT) with `search_after` is the preferred pagination method in OpenSearch, especially for deep pagination. It bypasses the limitations of all other methods because it operates on a dataset that is frozen in time, it is not bound to a query, and it supports consistent pagination going forward and backward. To learn more, see [Point in Time]({{site.url}}{{site.baseurl}}/opensearch/point-in-time/).

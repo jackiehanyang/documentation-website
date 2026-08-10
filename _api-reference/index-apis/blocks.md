@@ -1,11 +1,12 @@
 ---
 layout: default
 title: Blocks
-parent: Index APIs
-nav_order: 7
+parent: Index blocks and allocation
+grand_parent: Index APIs
+nav_order: 10
 ---
 
-# Blocks
+# Blocks API
 **Introduced 1.0**
 {: .label .label-purple }
 
@@ -15,7 +16,7 @@ For example, adding a `write` block through the API ensures that all index shard
 ## Endpoints
 
 ```json
-PUT /<index>/_block/<block>
+PUT /{index}/_block/{block}
 ```
 
 ## Path parameters
@@ -23,7 +24,7 @@ PUT /<index>/_block/<block>
 | Parameter | Data type | Description |
 :--- | :--- | :---
 | `index` | String | A comma-delimited list of index names. Wildcard expressions (`*`) are supported. To target all data streams and indexes in a cluster, use `_all` or `*`. Optional. |
-| `<block>` | String | Specifies the type of block to apply to the index. Valid values are: <br> `metadata`: Disables all metadata changes, such as closing the index. <br> `read`: Disables any read operations. <br> `read_only`: Disables any write operations and metadata changes. <br> `write`: Disables write operations. However, metadata changes are still allowed. |
+| `<block>` | String | Specifies the type of block to apply to the index. Valid values are: <br> - `metadata`: Blocks metadata changes, such as closing the index. <br> - `read`: Blocks read operations. <br> - `read_only`: Blocks write operations and metadata changes. <br> - `write`: Blocks write operations but allows metadata changes. <br> - `search_only`: Blocks indexing and write operations while allowing read-only access through search replicas. <br> OpenSearch automatically manages this block through the Scale API as part of the reader-writer separation mechanism. Therefore, do not set this parameter manually. |
 
 ## Query parameters
 
@@ -34,16 +35,57 @@ The following table lists the available query parameters. All query parameters a
 | `ignore_unavailable` | Boolean | When `false`, the request returns an error when it targets a missing or closed index. Default is `false`.
 | `allow_no_indices` | Boolean | When `false`, the Refresh Index API returns an error when a wildcard expression, index alias, or `_all` targets only closed or missing indexes, even when the request is made against open indexes. Default is `true`. |
 | `expand_wildcards` | String | The type of index that the wildcard patterns can match. If the request targets data streams, this argument determines whether the wildcard expressions match any hidden data streams. Supports comma-separated values, such as `open,hidden`. Valid values are `all`, `open`, `closed`, `hidden`, and `none`. |
-`cluster_manager_timeout` | Time | The amount of time to wait for a connection to the cluster manager node. Default is `30s`.
-`timeout` | Time | The amount of time to wait for the request to return. Default is `30s`. |
+`cluster_manager_timeout` | `Time` | The amount of time to wait for a connection to the cluster manager node. Default is `30s`.
+`timeout` | `Time` | The amount of time to wait for the request to return. Default is `30s`. |
 
 ## Example request
+<!-- spec_insert_start
+component: example_code
+rest: PUT /test-index/_block/write
+-->
+{% capture step1_rest %}
+PUT /test-index/_block/write
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.indices.add_block(
+  block = "write",
+  index = "test-index"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 The following example request disables any `write` operations made to the test index:
 
-```json
+<!-- spec_insert_start
+component: example_code
+rest: PUT /test-index/_block/write
+-->
+{% capture step1_rest %}
 PUT /test-index/_block/write
-```
+{% endcapture %}
+
+{% capture step1_python %}
+
+
+response = client.indices.add_block(
+  block = "write",
+  index = "test-index"
+)
+
+{% endcapture %}
+
+{% include code-block.html
+    rest=step1_rest
+    python=step1_python %}
+<!-- spec_insert_end -->
 
 ## Example response
 

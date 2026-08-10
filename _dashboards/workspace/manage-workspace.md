@@ -1,12 +1,12 @@
 ---
 layout: default
 title: Manage workspaces
-parent: Workspace for OpenSearch Dashboards
+parent: Workspaces
 nav_order: 2
 ---
 
 # Manage workspaces
-Introduced 2.18
+**Introduced 2.18**
 {: .label .label-purple }
 
 You can access and modify the workspace details, including name, description, use case, and icon color, on the **Workspace details** page. 
@@ -14,7 +14,7 @@ You can access and modify the workspace details, including name, description, us
 To access and modify your workspace details, follow these steps: 
 
 1. Open OpenSearch Dashboards and navigate to **My Workspaces**.
-2. Choose the desired workspace  and then select the **Edit** button to make changes
+2. Choose the desired workspace and then select the **Edit** button to make changes
 3. Select the **Save** button to confirm changes or the **Discard changes** button to cancel modifications.
 
 ## Workspace update permissions
@@ -33,7 +33,7 @@ Original use case | Target use case |
 :---: | :---:
 Analytics  | Cannot be changed to any other use case
 Search  | Analytics
-Security analytics  | Analytics
+Security Analytics  | Analytics
 Observability  | Analytics
 Essentials  |    Analytics Search<br> Security Analytics<br> Observability
 
@@ -99,8 +99,8 @@ Deleting a workspace permanently erases all its assets (except data sources) and
 
 To delete a workspace, follow these steps:
 
-1. From the **Workspace details** page, select the {::nomarkdown}<img src="{{site.url}}{{site.baseurl}}/images/dashboards/trash-can-icon.png" class="inline-icon" alt="trash can icon"/>{:/} icon in the upper-right corner to delete the current workspace.
-2. Alternatively, from the workspace list page, select the {::nomarkdown}<img src="{{site.url}}{{site.baseurl}}/images/ellipsis-icon.png" class="inline-icon" alt="ellipsis icon"/>{:/} icon and select **Delete**. Optionally, select multiple workspaces for bulk deletion.
+1. From the **Workspace details** page, select the {::nomarkdown}<img src="{{site.url}}{{site.baseurl}}/images/dashboards/trash-can-icon.png" class="inline-icon" alt="trash can icon"/>{:/} (trash can) icon in the upper-right corner to delete the current workspace.
+2. Alternatively, from the workspace list page, select the {::nomarkdown}<img src="{{site.url}}{{site.baseurl}}/images/ellipsis-icon.png" class="inline-icon" alt="ellipsis icon"/>{:/} (ellipsis) icon and select **Delete**. Optionally, select multiple workspaces for bulk deletion.
 
 ## Navigating the workspaces list
 

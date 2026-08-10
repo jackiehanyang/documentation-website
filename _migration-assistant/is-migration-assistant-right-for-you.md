@@ -1,98 +1,148 @@
 ---
 layout: default
 title: Is Migration Assistant right for you?
-nav_order: 5
+nav_order: 10
+permalink: /migration-assistant/is-migration-assistant-right-for-you/
+redirect_from:
+  - /migration-assistant/overview/is-migration-assistant-right-for-you/
+  - /migration-assistant/migration-paths/
 ---
 
 # Is Migration Assistant right for you?
+Whether Migration Assistant is right for you depends on your migration path, downtime target, and how much platform work you want to own yourself.
 
-Before deciding if Migration Assistant is right for you, it's important to assess your specific needs and understand the available tools for performing an upgrade or migration.
+Migration Assistant is designed for teams that want a **workflow-driven migration platform** rather than a single-use upgrade procedure. It is especially useful when:
 
-Migration Assistant addresses gaps found in other migration solutions, but in some cases, alternative tools may be a better fit.
+- You need to migrate across one or more major versions in a single step.
+- You want to validate the target before cutover.
+- You need a repeatable backfill process with retries and progress tracking.
+- You want a zero-downtime option through Capture and Replay.
 
-For instance, if you need to upgrade more than one major version, such as moving from Elasticsearch 6.8 to OpenSearch 2.19, Migration Assistant allows you to do this in a single hop. In contrast, other options like rolling upgrades or snapshot restore would require multiple steps because they cannot handle major version jumps without reindexing your data. Additionally, if you need to capture live traffic and perform a zero-downtime migration, Migration Assistant would be the right choice.
+Compared with traditional upgrade methods, Migration Assistant reduces the amount of manual coordination required between snapshot creation, metadata changes, backfill, validation, and cutover.
 
-There are also tools available for migrating cluster configuration, templates, and aliases, which can be helpful depending on the complexity of your setup. These tools streamline the migration process by preserving critical settings and custom configurations.
+## Migration concepts
 
-## Migration paths
+If you're new to Migration Assistant, you see a few terms repeatedly. The [migration phases overview]({{site.url}}{{site.baseurl}}/migration-assistant/migration-phases/) explains how they fit together. The shortest definitions are:
 
-{% comment %}First, collect all unique target versions{% endcomment %}
-{% assign all_targets = "" | split: "" %}
-{% for path in site.data.migration-assistant.valid_migrations.migration_paths %}
-  {% for target in path.targets %}
-    {% assign all_targets = all_targets | push: target %}
-  {% endfor %}
-{% endfor %}
-{% assign unique_targets = all_targets | uniq | sort %}
+- **Backfill** -- Bulk migration of historical documents from a snapshot. Used for both planned-downtime and zero-downtime migrations.
+- **Reindex-from-Snapshot (RFS)** -- The mechanism Migration Assistant uses for backfill. RFS reads shard data from a snapshot in object storage instead of querying the live source cluster, which is why it scales well and keeps load off the source.
+- **Capture and Replay** -- Zero-downtime path that captures live writes from the source through a proxy, buffers them in Kafka, and replays them against the target after backfill catches up.
+- **Migration phases** -- The ordered steps the workflow runs: assess, deploy, migrate metadata, backfill, optional Capture and Replay, validate, and switch traffic to the target.
 
-<table class="migration-matrix">
-  <thead>
-    <tr>
-      <th></th>
-      {% for target in unique_targets %}
-        <th>{{ target }}</th>
-      {% endfor %}
-    </tr>
-  </thead>
-  <tbody>
-    {% for path in site.data.migration-assistant.valid_migrations.migration_paths %}
-      <tr>
-        <th>{{ path.source }}</th>
-        {% for target_version in unique_targets %}
-          <td>
-            {% if path.targets contains target_version %}✓{% endif %}
-          </td>
-        {% endfor %}
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
+## Supported migration paths
 
-### Supported source and target platforms
+The following matrix shows which source versions can be directly migrated to which OpenSearch target versions.
 
-The following source and target platforms are supported:
+| Source version | OpenSearch 1.x | OpenSearch 2.x | OpenSearch 3.x |
+|:---------------|:--------------:|:--------------:|:--------------:|
+| Elasticsearch 1.x--2.x | Yes* | Yes* | Yes* |
+| Elasticsearch 5.x--7.x | Yes | Yes | Yes |
+| Elasticsearch 8.x | No | Yes | Yes |
+| OpenSearch 1.x--2.x | No | Yes | Yes |
+| Apache Solr 6.x--9.x | No | No | Yes* |
 
-* Self-managed (hosted by cloud provider or on-premises)
-* AWS OpenSearch
+\* Backfill only---Capture and Replay is not supported for these source versions.
 
-The tooling is designed to work with other cloud provider platforms, but it is not officially tested with these other platforms. If you would like to add support, please contact one of the maintainers on [GitHub](https://github.com/opensearch-project/opensearch-migrations/blob/main/MAINTAINERS.md).
+### Version-specific notes
 
-### Supported AWS Regions
+**Elasticsearch 6.x**: Elasticsearch 6.x generally uses single-type indexes, but upgraded or legacy datasets may still contain mappings that need type-handling decisions. Run metadata evaluation first; set `multiTypeBehavior` only if the evaluation reports multi-type mapping issues.
 
-Migration Assistant supports the following AWS Regions:
+**Elasticsearch 8.x**: Supported with compatibility support for post-fork features. Some 8.x-specific features may not have OpenSearch equivalents. Test metadata migration first.
 
-- US East (N. Virginia)
-- US East (Ohio)
-- US West (Oregon)
-- US West (N. California)
-- Europe (Frankfurt)
-- Europe (Ireland)
-- Europe (London)
-- Asia Pacific (Tokyo)
-- Asia Pacific (Singapore)
-- Asia Pacific (Sydney)
-- AWS GovCloud (US-East)[^1]
-- AWS GovCloud (US-West)[^1]
+**Apache Solr 6.x--9.x**: Only the backfill migration approach is supported (no Capture and Replay). Migration Assistant auto-detects whether the source is SolrCloud or standalone. For more information, see [Solr migration]({{site.url}}{{site.baseurl}}/migration-assistant/solr-migration/).
 
-[^1]: GovCloud does not support `reindex-from-snapshot` (RFS) shard sizes above 80 GiB. Ensure your shard sizes are within this limit when planning migrations with RFS in the listed GovCloud regions.
+## Supported platforms
 
-### Future migration paths
+The following table lists supported source and target platforms.
 
-To see the OpenSearch migrations roadmap, go to [OpenSearch Migrations - Roadmap](https://github.com/orgs/opensearch-project/projects/229/views/1).
+| Platform | Source | Target |
+|:---------|:-------|:-------|
+| Self-managed (on-premises) | Yes | Yes |
+| Amazon OpenSearch Service | Yes | Yes |
+| [Amazon OpenSearch Serverless]({{site.url}}{{site.baseurl}}/migration-assistant/amazon-opensearch-serverless/) | No | Yes |
+| Third-party cloud providers | Yes | Yes |
+| AWS EC2 | Yes | Yes |
+| Apache Solr (SolrCloud/Standalone) | Yes | No |
 
-## Supported components
+## Deployment options
 
-Before starting a migration, consider the scope of the components involved. The table below outlines the components that should be considered for migration, indicates their support by the Migration Assistant, and provides comments and recommendations.
+Migration Assistant runs on Kubernetes and can be deployed to:
 
-| Component | Supported | Recommendations   |
-| :--- |:--- | :--- |
-| **Documents**  | Yes  | Migrate existing data with `reindex-from-snapshot` (RFS) and live traffic with Capture and Replay. |
-| **Index settings**  | Yes   | Migrate with the metadata migration tool. |
-| **Index mappings**  | Yes   | Migrate with the metadata migration tool.  |
-| **Index templates**   | Yes   | Migrate with the metadata migration tool. |
-| **Component templates**  | Yes   | Migrate with the metadata migration tool.  |
-| **Aliases**   | Yes   | Migrate with the metadata migration tool.  |
-| **Index State Management (ISM) policies**  | Expected in 2025    | Manually migrate using an API.  |
-| **Elasticsearch Kibana dashboards** | Expected in 2025 | This tool is only needed when used to migrate Elasticsearch Kibana Dashboards to OpenSearch Dashboards. To start, export JSON files from Kibana and import them into OpenSearch Dashboards; before importing, use the [`dashboardsSanitizer`](https://github.com/opensearch-project/opensearch-migrations/tree/main/dashboardsSanitizer) tool on X-Pack visualizations like Canvas and Lens in Kibana Dashboards, as they may require recreation for compatibility with OpenSearch. |
-| **Security constructs**   | No   | Configure roles and permissions based on cloud provider recommendations. For example, if using AWS, leverage AWS Identity and Access Management (IAM) for enhanced security management. |
-| **Plugins**  | No  | Check plugin compatibility; some Elasticsearch plugins may not have direct OpenSearch equivalents. |
+- **Amazon EKS** for the recommended AWS production path with bootstrap automation, pod identity, image mirroring, snapshot helpers, and CloudWatch integration.
+- **Any Kubernetes cluster** when you already operate your own Kubernetes platform or you are evaluating locally.
+
+The migration engine is the same in both cases. The difference is how much of the surrounding platform is prepared for you.
+
+## Component support
+
+The following table lists the components that Migration Assistant can migrate automatically and those that require manual migration.
+
+| Component | Supported | Recommendation |
+|:----------|:----------|:---------------|
+| Documents | Yes | Migrate using RFS (backfill) or Capture and Replay |
+| Index settings | Yes | Migrated automatically |
+| Index mappings | Yes | Migrated automatically |
+| Index templates | Yes | Migrated automatically |
+| Component templates | Yes | Migrated automatically |
+| Aliases | Yes | Migrated automatically |
+| Data streams | No | Manually recreate on target |
+| ISM/ILM policies | No | Manually recreate on target |
+| Security configuration | No | Configure separately on target |
+| Kibana/Dashboards objects | No | Export/import using Dashboards UI |
+| Ingest pipelines | No | Manually recreate |
+| Cluster settings | No | Configure separately |
+
+## Checklist
+
+Use this checklist to determine whether Migration Assistant is the right fit:
+
+- Are you migrating across one or more major versions in a single step?
+- Do you need to maintain high service availability with minimal or zero downtime?
+- Do you need to validate a new OpenSearch cluster before switching over?
+- Are you looking for tooling to migrate index settings and other metadata?
+- Do you need a high-performance backfill solution with pause, resume, and checkpoint recovery?
+- Are you migrating from Apache Solr and need a snapshot-based backfill solution?
+
+Use Amazon EKS if you also want the deployment tooling to prepare the AWS environment around the migration.
+
+If you answered "yes" to most of these questions, Migration Assistant is likely the right solution.
+
+## Assumptions and limitations
+
+Migration Assistant has the following assumptions and limitations.
+
+### Reindex-from-Snapshot
+
+For Elasticsearch and OpenSearch sources:
+
+- The source cluster must have the [`repository-s3` plugin](https://opensearch.org/docs/latest/tuning-your-cluster/availability-and-recovery/snapshots/snapshot-restore/#amazon-s3) installed (for S3-based snapshots).
+- Shards of up to **80 GiB** are supported by default. This can be configured to support larger shards up to the limits of your EBS storage, except in AWS GovCloud regions which are limited to 80 GiB.
+- Snapshots of indexes using `zstd` or `zstd_no_dict` codecs (OpenSearch 2.9+) are not supported---reindex with `default` or `best_compression` first.
+
+For Apache Solr sources:
+
+- The source cluster must have the [Solr S3 backup plugin](https://solr.apache.org/guide/solr/latest/deployment-guide/backup-restore.html#s3backuprepository) installed and a backup repository configured in `solr.xml`. Solr writes the backup directly to S3, and Migration Assistant reads it from there. See the [Solr backfill guide]({{site.url}}{{site.baseurl}}/migration-assistant/solr-migration/solr-backfill-guide/) for the full prerequisite list.
+
+### Capture and Replay
+
+Capture and Replay has the following limitations:
+
+- Automatically generated document IDs are **not preserved** during replay---clients must explicitly provide document IDs to maintain consistency between source and target.
+- Live capture is recommended only for workloads with **< 4 TB/day** of incoming traffic.
+
+### Networking
+
+The following networking requirements apply:
+
+- The Kubernetes cluster must have network connectivity to both source and target clusters.
+- For EKS deployments, source and target cluster security groups must allow inbound traffic from the EKS cluster security group.
+
+## Pre-migration checklist
+
+Complete the following steps before starting a migration:
+
+- Verify source and target versions are in the preceding compatibility matrix.
+- Identify unsupported components and plan manual migration.
+- Plan index scope using index allow lists.
+- Test with a subset of 1--2 representative indexes first.
+- Verify whether multi-type indexes exist (ES 5.x and 6.x).

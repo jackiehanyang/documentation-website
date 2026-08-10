@@ -36,7 +36,7 @@ assistant.smartAnomalyDetector.enabled: true
 
 ### Step 2: Create an anomaly detector suggestion agent
 
-To orchestrate anomaly detector suggestions, create an anomaly detector suggestion [agent]({{site.url}}{{site.baseurl}}/ml-commons-plugin/agents-tools/index/#agents). To create an agent, send a `POST /_plugins/_flow_framework/workflow?provision=true` request and provide the agent template as a payload. For more information, see [Configuring OpenSearch Assistant]({{site.url}}{{site.baseurl}}/dashboards/dashboards-assistant/index/#configuring-opensearch-assistant).
+To orchestrate anomaly detector suggestions, create an anomaly detector suggestion [agent]({{site.url}}{{site.baseurl}}/ml-commons-plugin/agents-tools/agents/). To create an agent, send a `POST /_plugins/_flow_framework/workflow?provision=true` request and provide the agent template as a payload. For more information, see [Configuring OpenSearch Assistant]({{site.url}}{{site.baseurl}}/dashboards/dashboards-assistant/index/#configuring-opensearch-assistant).
 
 For sample agent templates, see [Flow Framework sample templates](https://github.com/opensearch-project/flow-framework/tree/2.x/sample-templates). Note the agent ID; you'll use it in the following step.
 
@@ -63,7 +63,7 @@ This example demonstrates a system index. In security-enabled domains, only supe
 You can verify that the agent was created successfully by calling the agent with an example payload:
 
 ```json
-POST /_plugins/_ml/agents/<SUGGEST_ANOMALY_DETECTOR_AGENT_ID>/_execute
+POST /_plugins/_ml/agents/{SUGGEST_ANOMALY_DETECTOR_AGENT_ID}/_execute
 {
   "parameters": {
     "index":"sample_weblogs_test"
@@ -82,8 +82,8 @@ To view anomaly detector suggestions in OpenSearch Dashboards, use the following
 
 1. Select the **AI assistant** dropdown list and then select **Suggest anomaly detector**, as shown in the following image.
 
-    <img width="420px" src="{{site.url}}{{site.baseurl}}/images/dashboards-assistant/suggestAD-button.png" alt="Click the Suggest anomaly detector action">
+    ![Click the Suggest anomaly detector action]({{site.url}}{{site.baseurl}}/images/dashboards-assistant/suggestAD-button.png){: width="420px" }
 
 1. Wait for the LLM to populate the **Suggest anomaly detector** fields that will be used to create an anomaly detector for the index pattern. Then select the **Create detector** button to create an anomaly detector, as shown in the following image.
 
-    <img width="800px" src="{{site.url}}{{site.baseurl}}/images/dashboards-assistant/suggestAD-UI.png" alt="Suggested anomaly detector">
+    ![Suggested anomaly detector]({{site.url}}{{site.baseurl}}/images/dashboards-assistant/suggestAD-UI.png){: width="800px" }

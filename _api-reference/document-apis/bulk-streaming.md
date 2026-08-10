@@ -7,7 +7,7 @@ redirect_from:
  - /opensearch/rest-api/document-apis/bulk/streaming/
 ---
 
-# Streaming bulk
+# Streaming Bulk API
 **Introduced 2.17.0**
 {: .label .label-purple }
 
@@ -23,7 +23,7 @@ The default HTTP transport method does not support streaming. You must install t
 
 ```json
 POST _bulk/stream
-POST <index>/_bulk/stream
+POST {index}/_bulk/stream
 ```
 
 If you specify the index in the path, then you don't need to include it in the [request body chunks]({{site.url}}{{site.baseurl}}/api-reference/document-apis/bulk/#request-body).

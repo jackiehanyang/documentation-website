@@ -8,7 +8,7 @@ redirect_from:
   - /security-plugin/configuration/saml/
 ---
 
-# SAML
+# SAML authentication
 
 The Security plugin supports user authentication through SAML single sign-on. The Security plugin implements the web browser SSO profile of the SAML 2.0 protocol.
 
@@ -163,7 +163,7 @@ Name | Description
 `kibana_url` | The OpenSearch Dashboards base URL. Required.
 
 
-## Username and Role attributes
+## Username and role attributes
 
 Subjects (for example, user names) are usually stored in the `NameID` element of a SAML response:
 
@@ -210,11 +210,11 @@ The Security plugin supports the following signature algorithms.
 
 Algorithm | Value
 :--- | :---
-DSA_SHA1 | http://www.w3.org/2000/09/xmldsig#dsa-sha1;
-RSA_SHA1 | http://www.w3.org/2000/09/xmldsig#rsa-sha1;
-RSA_SHA256 | http://www.w3.org/2001/04/xmldsig-more#rsa-sha256;
-RSA_SHA384 | http://www.w3.org/2001/04/xmldsig-more#rsa-sha384;
-RSA_SHA512 | http://www.w3.org/2001/04/xmldsig-more#rsa-sha512;
+`DSA_SHA1` | http://www.w3.org/2000/09/xmldsig#dsa-sha1;
+`RSA_SHA1` | http://www.w3.org/2000/09/xmldsig#rsa-sha1;
+`RSA_SHA256` | http://www.w3.org/2001/04/xmldsig-more#rsa-sha256;
+`RSA_SHA384` | http://www.w3.org/2001/04/xmldsig-more#rsa-sha384;
+`RSA_SHA512` | http://www.w3.org/2001/04/xmldsig-more#rsa-sha512;
 
 
 ## Logout

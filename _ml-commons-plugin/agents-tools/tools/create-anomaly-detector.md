@@ -1,15 +1,15 @@
 ---
 layout: default
-title: CreateAnomalyDetectorTool
+title: Create Anomaly Detector tool
 has_children: false
 has_toc: false
-nav_order: 70
+nav_order: 22
 parent: Tools
 grand_parent: Agents and tools
 ---
 
 <!-- vale off -->
-# CreateAnomalyDetectorTool
+# Create Anomaly Detector tool
 **Introduced 2.16**
 {: .label .label-purple }
 <!-- vale on -->
@@ -71,7 +71,7 @@ POST /_plugins/_ml/agents/EuJYYo0B9RaBCvhuy1q8/_execute
 ```
 {% include copy-curl.html %} 
 
-OpenSearch responds with a JSON string containing all of the recommended parameters for creating an anomaly detector, such as the string shown in the following example repsonse:
+OpenSearch responds with a JSON string containing all of the recommended parameters for creating an anomaly detector, such as the string shown in the following example response:
 
 ```json
 {
@@ -167,3 +167,7 @@ The following table lists the available tool parameters for running the agent.
 Parameter	| Type | Required/Optional | Description	
 :--- | :--- | :--- | :---
 `index` | String | Required | The index name. Supports wildcards (for example, `weblogs-*`). If wildcards are used, then the tool fetches mappings from the first resolved index and sends them to the LLM. 
+
+## Testing the tool
+
+You can run this tool either as part of an agent workflow or independently using the [Execute Tool API]({{site.url}}{{site.baseurl}}/ml-commons-plugin/api/execute-tool/). The Execute Tool API is useful for testing individual tools or performing standalone operations.

@@ -1,12 +1,12 @@
 ---
 layout: default
 title: Workspaces APIs
-parent: Workspace for OpenSearch Dashboards
+parent: Workspaces
 nav_order: 10
 ---
 
 # Workspaces APIs
-Introduced 2.18
+**Introduced 2.18**
 {: .label .label-purple }
 
 The Workspaces API provides a set of endpoints for managing workspaces in OpenSearch Dashboards.
@@ -16,9 +16,9 @@ The Workspaces API provides a set of endpoints for managing workspaces in OpenSe
 You can use the following endpoint to retrieve a list of workspaces:
 
 ```json
-POST <osd host>:<port>/api/workspaces/_list
+POST {osd_host}:{port}/api/workspaces/_list
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following table lists the available path parameters.
 
@@ -35,48 +35,47 @@ The following table lists the available path parameters.
 #### Example request
 
 ```json
-POST /api/workspaces/_list
+curl -k -u admin:admin \
+  -H 'osd-xsrf: true' \
+  -H 'Content-Type: application/json' \
+  -X POST 'https://localhost:5601/api/workspaces/_list' \
+  -d '{}'
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following example response shows a successful API call:
 
 ```json
 {
-    "success": true,
-    "result": {
-        "page": 1,
-        "per_page": 20,
-        "total": 3,
-        "workspaces": [
-            {
-                "name": "test1",
-                "features": [
-                    "use-case-all"
-                ],
-                "id": "hWNZls"
-            },
-            {
-                "name": "test2",
-                "features": [
-                    "use-case-observability"
-                ],
-                "id": "SnkOPt"
-            }
-        ]
-    }
+  "success": true,
+  "result": {
+    "page": 1,
+    "per_page": 20,
+    "total": 1,
+    "workspaces": [
+      {
+        "name": "test4",
+        "description": "test4",
+        "features": [
+          "use-case-all"
+        ],
+        "lastUpdatedTime": "2025-09-10T14:47:04.741Z",
+        "id": "B9Le1w",
+        "permissionMode": "read"
+      }
+    ]
+  }
 }
 ```
-{% include copy-curl.html %}
 
 ## Get Workspaces API
 
 You can use the following endpoint to retrieve a single workspace:
 
 ```json
-GET <osd host>:<port>/api/workspaces/<id>
+GET {osd_host}:{port}/api/workspaces/{id}
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following table lists the available path parameters. All path parameters are required.
 
@@ -87,32 +86,35 @@ The following table lists the available path parameters. All path parameters are
 #### Example request
 
 ```json
-GET /api/workspaces/SnkOPt
+curl -k -u admin:admin -X GET 'https://localhost:5601/api/workspaces/B9Le1w'
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following example response shows a successful API call:
 
 ```json
 {
-    "success": true,
-    "result": {
-        "name": "test2",
-        "features": ["use-case-all"],
-        "id": "SnkOPt"
-    }
+  "success": true,
+  "result": {
+    "name": "test4",
+    "description": "test4",
+    "features": [
+      "use-case-all"
+    ],
+    "lastUpdatedTime": "2025-09-10T14:47:04.741Z",
+    "id": "B9Le1w"
+  }
 }
 ```
-{% include copy-curl.html %}
 
 ## Create Workspaces API
 
 You can use the following endpoint to create a workspace:
 
 ```json
-POST <osd host>:<port>/api/workspaces
+POST {osd_host}:{port}/api/workspaces
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following table lists the available path parameters.
 
@@ -120,19 +122,23 @@ The following table lists the available path parameters.
 | :--- | :--- | :--- | :--- |
 | `attributes` | Object | Required | Defines the workspace attributes. |
 | `permissions` | Object | Optional | Specifies the permissions for the workspace. |
+| `settings` | Object | Optional | Specifies the settings for the workspace. |
 
 #### Example request
 
 ```json
-POST api/workspaces
-{
+curl -k -XPOST "https://localhost:5601/api/workspaces" \
+  -H "Content-Type: application/json" \
+  -H "osd-xsrf: true" \
+  -d '{
     "attributes": {
-        "name": "test4",
-        "description": "test4"
+      "name": "test4",
+      "description": "test4",
+      "features": ["use-case-all"]
     }
-}
+  }' -u admin:admin
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following example response shows a successful API call:
 
@@ -140,20 +146,19 @@ The following example response shows a successful API call:
 {
     "success": true,
     "result": {
-        "id": "eHVoCJ"
+        "id": "B9Le1w"
     }
 }
 ```
-{% include copy-curl.html %}
 
 ## Update Workspaces API
 
 You can use the following endpoint to update the attributes and permissions for a workspace:
 
 ```json
-PUT <osd host>:<port>/api/workspaces/<id>
+PUT {osd_host}:{port}/api/workspaces/{id}
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following table lists the available path parameters.
 
@@ -163,18 +168,20 @@ The following table lists the available path parameters.
 | `attributes` | Object | Required | Defines the workspace attributes. |
 | `permissions` | Object | Optional | Specifies the permissions for the workspace. |
 
-#### Example request
+#### Example request without permissions object
 
 ```json
-PUT api/workspaces/eHVoCJ
-{
+curl -k -XPUT "https://localhost:5601/api/workspaces/B9Le1w" \
+  -H "Content-Type: application/json" \
+  -H "osd-xsrf: true" \
+  -d '{
     "attributes": {
-        "name": "test4",
-        "description": "test update"
+      "name": "test5",
+      "description": "Updated description"
     }
-}
+  }' -u admin:admin
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following example response shows a successful API call:
 
@@ -184,16 +191,40 @@ The following example response shows a successful API call:
     "result": true
 }
 ```
-{% include copy-curl.html %}
+
+#### Example request with permissions object
+
+When a request includes a `permissions` object, each user or group must be assigned the set of permission modes required for the desired access level. For example, read-only access requires both the `library_read` and `read` permission modes:
+
+```json
+curl -k -u admin:admin \
+  -H 'osd-xsrf: true' \
+  -H 'Content-Type: application/json' \
+  -X PUT 'https://localhost:5601/api/workspaces/B9Le1w' \
+  -d '{
+    "attributes": {},
+    "settings": {
+      "permissions": {
+        "library_write": { "users": ["obs-admin-user"] },
+        "write": { "users": ["obs-admin-user"] },
+        "library_read": { "groups": ["obs-read-users"] },
+        "read": { "groups": ["obs-read-users"] }
+      }
+    }
+  }'
+```
+{% include copy.html %}
+
+For a complete list of permission modes and the access levels they provide, see [Defining workspace collaborators]({{site.url}}{{site.baseurl}}/dashboards/workspace/workspace-acl/#defining-workspace-collaborators).
 
 ## Delete Workspaces API
 
 You can use the following endpoint to delete a workspace:
 
 ```json
-DELETE <osd host>:<port>/api/workspaces/<id>
+DELETE {osd_host}:{port}/api/workspaces/{id}
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following table lists the available path parameters. All path parameters are required.
 
@@ -204,9 +235,11 @@ The following table lists the available path parameters. All path parameters are
 #### Example request
 
 ```json
-DELETE api/workspaces/eHVoCJ
+curl -k -u admin:admin \
+  -H 'osd-xsrf: true' \
+  -X DELETE 'https://localhost:5601/api/workspaces/B9Le1w'
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following example response shows a successful API call:
 
@@ -216,16 +249,15 @@ The following example response shows a successful API call:
     "result": true
 }
 ```
-{% include copy-curl.html %}
 
 ## Duplicate Saved Objects Workspaces API
 
 You can use the following endpoint to copy saved objects between workspaces:
 
 ```json
-POST <osd host>:<port>/api/workspaces/_duplicate_saved_objects
+POST {osd_host}:{port}/api/workspaces/_duplicate_saved_objects
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following table lists the available path parameters.
 
@@ -245,18 +277,18 @@ The following table lists the attributes of the object in the `objects` paramete
 #### Example request
 
 ```json
-POST api/workspaces/_duplicate_saved_objects
-{
+curl -k -u admin:admin \
+  -H 'osd-xsrf: true' \
+  -H 'Content-Type: application/json' \
+  -X POST 'https://localhost:5601/api/workspaces/_duplicate_saved_objects' \
+  -d '{
     "objects": [
-        {
-            "type": "index-pattern",
-            "id": "619cc200-ecd0-11ee-95b1-e7363f9e289d"
-        }
+      { "type": "index-pattern", "id": "619cc200-ecd0-11ee-95b1-e7363f9e289d" }
     ],
     "targetWorkspace": "9gt4lB"
-}
+  }'
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following example response shows a successful API call:
 
@@ -277,16 +309,15 @@ The following example response shows a successful API call:
     ]
 }
 ```
-{% include copy-curl.html %}
 
 ## Associate Saved Objects Workspaces API
 
 You can use the following endpoint to associate saved objects with a workspace:
 
 ```json
-POST <osd host>:<port>/api/workspaces/_associate
+POST {osd_host}:{port}/api/workspaces/_associate
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following table lists the available path parameters.
 
@@ -305,18 +336,18 @@ The following table lists the attributes of the object in the `objects` paramete
 #### Example request
 
 ```json
-POST api/workspaces/_associate
-{
+curl -k -u admin:admin \
+  -H 'osd-xsrf: true' \
+  -H 'Content-Type: application/json' \
+  -X POST 'https://localhost:5601/api/workspaces/_associate' \
+  -d '{
     "objects": [
-        {
-            "type": "index-pattern",
-            "id": "619cc200-ecd0-11ee-95b1-e7363f9e289d"
-        }
+      { "type": "index-pattern", "id": "619cc200-ecd0-11ee-95b1-e7363f9e289d" }
     ],
     "targetWorkspace": "9gt4lB"
-}
+  }'
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following example response shows a successful API call:
 
@@ -330,16 +361,15 @@ The following example response shows a successful API call:
     ]
 }
 ```
-{% include copy-curl.html %}
 
 ## Dissociate Saved Objects Workspaces API
 
 You can use the following endpoint to dissociate saved objects from a workspace:
 
 ```json
-POST <osd host>:<port>/api/workspaces/_dissociate
+POST {osd_host}:{port}/api/workspaces/_dissociate
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following table lists the available path parameters.
 
@@ -358,18 +388,19 @@ The following table lists the attributes of the `savedObjects` parameter.
 #### Example request
 
 ```json
-POST api/workspaces/_dissociate
-{
+curl -k -u admin:admin \
+  -H 'osd-xsrf: true' \
+  -H 'Content-Type: application/json' \
+  -X POST 'https://localhost:5601/api/workspaces/_dissociate' \
+  -d '{
     "objects": [
-        {
-            "type": "index-pattern",
-            "id": "619cc200-ecd0-11ee-95b1-e7363f9e289d"
-        }
+      { "type": "index-pattern", "id": "619cc200-ecd0-11ee-95b1-e7363f9e289d" }
     ],
     "targetWorkspace": "9gt4lB"
-}
+  }'
+
 ```
-{% include copy-curl.html %}
+{% include copy.html %}
 
 The following example response shows a successful API call:
 
@@ -383,4 +414,3 @@ The following example response shows a successful API call:
     ]
 }
 ```
-{% include copy-curl.html %}

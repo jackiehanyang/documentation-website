@@ -28,7 +28,7 @@ assistant.text2viz.enabled: true
 
 ### Step 2: Create the agents
 
-To orchestrate text to visualization, you'll need to create the necessary [agents]({{site.url}}{{site.baseurl}}/ml-commons-plugin/agents-tools/index/#agents). Create a workflow template for creating all necessary text-to-visualization agents by sending the following request:
+To orchestrate text to visualization, you'll need to create the necessary [agents]({{site.url}}{{site.baseurl}}/ml-commons-plugin/agents-tools/agents/). Create a workflow template for creating all necessary text-to-visualization agents by sending the following request:
 
 <details markdown="block">
   <summary>
@@ -170,14 +170,14 @@ POST /_plugins/_flow_framework/workflow
 Use the workflow ID returned in the response to provision the resources:
 
 ```json
-POST /_plugins/_flow_framework/workflow/<workflow_id>/_provision
+POST /_plugins/_flow_framework/workflow/{workflow_id}/_provision
 ```
 {% include copy-curl.html %}
 
 To view the status of the workflow and all created resources, send the following request:
 
 ```json
-GET /_plugins/_flow_framework/workflow/<workflow_id>/_status
+GET /_plugins/_flow_framework/workflow/{workflow_id}/_status
 ```
 {% include copy-curl.html %}
 
@@ -217,7 +217,7 @@ This example demonstrates a system index. In security-enabled domains, only supe
 You can verify that the agent was created successfully by calling the agent with an example payload:
 
 ```json
-POST /_plugins/_ml/agents/<ROOT_AGENT_ID>/_execute
+POST /_plugins/_ml/agents/{ROOT_AGENT_ID}/_execute
 {
   "parameters": {
     "input_question": "find unique visitors and average bytes every 3 hours",
@@ -264,23 +264,23 @@ To generate visualizations from text in OpenSearch Dashboards, use the following
 
 1. In the **New Visualization** dialog, select **Natural language**, as shown in the following image.
 
-    <img width="800px" src="{{site.url}}{{site.baseurl}}/images/dashboards-assistant/t2viz-start.png" alt="Create a visualization by selecting natural language">
+    ![Create a visualization by selecting natural language]({{site.url}}{{site.baseurl}}/images/dashboards-assistant/t2viz-start.png){: width="800px" }
 
 1. From the data sources dropdown list, select a data source, as shown in the following image. 
 
-    <img src="{{site.url}}{{site.baseurl}}/images/dashboards-assistant/t2viz-select-data-source.png" alt="Create a visualization by selecting natural language">
+    ![Create a visualization by selecting natural language]({{site.url}}{{site.baseurl}}/images/dashboards-assistant/t2viz-select-data-source.png)
 
 1. In the text box on the upper right, enter a question using natural language. A new visualization is generated, as shown in the following image.
 
-    <img src="{{site.url}}{{site.baseurl}}/images/dashboards-assistant/t2viz-ask-question.png" alt="Create a visualization by selecting natural language">
+    ![Create a visualization by selecting natural language]({{site.url}}{{site.baseurl}}/images/dashboards-assistant/t2viz-ask-question.png)
 
 1. To modify the generated visualization, select **Edit visual**. In the **Edit visual** dialog, enter the desired modifications and then select **Apply**, as shown in the following image.
 
-    <img src="{{site.url}}{{site.baseurl}}/images/dashboards-assistant/t2viz-edit-visual.png" alt="Create a visualization by selecting natural language">
+    ![Create a visualization by selecting natural language]({{site.url}}{{site.baseurl}}/images/dashboards-assistant/t2viz-edit-visual.png)
 
     The visualization is updated, as shown in the following image.
 
-    <img src="{{site.url}}{{site.baseurl}}/images/dashboards-assistant/t2viz-edit-visual-response.png" alt="Create a visualization by selecting natural language">
+    ![Create a visualization by selecting natural language]({{site.url}}{{site.baseurl}}/images/dashboards-assistant/t2viz-edit-visual-response.png)
 
 
 

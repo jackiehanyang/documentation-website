@@ -3,7 +3,7 @@ layout: default
 title: Rerank
 nav_order: 110
 has_children: false
-parent: Search processors
+parent: User-defined search processors
 grand_parent: Search pipelines
 ---
 
@@ -26,7 +26,7 @@ The following table lists all available request fields.
 
 Field | Data type | Required/Optional | Description
 :--- | :--- | :--- | :---
-`<rerank_type>` | Object | Required | The rerank type for document reranking. Valid values are `ml-opensearch` and `by_field`.
+`rerank_type` | Object | Required | The rerank type for document reranking. Valid values are `ml-opensearch` and `by_field`.
 `context` | Object |  Required for the `ml_opensearch` rerank type. Optional and does not affect the results for the `by_field` rerank type. | Provides the `rerank` processor with information necessary for reranking at query time. 
 `tag` | String | Optional | The processor's identifier.
 `description` | String | Optional | A description of the processor.
@@ -146,7 +146,12 @@ Field  | Data type | Required/Optional | Description
 :--- | :---  | :--- | :--- 
 `target_field` | String | Required |  Specifies the field name or a dot path to the field containing the score to use for reranking. 
 `remove_target_field` | Boolean | Optional | If `true`, the response does not include the `target_field` used to perform reranking. Default is `false`.
-`keep_previous_score` | Boolean | Optional | If `true`, the response includes a `previous_score` field, which contains the score calculated before reranking and can be useful when debugging. Default is `false`.
+`keep_previous_score` | Boolean | Optional | If `true`, the response includes a field containing the score calculated before reranking. The field name is specified by `previous_score_field`. This can be useful when debugging. Default is `false`.
+`previous_score_field` | String | Optional | The field name used to store the score calculated before reranking when `keep_previous_score` is `true`. Default is `previous_score`. Only used when `keep_previous_score` is `true`.
+
+If your index already defines a `previous_score` document field, set `previous_score_field` to a different name (for example, `original_query_score`) to avoid overwriting the existing field value in search results.
+{: .note}
+
 
 ### Example 
 

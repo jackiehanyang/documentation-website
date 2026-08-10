@@ -4,6 +4,8 @@ title: k-NN API
 parent: Vector search API
 nav_order: 10
 has_children: false
+redirect_from:
+  - /search-plugins/knn/jni-libraries/
 ---
 
 # k-NN API
@@ -56,6 +58,34 @@ Field |  Description
 
 Some statistics contain *graph* in the name. In these cases, *graph* is synonymous with *native library index*. The term *graph* is reflective of when the plugin only supported the HNSW algorithm, which consists of hierarchical graphs.
 {: .note}
+
+#### Remote index build stats
+Introduced 3.0 
+{: .label .label-purple }
+
+If you configured [remote index build]({{site.url}}{{site.baseurl}}/vector-search/remote-index-build/), the response contains additional fields. The following table lists the available remote index build stats response body fields.
+
+| Field | Description |
+|:---|:---|
+| `repository_stats.read_success_count` | The number of successful read operations from the repository. |
+| `repository_stats.read_failure_count` | The number of failed read operations from the repository. |
+| `repository_stats.successful_read_time_in_millis` | The total time, in milliseconds, spent on successful read operations. |
+| `repository_stats.write_success_count` | The number of successful write operations to the repository. |
+| `repository_stats.write_failure_count` | The number of failed write operations to the repository. |
+| `repository_stats.successful_write_time_in_millis` | The total time, in milliseconds, spent on successful write operations. |
+| `client_stats.build_request_success_count` | The number of successful build request operations. |
+| `client_stats.build_request_failure_count` | The number of failed build request operations. |
+| `client_stats.status_request_failure_count` | The number of failed status request operations. |
+| `client_stats.status_request_success_count` | The number of successful status request operations. |
+| `client_stats.index_build_success_count` | The number of successful index build operations. |
+| `client_stats.index_build_failure_count` | The number of failed index build operations. |
+| `client_stats.waiting_time_in_ms` | The total time, in milliseconds, that the client has spent awaiting completion of remote builds. |
+| `build_stats.remote_index_build_flush_time_in_millis` | The total time, in milliseconds, spent on remote flush operations. |
+| `build_stats.remote_index_build_merge_time_in_millis` | The total time, in milliseconds, spent on remote merge operations. |
+| `build_stats.remote_index_build_current_merge_operations` | The current number of remote merge operations in progress. |
+| `build_stats.remote_index_build_current_flush_operations` | The current number of remote flush operations in progress. |
+| `build_stats.remote_index_build_current_merge_size` | The current size of remote merge operations. |
+| `build_stats.remote_index_build_current_flush_size` | The current size of remote flush operations. |
 
 #### Example request
 
@@ -252,7 +282,7 @@ The following table lists the available response body fields.
 Response field |  Description
 :--- | :---
 `model_id` | The unique identifier of the fetched model.
-`model_blob` | The base64 encoded string of the serialized model.
+`model_blob` | The Base64-encoded string of the serialized model.
 `state` | The model's current state, which can be `created`, `failed`, or `training`.
 `timestamp` | The date and time when the model was created.
 `description` | A user-provided description of the model.
@@ -393,7 +423,7 @@ Request field |  Description
 `max_training_vector_count` | The maximum number of vectors from the training index to be used for training. Defaults to all the vectors in the index. Optional.
 `search_size` | The training data is pulled from the training index using scroll queries. This parameter defines the number of results to return per scroll query. Default is `10000`. Optional.
 `description` | A user-provided description of the model. Optional.
-`method` | The configuration of the approximate k-NN method used for search operations. For more information about the available methods, see [Methods and engines]({{site.url}}{{site.baseurl}}/field-types/supported-field-types/knn-methods-engines/). The method requires training in order to be valid.
+`method` | The configuration of the approximate k-NN method used for search operations. For more information about the available methods, see [Methods and engines]({{site.url}}{{site.baseurl}}/mappings/supported-field-types/knn-methods-engines/). The method requires training in order to be valid.
 `space_type` | The space type for which this model is trained, for example, Euclidean or cosine. Note: This value can also be set in the `method` parameter.
    
 #### Example request

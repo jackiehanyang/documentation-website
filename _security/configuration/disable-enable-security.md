@@ -4,8 +4,9 @@ title: Disabling and enabling the Security plugin
 parent: Configuration
 nav_order: 40
 has_toc: true
-redirect_from: 
+redirect_from:
  - /security-plugin/configuration/disable/
+ - /security/configuration/disable/
 ---
 
 # Disabling and enabling the Security plugin
@@ -18,7 +19,7 @@ Disabling or removing the plugin exposes the configuration index for the Securit
 Disabling, removing, or installing the Security plugin requires a full cluster restart because during this process, the individual nodes are not able to communicate with each other.
 {: .warning}
 
-## Disabling/enabling the Security plugin
+## Disabling or enabling the Security plugin
 
 You can disable the Security plugin by editing the `opensearch.yml` file:
 
@@ -65,7 +66,7 @@ To perform these steps on the Docker image, see [Working with plugins]({{site.ur
 
 ### Removing the Security plugin from OpenSearch Dashboards 
 
-If you disable the Security plugin in `opensearch.yml` and still want to use OpenSearch Dashboards, you must remove the corresponding OpenSearch Dashboards Security plugin. For more information, see [Remove plugins]({{site.url}}{{site.baseurl}}/install-and-configure/install-dashboards/plugins/#remove-plugins).
+If you disable the Security plugin in `opensearch.yml` and still want to use OpenSearch Dashboards, you must remove the corresponding OpenSearch Dashboards Security plugin. For more information, see [Remove plugins]({{site.url}}{{site.baseurl}}/install-and-configure/install-dashboards/plugins/#removing-a-plugin).
 
 Refer to the following installation types to remove the OpenSearch Dashboards plugin.
 

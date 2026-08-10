@@ -2,7 +2,7 @@
 layout: default
 title: Plugin settings
 parent: Configuring OpenSearch
-nav_order: 100
+nav_order: 110
 ---
 
 # Plugin settings
@@ -33,6 +33,8 @@ For information about automatic workflow settings, see [Workflow settings]({{sit
 
 For information about the Geospatial plugin's IP2Geo processor settings, see [Cluster settings]({{site.url}}{{site.baseurl}}/ingest-pipelines/processors/ip2geo/#cluster-settings).
 
+For information about the Geospatial plugin's GeoJSON complexity settings, see [Configuring GeoJSON complexity]({{site.url}}{{site.baseurl}}/dashboards/visualize/geojson-regionmaps/#configuring-geojson-complexity).
+
 ## Index Management plugin settings
 
 For information about index state management (ISM) settings, see [ISM settings]({{site.url}}{{site.baseurl}}/im-plugin/ism/settings/).
@@ -55,9 +57,7 @@ For information about machine learning settings, see [ML Commons cluster setting
 
 ## Neural Search plugin settings
 
-The Security Analytics plugin supports the following settings:
-
-- `plugins.neural_search.hybrid_search_disabled` (Dynamic, Boolean): Disables hybrid search. Default is `false`.
+For information about Neural Search plugin settings, see [Neural Search plugin settings]({{site.url}}{{site.baseurl}}/vector-search/settings/#neural-search-plugin-settings).
 
 ## Notifications plugin settings
 
@@ -83,6 +83,11 @@ The Notifications plugin supports the following settings. All settings in this l
 
 - `opensearch.notifications.general.filter_by_backend_roles` (Boolean): Enables filtering by backend roles (role-based access control for the notification channels). Default is `false`.
 
+- `opensearch.notifications.general.filter_by_backend_roles_access_strategy` (String): Controls filtering by backend roles (role-based access control for the notification channels). Valid values are:
+  - `intersect` (Default) -- Users have access to notifications objects if they share at least one backend role with the user who created the object.
+  - `exact` -- Users have access to notifications objects if they have exactly the same (with no additional) backend roles as the user who created the object.
+  - `all` -- Users have access to notifications objects if their backend roles contain all of the backend roles of the user who created the object.
+
 ## Query Insights plugin settings
 
 For information about Query Insights plugin settings, see [Query Insights features and settings]({{site.url}}{{site.baseurl}}/observing-your-data/query-insights/index#query-insights-features-and-settings).
@@ -93,8 +98,18 @@ For information about the Security plugin settings, see [Security settings]({{si
 
 ## Security Analytics plugin settings
 
-For information about security analytics settings, see [Security Analytics settings]({{site.url}}{{site.baseurl}}/security-analytics/settings/).
+For information about the Security Analytics plugin settings, see [Security Analytics settings]({{site.url}}{{site.baseurl}}/security-analytics/settings/).
 
 ## SQL plugin settings
 
 For information about settings related to SQL and PPL, see [SQL settings]({{site.url}}{{site.baseurl}}/search-plugins/sql/settings/).
+
+## Workload Management plugin settings
+
+For information about workload management settings, see [Workload management settings]({{site.url}}{{site.baseurl}}/tuning-your-cluster/availability-and-recovery/workload-management/wlm-feature-overview/#workload-management-settings).
+
+## General plugin settings
+
+OpenSearch supports the following general plugin configuration settings:
+
+- `plugin.mandatory` (Static, list): Specifies plugins that are required for the node to start successfully. If any of the listed plugins are not available or fail to load, the node will not start. This setting is particularly important for clusters that depend on custom processors or other critical plugin functionality to ensure consistent behavior across all nodes. You can specify multiple plugins as a comma-separated list. Default is `[]` (empty list).

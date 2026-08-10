@@ -15,6 +15,20 @@ function addButtons(labels, curl) {
         if (curl) {           
             buttonWrap.appendChild(createButton(text, 'Copy as cURL', 'Copy snippet as cURL', true));
         }
+
+        // Check if the next sibling after the copy label is a playground label
+        var nextSibling = copyLabel.nextElementSibling;
+        if (nextSibling && nextSibling.classList.contains('try-in-playground-label')) {
+            var playButton = document.createElement('button');
+            playButton.className = 'copy-button playground-button';
+            playButton.type = 'button';
+            playButton.innerText = 'Try in Playground';
+            playButton.ariaLabel = 'Open query in OpenSearch Playground';
+            playButton.setAttribute('data-action', 'open_playground');
+            playButton.setAttribute('data-query', text);
+            buttonWrap.appendChild(playButton);
+            nextSibling.remove();
+        }
         
         snippet.style.marginBottom = 0;
         snippet.style.paddingBottom = 0;
@@ -29,12 +43,8 @@ function createButton(textToCopy, buttonText, buttonAriaLabel, curl) {
     copyButton.innerText = buttonText;
     copyButton.ariaLabel = buttonAriaLabel;
 
-    if (curl) {
-        copyButton.setAttribute('data-text', addCurl(textToCopy));
-    }
-    else {
-        copyButton.setAttribute('data-text', textToCopy);
-    }
+    copyButton.setAttribute('data-action', curl ? 'copy_as_curl' : 'copy_code');
+    copyButton.setAttribute('data-text', curl ? addCurl(textToCopy) : textToCopy);
 
     return copyButton;
 }

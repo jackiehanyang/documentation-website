@@ -9,11 +9,12 @@ redirect_from:
   - /query-dsl/aggregations/metric-agg/
   - /aggregations/metric-agg/
   - /query-dsl/aggregations/metric/
+  - /aggregations/metric/
 ---
 
 # Metric aggregations
 
-Metric aggregations let you perform simple calculations such as finding the minimum, maximum, and average values of a field.
+Metric aggregations let you perform calculations such as finding the minimum, maximum, and average values of a field.
 
 ## Types of metric aggregations
 

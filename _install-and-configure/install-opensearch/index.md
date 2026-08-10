@@ -7,15 +7,27 @@ redirect_from:
   - /opensearch/install/
   - /opensearch/install/compatibility/
   - /opensearch/install/important-settings/
-  - /install-and-configure/index/
   - /opensearch/install/index/
+  - /install-and-configure/install-opensearch/
 ---
 
 # Installing OpenSearch
 
-This section provides information about how to install OpenSearch on your host, including which [ports to open](#network-requirements) and which [important settings](#important-settings) to configure on your host.
+You can install OpenSearch using Docker, Helm, tarball, RPM, Debian packages, Ansible, or on Windows. Each method requires specific [ports to be open](#network-requirements) and [important settings](#important-settings) to be configured on your host.
 
 For operating system compatibility, see [Compatible operating systems]({{site.url}}{{site.baseurl}}/install-and-configure/os-comp/).
+
+## Installation steps
+
+Installation steps vary depending on the deployment method. For steps specific to your deployment, see the following installation guides:
+
+- [Docker]({{site.url}}{{site.baseurl}}/install-and-configure/install-opensearch/docker/)
+- [Helm]({{site.url}}{{site.baseurl}}/install-and-configure/install-opensearch/helm/)
+- [Tarball]({{site.url}}{{site.baseurl}}/install-and-configure/install-opensearch/tar/)
+- [RPM]({{site.url}}{{site.baseurl}}/install-and-configure/install-opensearch/rpm/)
+- [Debian]({{site.url}}{{site.baseurl}}/install-and-configure/install-opensearch/debian/)
+- [Ansible playbook]({{site.url}}{{site.baseurl}}/install-and-configure/install-opensearch/ansible/)
+- [Windows]({{site.url}}{{site.baseurl}}/install-and-configure/install-opensearch/windows/)
 
 
 ## File system recommendations
@@ -26,21 +38,25 @@ Avoid using a network file system for node storage in a production workflow. Usi
 
 The OpenSearch distribution for Linux ships with a compatible [Adoptium JDK](https://adoptium.net/) version of Java in the `jdk` directory. To find the JDK version, run `./jdk/bin/java -version`. For example, the OpenSearch 1.0.0 tarball ships with Java 15.0.1+9 (non-LTS), OpenSearch 1.3.0 ships with Java 11.0.14.1+1 (LTS), and OpenSearch 2.0.0 ships with Java 17.0.2+8 (LTS). OpenSearch is tested with all compatible Java versions.
 
-OpenSearch Version | Compatible Java Versions | Bundled Java Version
+OpenSearch version | Compatible Java versions | Bundled Java version
 :---------- | :-------- | :-----------
 1.0--1.2.x    | 11, 15     | 15.0.1+9
 1.3.x          | 8, 11, 14  | 11.0.25+9
 2.0.0--2.11.x    | 11, 17     | 17.0.2+8
-2.12.0+        | 11, 17, 21 | 21.0.5+11
+2.12.0+        | 11, 17, 21 | 21.0.11+10
+3.2.0+        | 21, 24 | 24.0.2+12
+3.5.0+        | 21, 25 | 25.0.2+10
+3.6.1+        | 21, 25, 26 | 25.0.4+7
 
-To use a different Java installation, set the `OPENSEARCH_JAVA_HOME` or `JAVA_HOME` environment variable to the Java install location. For example:
+To use a different Java installation, set the `OPENSEARCH_JAVA_HOME` or `JAVA_HOME` environment variable to the Java installation location. For example:
+
 ```bash
 export OPENSEARCH_JAVA_HOME=/path/to/opensearch-{{site.opensearch_version}}/jdk
 ```
 
 ## Network requirements
 
-The following ports need to be open for OpenSearch components.
+The following TCP ports need to be open for OpenSearch components.
 
 Port number | OpenSearch component
 :--- | :--- 
@@ -50,9 +66,12 @@ Port number | OpenSearch component
 9300 | Node communication and transport (internal), cross cluster search
 9600 | Performance Analyzer
 
+No UDP ports are used.
+{: .note}
+
 ## Important settings
 
-For production workloads, make sure the [Linux setting](https://www.kernel.org/doc/Documentation/sysctl/vm.txt) `vm.max_map_count` is set to at least 262144. Even if you use the Docker image, set this value on the *host machine*. To check the current value, run this command:
+For production workloads running on Linux, make sure the [Linux setting](https://www.kernel.org/doc/Documentation/sysctl/vm.txt) `vm.max_map_count` is set to at least `262144`. Even if you use the Docker image, set this value on the host machine. To check the current value, run this command:
 
 ```bash
 cat /proc/sys/vm/max_map_count
@@ -73,7 +92,7 @@ wsl -d docker-desktop
 sysctl -w vm.max_map_count=262144
 ```
 
-The [sample docker-compose.yml]({{site.url}}{{site.baseurl}}/install-and-configure/install-opensearch/docker/#sample-docker-composeyml) file also contains several key settings:
+The [sample `docker-compose.yml`]({{site.url}}{{site.baseurl}}/install-and-configure/install-opensearch/docker/#sample-docker-composeyml) file also contains several key settings:
 
 - `bootstrap.memory_lock=true`
 
